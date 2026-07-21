@@ -30,6 +30,7 @@ for name, purpose, cat in official:
         "purpose": purpose,
         "category": cat,
         "source": "Anthropic (official)",
+        "type": "skill",
     })
 
 community = [
@@ -75,9 +76,42 @@ for repo, purpose, cat, group in community:
         "purpose": purpose,
         "category": group,
         "source": repo.split("/")[0],
+        "type": "skill",
+    })
+
+# Governance files: the broader class of artifact that a Skill belongs to —
+# anything that scopes, directs, constrains, or audits what an AI agent may do.
+governance = [
+    ("AGENTS.md", "https://github.com/agentsmd/agents.md", "Open, cross-tool standard for a project instructions file — scopes what a coding agent may build, run, and touch. Read by 30+ agents.", "Instruction Files", "Agentic AI Foundation"),
+    ("CLAUDE.md", "https://docs.claude.com/en/docs/claude-code/memory", "Per-project memory file Claude Code loads automatically to govern its behavior, conventions, and boundaries in a given repo.", "Instruction Files", "Anthropic"),
+    ("copilot-instructions.md", "https://docs.github.com/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot", "Repo-scoped instructions file GitHub Copilot reads automatically to constrain suggestions to house conventions.", "Instruction Files", "GitHub"),
+    ("Cursor Rules", "https://docs.cursor.com/context/rules", ".cursor/rules directory of scoped rule files governing what Cursor's agent can edit and how.", "Instruction Files", "Cursor"),
+    ("Windsurf Rules", "https://docs.windsurf.com/windsurf/cascade/memories", ".windsurfrules / .windsurf/rules governing Cascade's behavior on a per-project basis.", "Instruction Files", "Windsurf"),
+    ("NeMo Guardrails", "https://github.com/NVIDIA-NeMo/Guardrails", "Open-source toolkit for adding programmable input/output/dialog guardrails to LLM apps and agents.", "Guardrails", "NVIDIA"),
+    ("Guardrails AI", "https://github.com/guardrails-ai/guardrails", "RAIL-spec framework that validates and corrects LLM outputs against structured rules before they reach a user.", "Guardrails", "Guardrails AI"),
+    ("Llama Guard / PurpleLlama", "https://github.com/meta-llama/PurpleLlama", "Meta's safety classifier and toolkit for scoring prompts and agent outputs against a harm taxonomy.", "Guardrails", "Meta"),
+    ("Rebuff", "https://github.com/protectai/rebuff", "Prompt-injection detector that governs what untrusted input is allowed to influence an agent's behavior.", "Guardrails", "Protect AI"),
+    ("OWASP Top 10 for LLM Apps", "https://github.com/OWASP/www-project-top-10-for-large-language-model-applications", "Community risk-ranked list of top LLM/agent vulnerabilities, widely used as a baseline governance checklist.", "Standards", "OWASP"),
+    ("MITRE ATT&CK Navigator", "https://github.com/mitre-attack/attack-navigator", "Threat-matrix browser used to map and govern AI/agent attack surfaces against known adversary techniques.", "Standards", "MITRE"),
+    ("Responsible AI Toolbox", "https://github.com/microsoft/responsible-ai-toolbox", "Model/data assessment UI and libraries for auditing an AI system's fairness, safety, and reliability before it ships.", "Standards", "Microsoft"),
+    ("awesome-ai-agent-governance", "https://github.com/systempromptio/awesome-ai-agent-governance", "Curated list of tools and standards for governing AI agents in production — policy enforcement, audit trails, EU AI Act, MCP/Claude Code security.", "Curated list", "systempromptio"),
+    ("awesome-ai-governance", "https://github.com/Myr-Aya/awesome-ai-governance", "Curated frameworks, standards, regulations and tools for enterprise AI governance, risk, security and compliance.", "Curated list", "Myr-Aya"),
+    ("ai-governance-framework-tools", "https://github.com/BinaryVerseAI/ai-governance-framework-tools", "Practical templates and guides for implementing the NIST AI RMF and ISO 42001 AI management systems.", "Standards", "BinaryVerseAI"),
+    ("NIST AI Risk Management Framework", "https://www.nist.gov/itl/ai-risk-management-framework", "US government framework for identifying, measuring, and governing AI risk across an organization's AI lifecycle.", "Standards", "NIST"),
+    ("EU AI Act", "https://artificialintelligenceact.eu/", "Binding EU regulation classifying and governing AI systems by risk tier, with obligations for agentic/general-purpose AI.", "Standards", "European Union"),
+]
+
+for name, url, purpose, cat, source in governance:
+    skills.append({
+        "name": name,
+        "url": url,
+        "purpose": purpose,
+        "category": cat,
+        "source": source,
+        "type": "governance",
     })
 
 with open("/private/tmp/claude-501/-Users-nafiz43/f7b880f4-6bd5-4b77-8f3e-11dfab4340fa/scratchpad/skillbench-site/data.js", "w") as f:
     f.write("const SKILLS = " + json.dumps(skills, indent=2) + ";\n")
 
-print("wrote", len(skills), "skills")
+print("wrote", len(skills), "entries:", sum(1 for s in skills if s['type']=='skill'), "skills,", sum(1 for s in skills if s['type']=='governance'), "governance files")

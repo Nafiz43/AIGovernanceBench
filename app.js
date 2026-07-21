@@ -1,24 +1,35 @@
 const PAGE_SIZE = 10;
 let filtered = SKILLS.slice();
 let page = 1;
+let activeType = "";
 
 const body = document.getElementById("skillsBody");
 const empty = document.getElementById("emptyState");
 const pager = document.getElementById("pagination");
 const searchInput = document.getElementById("searchInput");
 const categoryFilter = document.getElementById("categoryFilter");
+const typeTabs = document.getElementById("typeTabs");
 
 function init() {
   document.getElementById("statTotal").textContent = SKILLS.length;
-  const cats = [...new Set(SKILLS.map(s => s.category))].sort();
-  document.getElementById("statCats").textContent = cats.length;
+  document.getElementById("statSkills").textContent = SKILLS.filter(s => s.type === "skill").length;
+  document.getElementById("statGov").textContent = SKILLS.filter(s => s.type === "governance").length;
 
+  const cats = [...new Set(SKILLS.map(s => s.category))].sort();
   categoryFilter.innerHTML =
     `<option value="">All categories</option>` +
     cats.map(c => `<option value="${c}">${c}</option>`).join("");
 
   searchInput.addEventListener("input", applyFilters);
   categoryFilter.addEventListener("change", applyFilters);
+  typeTabs.addEventListener("click", (e) => {
+    const btn = e.target.closest(".type-tab");
+    if (!btn) return;
+    typeTabs.querySelectorAll(".type-tab").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    activeType = btn.dataset.type;
+    applyFilters();
+  });
 
   render();
 }
@@ -33,7 +44,8 @@ function applyFilters() {
       s.source.toLowerCase().includes(q) ||
       s.category.toLowerCase().includes(q);
     const matchesCat = !cat || s.category === cat;
-    return matchesQ && matchesCat;
+    const matchesType = !activeType || s.type === activeType;
+    return matchesQ && matchesCat && matchesType;
   });
   page = 1;
   render();
@@ -60,6 +72,7 @@ function render() {
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         </a>
       </td>
+      <td class="col-type"><span class="type-pill type-${s.type}">${s.type === "skill" ? "Skill" : "Governance"}</span></td>
       <td class="col-cat"><span class="cat-pill">${escapeHtml(s.category)}</span></td>
       <td class="col-purpose purpose-text">${escapeHtml(s.purpose)}</td>
       <td class="col-source source-text">${escapeHtml(s.source)}</td>
