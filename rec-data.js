@@ -1313,5 +1313,42 @@ const RECS = [
   ]},
 ];
 
+// Bridge to the "All Skill List" directory: competency -> real entries in data.js
+// that genuinely help you build it (Agent Skills / governance files). Only honest
+// matches; competencies without a real counterpart are intentionally absent.
+const SKILL_TO_DIRECTORY = {
+  "Prompt Engineering": ["prompt-master"],
+  "Context Engineering": ["CLAUDE.md", "AGENTS.md", "Cursor Rules", "Windsurf Rules", "copilot-instructions.md", "planning-with-files"],
+  "Model Context Protocol (MCP)": ["mcp-builder"],
+  "Tool Calling": ["mcp-builder", "claude-api"],
+  "LLM Fundamentals": ["claude-api"],
+  "Agent Orchestration": ["awesome-agent-skills"],
+  "Multi-Agent Systems": ["awesome-agent-skills"],
+  "Agentic Coding": ["awesome-claude-code", "claude-code-tips", "planning-with-files", "claude-code-infrastructure-showcase", "awesome-claude-code-and-skills"],
+  "AI Test Generation": ["webapp-testing"],
+  "Guardrails": ["NeMo Guardrails", "Guardrails AI", "Llama Guard / PurpleLlama", "Rebuff"],
+  "Prompt Injection Defense": ["Rebuff", "Llama Guard / PurpleLlama"],
+  "AI Governance & Compliance": ["EU AI Act", "NIST AI Risk Management Framework", "ai-governance-framework-tools", "awesome-ai-governance", "awesome-ai-agent-governance"],
+  "Responsible AI Practice": ["Responsible AI Toolbox", "awesome-ai-governance"],
+  "Bias & Fairness Auditing": ["Responsible AI Toolbox"],
+  "Explainability (XAI)": ["Responsible AI Toolbox"],
+  "Red-Teaming & Adversarial Testing": ["OWASP Top 10 for LLM Apps", "Anthropic-Cybersecurity-Skills"],
+  "Security Copilots & SOC Automation": ["Anthropic-Cybersecurity-Skills"],
+  "Threat Intelligence AI": ["MITRE ATT&CK Navigator", "Anthropic-Cybersecurity-Skills"],
+  "Literature Search & Research Agents": ["academic-research-skills", "scientific-agent-skills", "AI-Research-SKILLs", "Auto-claude-code-research-in-sleep"],
+  "Systematic Review Automation": ["academic-research-skills", "scientific-agent-skills"],
+  "Hypothesis Generation": ["scientific-agent-skills", "AI-Research-SKILLs"],
+  "Scientific Writing with AI": ["academic-research-skills", "notebooklm-py"],
+  "Scientific Data Analysis": ["scientific-agent-skills", "notebooklm-py"],
+  "AI Writing & Editing": ["humanizer", "doc-coauthoring", "Humanizer-zh"],
+  "Content Generation & Brand Voice": ["marketingskills", "brand-guidelines"],
+  "SEO & Content Optimization": ["claude-seo", "geo-seo-claude", "marketingskills"],
+  "Design-to-Code AI": ["frontend-design", "web-artifacts-builder", "theme-factory", "huashu-design", "hallmark"],
+  "Document Processing & OCR": ["pdf", "docx", "xlsx", "pptx"],
+  "Image & Video Generation": ["slack-gif-creator", "canvas-design", "algorithmic-art"],
+  "Skills Taxonomy & Ontology": ["skill-creator", "Skill_Seekers", "book-to-skill"],
+  "Knowledge Management AI": ["notebooklm-py"]
+};
+
 // Expose for app-rec.js
-if (typeof window !== "undefined") { window.SKILL_LIB = SKILL_LIB; window.RECS = RECS; }
+if (typeof window !== "undefined") { window.SKILL_LIB = SKILL_LIB; window.RECS = RECS; window.SKILL_TO_DIRECTORY = SKILL_TO_DIRECTORY; }

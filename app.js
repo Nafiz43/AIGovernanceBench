@@ -2,6 +2,7 @@ const PAGE_SIZE = 10;
 let filtered = SKILLS.slice();
 let page = 1;
 let activeType = "";
+let nameFilter = null; // Set of entry names when the recommender jumps here; null otherwise.
 
 const body = document.getElementById("skillsBody");
 const empty = document.getElementById("emptyState");
@@ -20,11 +21,12 @@ function init() {
     `<option value="">All categories</option>` +
     cats.map(c => `<option value="${c}">${c}</option>`).join("");
 
-  searchInput.addEventListener("input", applyFilters);
-  categoryFilter.addEventListener("change", applyFilters);
+  searchInput.addEventListener("input", () => { nameFilter = null; applyFilters(); });
+  categoryFilter.addEventListener("change", () => { nameFilter = null; applyFilters(); });
   typeTabs.addEventListener("click", (e) => {
     const btn = e.target.closest(".type-tab");
     if (!btn) return;
+    nameFilter = null;
     typeTabs.querySelectorAll(".type-tab").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     activeType = btn.dataset.type;
@@ -33,6 +35,16 @@ function init() {
 
   render();
 }
+
+// Called by the recommender to show the directory entries behind a competency.
+window.showDirectoryEntries = function (names) {
+  nameFilter = new Set(names);
+  searchInput.value = "";
+  categoryFilter.value = "";
+  activeType = "";
+  typeTabs.querySelectorAll(".type-tab").forEach(b => b.classList.toggle("active", b.dataset.type === ""));
+  applyFilters();
+};
 
 function applyFilters() {
   const q = searchInput.value.trim().toLowerCase();
@@ -45,7 +57,8 @@ function applyFilters() {
       s.category.toLowerCase().includes(q);
     const matchesCat = !cat || s.category === cat;
     const matchesType = !activeType || s.type === activeType;
-    return matchesQ && matchesCat && matchesType;
+    const matchesName = !nameFilter || nameFilter.has(s.name);
+    return matchesQ && matchesCat && matchesType && matchesName;
   });
   page = 1;
   render();

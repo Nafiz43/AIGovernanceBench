@@ -1,14 +1,17 @@
 // Skill Recommender view. Depends on RECS + SKILL_LIB from rec-data.js.
 
 // ---- View switching ----
-document.getElementById("mainNav").addEventListener("click", (e) => {
-  const btn = e.target.closest(".nav-tab");
-  if (!btn) return;
-  document.querySelectorAll(".nav-tab").forEach(b => b.classList.toggle("active", b === btn));
-  const view = btn.dataset.view;
+function activateView(view) {
+  document.querySelectorAll(".nav-tab").forEach(b => b.classList.toggle("active", b.dataset.view === view));
   document.getElementById("view-recommend").hidden = view !== "recommend";
   document.getElementById("view-directory").hidden = view !== "directory";
   window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.getElementById("mainNav").addEventListener("click", (e) => {
+  const btn = e.target.closest(".nav-tab");
+  if (!btn) return;
+  activateView(btn.dataset.view);
 });
 
 // ---- Elements ----
@@ -41,23 +44,31 @@ function initRec() {
   RECS.forEach(r => { suggestions.add(r.p); suggestions.add(r.t); suggestions.add(r.d); });
   recSuggest.innerHTML = [...suggestions].sort().map(s => `<option value="${esc(s)}">`).join("");
 
-  recPersona.addEventListener("change", () => { syncTaskOptions(); render(); });
-  recTask.addEventListener("change", render);
-  recSearch.addEventListener("input", render);
+  recPersona.addEventListener("change", () => { syncTaskOptions(); renderRec(); });
+  recTask.addEventListener("change", renderRec);
+  recSearch.addEventListener("input", renderRec);
 
-  // Click a skill -> show every persona · task that recommends it.
   recResults.addEventListener("click", (e) => {
+    // "↗ in directory" chip -> jump to the All Skill List, filtered to the real entries.
+    const dir = e.target.closest(".dir-link");
+    if (dir) {
+      const names = (SKILL_TO_DIRECTORY[dir.dataset.skill] || []);
+      activateView("directory");
+      if (window.showDirectoryEntries) window.showDirectoryEntries(names);
+      return;
+    }
+    // Click a skill name -> show every persona · task that recommends it.
     const btn = e.target.closest(".skill-name");
     if (!btn) return;
     recPersona.value = "";
     recTask.value = "";
     syncTaskOptions();
     recSearch.value = btn.dataset.skill;
-    render();
+    renderRec();
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
-  render();
+  renderRec();
 }
 
 // When a persona is chosen, scope the task dropdown to that persona's tasks.
@@ -79,7 +90,7 @@ function matches(r) {
   return true;
 }
 
-function render() {
+function renderRec() {
   const hits = RECS.filter(matches);
   recEmpty.hidden = hits.length !== 0;
   recResults.innerHTML = hits.map(card).join("");
@@ -95,8 +106,9 @@ function card(r) {
         <h3 class="rec-persona">${esc(r.p)}</h3>
         <p class="rec-task">${esc(r.t)}</p>
       </div>
-      <span class="rec-count">${skills.length} skills</span>
+      <span class="rec-count">${skills.length} AI skills</span>
     </header>
+    <p class="rec-skills-label">Recommended AI skills</p>
     <ul class="rec-skills">
       ${skills.map(skillRow).join("")}
     </ul>
@@ -106,6 +118,10 @@ function card(r) {
 function skillRow([name, importance, proficiency, why]) {
   const lib = SKILL_LIB[name] || ["", ""];
   const [category, description] = lib;
+  const dirMatches = (typeof SKILL_TO_DIRECTORY !== "undefined" && SKILL_TO_DIRECTORY[name]) || null;
+  const dirLink = dirMatches
+    ? `<button type="button" class="dir-link" data-skill="${esc(name)}" title="See related Agent Skills &amp; governance files in the directory">↗ ${dirMatches.length} in directory</button>`
+    : "";
   return `
   <li class="skill-item">
     <div class="skill-item-top">
@@ -116,6 +132,7 @@ function skillRow([name, importance, proficiency, why]) {
     </div>
     ${description ? `<p class="skill-desc">${esc(description)}</p>` : ""}
     <p class="skill-why"><span>Why:</span> ${esc(why)}</p>
+    ${dirLink}
   </li>`;
 }
 
