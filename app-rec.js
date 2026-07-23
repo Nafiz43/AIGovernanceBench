@@ -1,4 +1,9 @@
-// Skill Recommender view. Depends on RECS + SKILL_LIB from rec-data.js.
+// Skill Recommender view.
+// Depends on RECS (rec-data.js) and the directory SKILLS (data.js).
+// Every recommendation names a real directory entry; its type/category/purpose/URL
+// are read live from SKILLS so a card always links to the real GitHub repo.
+
+const DIR = new Map(SKILLS.map(s => [s.name, s]));
 
 // ---- View switching ----
 function activateView(view) {
@@ -39,7 +44,7 @@ function initRec() {
   recPersona.innerHTML = `<option value="">All personas</option>` +
     personas.map(p => `<option value="${esc(p)}">${esc(p)}</option>`).join("");
 
-  // Search autocomplete: personas + tasks + a few keywords
+  // Search autocomplete: personas, tasks, domains.
   const suggestions = new Set();
   RECS.forEach(r => { suggestions.add(r.p); suggestions.add(r.t); suggestions.add(r.d); });
   recSuggest.innerHTML = [...suggestions].sort().map(s => `<option value="${esc(s)}">`).join("");
@@ -47,26 +52,6 @@ function initRec() {
   recPersona.addEventListener("change", () => { syncTaskOptions(); renderRec(); });
   recTask.addEventListener("change", renderRec);
   recSearch.addEventListener("input", renderRec);
-
-  recResults.addEventListener("click", (e) => {
-    // "↗ in directory" chip -> jump to the All Skill List, filtered to the real entries.
-    const dir = e.target.closest(".dir-link");
-    if (dir) {
-      const names = (SKILL_TO_DIRECTORY[dir.dataset.skill] || []);
-      activateView("directory");
-      if (window.showDirectoryEntries) window.showDirectoryEntries(names);
-      return;
-    }
-    // Click a skill name -> show every persona · task that recommends it.
-    const btn = e.target.closest(".skill-name");
-    if (!btn) return;
-    recPersona.value = "";
-    recTask.value = "";
-    syncTaskOptions();
-    recSearch.value = btn.dataset.skill;
-    renderRec();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
 
   renderRec();
 }
@@ -97,7 +82,7 @@ function renderRec() {
 }
 
 function card(r) {
-  const skills = r.s.slice().sort((a, b) => IMPORTANCE_ORDER[a[1]] - IMPORTANCE_ORDER[b[1]]);
+  const items = r.s.slice().sort((a, b) => IMPORTANCE_ORDER[a[1]] - IMPORTANCE_ORDER[b[1]]);
   return `
   <article class="rec-card">
     <header class="rec-card-head">
@@ -106,33 +91,32 @@ function card(r) {
         <h3 class="rec-persona">${esc(r.p)}</h3>
         <p class="rec-task">${esc(r.t)}</p>
       </div>
-      <span class="rec-count">${skills.length} AI skills</span>
+      <span class="rec-count">${items.length} to import</span>
     </header>
-    <p class="rec-skills-label">Recommended AI skills</p>
+    <p class="rec-skills-label">AI skills &amp; governance files to import</p>
     <ul class="rec-skills">
-      ${skills.map(skillRow).join("")}
+      ${items.map(skillRow).join("")}
     </ul>
   </article>`;
 }
 
-function skillRow([name, importance, proficiency, why]) {
-  const lib = SKILL_LIB[name] || ["", ""];
-  const [category, description] = lib;
-  const dirMatches = (typeof SKILL_TO_DIRECTORY !== "undefined" && SKILL_TO_DIRECTORY[name]) || null;
-  const dirLink = dirMatches
-    ? `<button type="button" class="dir-link" data-skill="${esc(name)}" title="See related Agent Skills &amp; governance files in the directory">↗ ${dirMatches.length} in directory</button>`
-    : "";
+function skillRow([name, importance, why]) {
+  const e = DIR.get(name);
+  if (!e) return ""; // validation guarantees a match; guard just in case
+  const typeLabel = e.type === "skill" ? "Skill" : "Governance";
   return `
   <li class="skill-item">
     <div class="skill-item-top">
-      <button type="button" class="skill-name" data-skill="${esc(name)}" title="See everyone who needs ${esc(name)}">${esc(name)}</button>
+      <a class="skill-name" href="${e.url}" target="_blank" rel="noopener" title="Open ${esc(name)} on GitHub">
+        ${esc(name)}
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+      <span class="type-pill type-${e.type}">${typeLabel}</span>
       <span class="badge imp-${importance.toLowerCase()}">${esc(importance)}</span>
-      <span class="badge prof">${esc(proficiency)}</span>
-      ${category ? `<span class="skill-cat">${esc(category)}</span>` : ""}
+      <span class="skill-cat">${esc(e.category)}</span>
     </div>
-    ${description ? `<p class="skill-desc">${esc(description)}</p>` : ""}
+    <p class="skill-desc">${esc(e.purpose)}</p>
     <p class="skill-why"><span>Why:</span> ${esc(why)}</p>
-    ${dirLink}
   </li>`;
 }
 

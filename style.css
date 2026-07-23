@@ -80,28 +80,20 @@ h1,h2,.brand-name{font-family:"Lora",Georgia,serif;}
 .skill-item:last-child{border-bottom:none;}
 .skill-item-top{display:flex;flex-wrap:wrap;align-items:center;gap:7px;}
 .skill-name{
-  font-family:inherit;font-weight:600;color:var(--navy);font-size:.92rem;
-  background:none;border:none;padding:0;cursor:pointer;text-align:left;
-  border-bottom:1px dotted transparent;
+  font-weight:600;color:var(--navy);font-size:.92rem;text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;
 }
-.skill-name:hover{color:var(--blue);border-bottom-color:var(--blue);}
+.skill-name:hover{color:var(--blue);text-decoration:underline;}
 .skill-name:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:2px;}
+.skill-name svg{flex:none;opacity:.55;}
 .badge{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;padding:2px 8px;border-radius:999px;}
 .imp-high{background:#fde5e5;color:#b3261e;}
 .imp-medium{background:#fdf1d6;color:#8a6400;}
 .imp-low{background:#eef1f5;color:#5b6472;}
-.badge.prof{background:#e7f4ec;color:#1a7a45;}
 .skill-cat{font-size:.7rem;color:var(--muted);margin-left:auto;}
 .skill-desc{margin:6px 0 4px;font-size:.83rem;color:var(--ink);line-height:1.45;}
 .skill-why{margin:0;font-size:.82rem;color:var(--muted);line-height:1.45;}
 .skill-why span{font-weight:700;color:var(--navy);}
-.dir-link{
-  margin-top:8px;font-family:inherit;font-size:.72rem;font-weight:600;cursor:pointer;
-  color:var(--blue);background:#eaf1ff;border:1px solid #d3e0ff;border-radius:999px;
-  padding:3px 10px;display:inline-flex;align-items:center;gap:4px;
-}
-.dir-link:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
-.dir-link:focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
 
 #recPersona,#recTask{
   padding:11px 14px;border:1px solid var(--line);border-radius:8px;font-size:.95rem;

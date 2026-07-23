@@ -1,1354 +1,982 @@
-// AI Skillset Recommendation data.
-// SKILL_LIB: skill name -> [category, description] (defined once, referenced by RECS).
-// RECS: persona-task pairs; s: [skill name, importance, proficiency, why].
+// AI Skill Recommender data.
+// EVERY recommendation references a REAL entry in the All Skill List (data.js)
+// by its exact name — an Agent Skill or governance file that has a live GitHub
+// repo you can import into your AI agent. No invented/abstract competencies.
+// Purpose: tell people which real AI skills & governance files to add to their
+// agent for a given role and task — not what a human should go learn.
+//
+// s: [ directoryEntryName, importance("High"|"Medium"|"Low"), whyForThisPersonaTask ]
+// The card pulls type / category / purpose / GitHub URL from data.js by name.
 
-const SKILL_LIB = {
-  // Foundations
-  "LLM Fundamentals": ["Foundations", "How large language models work — tokens, context windows, sampling, and failure modes like hallucination."],
-  "Python": ["Foundations", "The default language for AI tooling, data work, and gluing model APIs and agents together."],
-  "AI Literacy & Verification": ["Foundations", "Knowing when to trust AI output, how to verify it, and where human judgment must stay in the loop."],
-  "Statistical Analysis": ["Foundations", "Hypothesis testing, uncertainty, and experimental statistics — the basis for judging any model or result."],
-  "Machine Learning Basics": ["Foundations", "Supervised/unsupervised learning, train/test splits, overfitting, and core model families."],
-  "SQL & AI-Assisted Analytics": ["Foundations", "Querying data directly and using LLMs to draft, explain, and optimize SQL."],
-
-  // Prompting & Context
-  "Prompt Engineering": ["Prompting & Context", "Writing instructions, examples, and constraints that get reliable, high-quality model output."],
-  "Context Engineering": ["Prompting & Context", "Curating what enters the context window — instructions, retrieved documents, tools, and memory."],
-  "Structured Output": ["Prompting & Context", "Getting reliable JSON or schema-conformant output from models for downstream automation."],
-
-  // Agents & Orchestration
-  "Agent Orchestration": ["Agents & Orchestration", "Designing agent loops: planning, tool use, memory, and error recovery across multi-step tasks."],
-  "Tool Calling": ["Agents & Orchestration", "Exposing functions and APIs to models so they can act — search, compute, write, execute."],
-  "Model Context Protocol (MCP)": ["Agents & Orchestration", "The open standard for connecting agents to data sources and tools in a reusable way."],
-  "Multi-Agent Systems": ["Agents & Orchestration", "Coordinating multiple specialized agents — decomposition, hand-offs, verification, and synthesis."],
-  "Agentic Coding": ["Agents & Orchestration", "Working with AI coding agents (e.g. Claude Code) — task scoping, review discipline, and repo guardrails like CLAUDE.md."],
-  "Human-in-the-Loop Design": ["Agents & Orchestration", "Deciding where humans approve, correct, or override AI — and building those checkpoints into the workflow."],
-  "Workflow Automation": ["Agents & Orchestration", "Chaining AI steps with triggers and integrations using tools like n8n, Zapier, or custom pipelines."],
-  "Computer Use & Browser Automation": ["Agents & Orchestration", "Agents that operate GUIs and browsers for tasks with no API."],
-
-  // RAG & Knowledge
-  "RAG (Retrieval-Augmented Generation)": ["RAG & Knowledge", "Grounding model answers in your own documents — chunking, retrieval, and citation."],
-  "Vector Databases": ["RAG & Knowledge", "Storing and querying embeddings at scale (pgvector, Pinecone, Chroma, etc.)."],
-  "Embeddings & Semantic Search": ["RAG & Knowledge", "Representing text/images as vectors to find meaning-based matches beyond keywords."],
-  "Knowledge Graphs": ["RAG & Knowledge", "Structuring entities and relationships so agents can reason over connected facts."],
-  "Document Processing & OCR": ["RAG & Knowledge", "Parsing PDFs, scans, tables, and forms into structured, machine-readable data."],
-
-  // ML Engineering
-  "PyTorch": ["ML Engineering", "The dominant deep learning framework for building and training custom models."],
-  "Fine-Tuning (LoRA/PEFT)": ["ML Engineering", "Adapting foundation models to a domain or task with parameter-efficient training."],
-  "Model Deployment & Serving": ["ML Engineering", "Packaging models behind APIs with acceptable latency, cost, and reliability."],
-  "MLOps & Model Monitoring": ["ML Engineering", "Versioning, CI/CD, drift detection, and observability for models in production."],
-  "Model Evaluation": ["ML Engineering", "Choosing metrics, building test sets, and measuring real performance beyond accuracy."],
-  "Time-Series Forecasting": ["ML Engineering", "Predicting demand, load, or trends with statistical and ML forecasting models."],
-  "Anomaly Detection": ["ML Engineering", "Flagging unusual patterns in transactions, sensors, logs, or behavior."],
-  "Reinforcement Learning": ["ML Engineering", "Training agents from reward signals — core to robotics and control."],
-  "Synthetic Data Generation": ["ML Engineering", "Creating artificial training/test data to cover rare cases or protect privacy."],
-  "Recommender Systems": ["ML Engineering", "Ranking and personalization models that match items to users."],
-
-  // Data
-  "Dataset Curation": ["Data", "Sourcing, filtering, deduplicating, and balancing data — where most model quality is won."],
-  "Data Annotation & Labeling QA": ["Data", "Designing labeling guidelines, measuring inter-annotator agreement, and auditing quality."],
-  "Data Visualization": ["Data", "Communicating results with clear, honest charts — increasingly AI-assisted."],
-  "AI-Assisted Data Cleaning": ["Data", "Using LLMs to standardize, deduplicate, and repair messy tabular and text data."],
-
-  // Multimodal
-  "Computer Vision": ["Multimodal", "Image classification, detection, and segmentation — classical and deep approaches."],
-  "Multimodal AI": ["Multimodal", "Vision-language models that reason jointly over images, documents, and text."],
-  "Medical Imaging AI": ["Multimodal", "Applying vision models to radiology/pathology data — DICOM handling, augmentation, reader studies."],
-  "Speech & Voice AI": ["Multimodal", "Transcription, diarization, and voice agents built on speech models."],
-  "Image & Video Generation": ["Multimodal", "Producing and editing visual assets with generative models, with control and consistency."],
-
-  // Evaluation & Safety
-  "LLM Evaluation (Evals)": ["Evaluation & Safety", "Building eval sets and LLM-as-judge pipelines to measure and regress AI system quality."],
-  "Guardrails": ["Evaluation & Safety", "Input/output filtering, policy enforcement, and constraining what an AI system may do."],
-  "Red-Teaming & Adversarial Testing": ["Evaluation & Safety", "Probing AI systems for jailbreaks, unsafe output, and edge-case failures before users find them."],
-  "Prompt Injection Defense": ["Evaluation & Safety", "Recognizing and mitigating injected instructions in retrieved or user-supplied content."],
-  "Bias & Fairness Auditing": ["Evaluation & Safety", "Measuring disparate performance across groups and mitigating it — essential in hiring, lending, health."],
-  "Explainability (XAI)": ["Evaluation & Safety", "Interpreting model decisions (saliency, SHAP, attention) for trust and regulatory needs."],
-  "Hallucination Detection & Fact Verification": ["Evaluation & Safety", "Checking AI claims against sources; grounding and citation discipline."],
-
-  // Governance
-  "AI Governance & Compliance": ["Governance", "Operating within EU AI Act, NIST AI RMF, and sector rules — risk classification, documentation, audit trails."],
-  "Privacy-Preserving AI": ["Governance", "Handling PII/PHI safely — de-identification, data minimization, and privacy-aware model use."],
-  "Responsible AI Practice": ["Governance", "Transparency, consent, attribution, and appropriate-use judgment when deploying AI on people."],
-
-  // Research & Science
-  "Literature Search & Research Agents": ["Research & Science", "Using AI deep-research tools and APIs (Semantic Scholar, PubMed) to find and synthesize prior work."],
-  "Systematic Review Automation": ["Research & Science", "AI-assisted screening, extraction, and PRISMA-compliant synthesis across large corpora."],
-  "Hypothesis Generation": ["Research & Science", "Using LLMs and knowledge graphs to propose testable, novel research directions."],
-  "Experiment Planning": ["Research & Science", "AI-assisted design of experiments — controls, power analysis, and protocol drafting."],
-  "Scientific Data Analysis": ["Research & Science", "Reproducible analysis in Python/R notebooks, accelerated by AI code assistance."],
-  "Scientific Writing with AI": ["Research & Science", "Drafting, editing, and formatting papers and grants with AI while preserving integrity and attribution."],
-
-  // Life Sciences
-  "Protein Structure Prediction": ["Life Sciences", "AlphaFold-class models for structure prediction and protein design."],
-  "Molecular Property Prediction": ["Life Sciences", "ML models predicting ADMET, binding, and activity of candidate molecules."],
-  "Generative Chemistry": ["Life Sciences", "Generative models proposing novel molecules under property and synthesizability constraints."],
-  "Cheminformatics": ["Life Sciences", "RDKit-style molecular representation, fingerprints, and similarity search."],
-  "Bioinformatics Pipelines": ["Life Sciences", "Sequence analysis workflows (NGS, single-cell) — increasingly built and debugged with AI agents."],
-  "Clinical NLP": ["Life Sciences", "Extracting structured information from clinical notes, reports, and trial documents."],
-  "Clinical Documentation AI": ["Life Sciences", "Ambient scribes and note-drafting tools — supervision, editing, and billing-safe use."],
-  "Trial Matching & Recruitment AI": ["Life Sciences", "Matching patients to trial criteria from EHR data with AI extraction."],
-
-  // Domain Applications
-  "Legal NLP & Contract Analysis": ["Domain Applications", "AI review of contracts and legal documents — clause extraction, risk flags, redline drafting."],
-  "E-Discovery AI": ["Domain Applications", "Technology-assisted review: prioritizing and classifying documents in litigation at scale."],
-  "Financial NLP": ["Domain Applications", "Parsing filings, earnings calls, and news into structured signals and summaries."],
-  "Quantitative Modeling with ML": ["Domain Applications", "ML for signals, risk, and pricing — with rigorous backtesting and leakage control."],
-  "Fraud Detection ML": ["Domain Applications", "Supervised and anomaly-based models for transaction and identity fraud."],
-  "Geospatial & Remote Sensing AI": ["Domain Applications", "Analyzing satellite/aerial imagery for land use, emissions, crops, and disaster response."],
-  "Climate Modeling with ML": ["Domain Applications", "ML emulators and downscaling that accelerate physical climate models."],
-  "Robotics Foundation Models": ["Domain Applications", "Vision-language-action models for manipulation and navigation."],
-  "Simulation & Digital Twins": ["Domain Applications", "Virtual environments for training, testing, and optimizing physical systems."],
-  "Predictive Maintenance": ["Domain Applications", "Forecasting equipment failure from sensor data before it happens."],
-  "Visual Quality Inspection": ["Domain Applications", "Camera-based defect detection on production lines."],
-  "AI Tutoring & Adaptive Learning": ["Domain Applications", "Systems that adjust instruction to each learner — pedagogy plus prompting."],
-  "Assessment Generation": ["Domain Applications", "Generating and validating quiz/exam items aligned to learning objectives."],
-  "Conversational AI Design": ["Domain Applications", "Designing chat/voice assistants — flows, tone, escalation, and failure handling."],
-  "Sentiment & Intent Analysis": ["Domain Applications", "Classifying emotion, intent, and topics in feedback, tickets, and calls."],
-  "AI Writing & Editing": ["Domain Applications", "Drafting and revising prose with AI while keeping voice, accuracy, and ownership."],
-  "Content Generation & Brand Voice": ["Domain Applications", "Producing on-brand marketing content at scale with style guides and review loops."],
-  "SEO & Content Optimization": ["Domain Applications", "Optimizing for search — including how AI answer engines cite and surface content."],
-  "Personalization & Segmentation": ["Domain Applications", "Using ML and LLMs to tailor messaging and experiences per audience segment."],
-  "Generative Design": ["Domain Applications", "AI-driven exploration of design spaces in engineering and creative work."],
-  "Design-to-Code AI": ["Domain Applications", "Turning mockups and prompts into working UI code; supervising the result."],
-  "UX Research with AI": ["Domain Applications", "AI-assisted synthesis of interviews, surveys, and usability data into insights."],
-  "Threat Intelligence AI": ["Domain Applications", "LLM-assisted enrichment and correlation of indicators, actors, and campaigns."],
-  "Security Copilots & SOC Automation": ["Domain Applications", "AI triage of alerts, log summarization, and playbook automation in the SOC."],
-  "Deepfake & Synthetic Media Detection": ["Domain Applications", "Detecting AI-generated images, audio, and video; provenance standards like C2PA."],
-  "Fact-Checking & Verification AI": ["Domain Applications", "Source-tracing claims and verifying content with AI assistance."],
-  "Data Journalism": ["Domain Applications", "Finding and telling stories in datasets — scraping, analysis, and visualization with AI help."],
-  "Talent Analytics": ["Domain Applications", "People data analysis for retention, skills gaps, and workforce planning."],
-  "Sales Intelligence AI": ["Domain Applications", "AI research on accounts and contacts, signal detection, and outreach drafting."],
-  "Supply Chain Optimization AI": ["Domain Applications", "Forecasting, routing, and inventory optimization with ML and agents."],
-  "Grant & Proposal Writing with AI": ["Domain Applications", "Structuring, drafting, and compliance-checking proposals against funder requirements."],
-
-  // --- Expansion: methods & emerging competencies ---
-  "Causal Inference": ["Foundations", "Estimating cause-and-effect from data — the difference between correlation and a decision you can act on."],
-  "A/B Testing & Experimentation": ["Data", "Designing and reading controlled experiments so AI-driven changes are proven, not assumed."],
-  "Optimization & Operations Research": ["ML Engineering", "Linear/constraint optimization and scheduling — often paired with ML forecasts to make decisions."],
-  "Process Mining": ["Domain Applications", "Reconstructing real process flows from event logs to find bottlenecks and automation targets."],
-  "Sensor Fusion": ["Domain Applications", "Combining camera, lidar, radar, and IMU streams into one coherent perception of the world."],
-  "Data Governance": ["Governance", "Lineage, access control, and quality contracts for the data feeding models and RAG systems."],
-  "Model Cards & Documentation": ["Governance", "Standardized disclosure of a model's intended use, limits, and evaluation — increasingly required by regulation."],
-  "AI Cost & Latency Optimization": ["ML Engineering", "Model routing, caching, batching, and prompt trimming to keep AI systems fast and affordable at scale."],
-  "Accessibility AI": ["Domain Applications", "Using AI to meet WCAG — alt text, captions, and inclusive interfaces — and auditing AI output for exclusion."],
-  "AI Test Generation": ["Agents & Orchestration", "Generating unit, integration, and property tests with AI, then reviewing them for real coverage."],
-  "Materials Informatics": ["Life Sciences", "ML over materials data to predict properties and propose novel compounds and alloys."],
-  "Genomics AI": ["Life Sciences", "Variant calling, interpretation, and functional prediction with deep learning on sequence data."],
-  "Generative Biology": ["Life Sciences", "Sequence- and structure-design models that propose novel proteins, enzymes, and genetic constructs."],
-  "Regulatory Intelligence AI": ["Domain Applications", "Tracking and mapping evolving regulations to obligations, and drafting submission documents."],
-  "Patent Analysis AI": ["Domain Applications", "Prior-art search, claim analysis, and drafting support across patent corpora."],
-  "Audit Analytics AI": ["Domain Applications", "Full-population testing, anomaly flagging, and evidence extraction for assurance work."],
-  "Carbon Accounting AI": ["Domain Applications", "Extracting emissions data from documents and estimating footprints across scopes for ESG reporting."],
-  "Skills Taxonomy & Ontology": ["Domain Applications", "Structuring roles, skills, and learning content so AI can match people to gaps and paths."],
-  "Knowledge Management AI": ["Domain Applications", "Turning scattered organizational knowledge into a governed, searchable, AI-accessible corpus."],
-
-  // --- Expansion: clinical & medical AI ---
-  "Digital Pathology AI": ["Multimodal", "Deep learning on whole-slide images — tiling, stain normalization, and region-level classification."],
-  "Physiological Signal AI": ["Multimodal", "Models over ECG, EEG, and waveform data for detection, classification, and monitoring."],
-  "Clinical Predictive Modeling": ["Life Sciences", "EHR-based risk models — sepsis, deterioration, readmission — with calibration and validation."],
-  "Medical Coding AI": ["Life Sciences", "AI-assisted and autonomous ICD/CPT coding from clinical documentation, with human audit."],
-  "Pharmacovigilance AI": ["Life Sciences", "Detecting and coding adverse drug events from reports and literature for safety reporting."],
-  "Translation & Localization AI": ["Domain Applications", "AI translation with terminology control, quality estimation, and human post-editing."]
-};
-
-// p: persona, d: domain, t: task/workflow, s: [skill, importance, proficiency, why]
 const RECS = [
   // ---------- Healthcare ----------
   { p: "Radiologist", d: "Healthcare", t: "Building an AI model for DSA vs. non-DSA image classification", s: [
-    ["Computer Vision", "High", "Advanced", "Classification architectures, transfer learning, and augmentation are the core of the task."],
-    ["Medical Imaging AI", "High", "Advanced", "DICOM handling, class imbalance, and reader-study validation are imaging-specific requirements."],
-    ["Dataset Curation", "High", "Intermediate", "Model quality is decided by how studies are selected, de-duplicated, and split by patient."],
-    ["Data Annotation & Labeling QA", "High", "Intermediate", "Ground-truth labels need clear criteria and inter-reader agreement checks."],
-    ["PyTorch", "Medium", "Intermediate", "The practical framework for training and iterating on the classifier."],
-    ["Model Evaluation", "High", "Advanced", "AUROC, sensitivity/specificity trade-offs, and external validation determine clinical credibility."],
-    ["Privacy-Preserving AI", "High", "Intermediate", "PHI in imaging metadata must be de-identified before any model work."],
-    ["Explainability (XAI)", "Medium", "Beginner", "Saliency maps help verify the model attends to vasculature, not artifacts."]
+    ["EU AI Act", "High", "Medical imaging AI is high-risk under the Act — import its risk-tier obligations from day one."],
+    ["Responsible AI Toolbox", "High", "Audit the classifier's fairness and reliability before it ever touches patients."],
+    ["NIST AI Risk Management Framework", "Medium", "A lifecycle framework to govern the model's risk end to end."],
+    ["scientific-agent-skills", "Medium", "Science-focused agent skills for the data analysis and experiment work."],
+    ["academic-research-skills", "Low", "Validate and write up the model against the literature."]
   ]},
   { p: "Radiologist", d: "Healthcare", t: "AI-assisted report drafting and worklist triage", s: [
-    ["Clinical Documentation AI", "High", "Intermediate", "Draft-report tools need supervised editing habits and error-pattern awareness."],
-    ["Multimodal AI", "High", "Intermediate", "Vision-language models increasingly pre-draft findings from images."],
-    ["Prompt Engineering", "Medium", "Intermediate", "Report templates and style constraints come from well-designed prompts."],
-    ["Human-in-the-Loop Design", "High", "Intermediate", "Radiologist sign-off points must be explicit; triage reordering needs override paths."],
-    ["Hallucination Detection & Fact Verification", "High", "Intermediate", "Every AI-drafted finding must be verified against the image before signing."],
-    ["AI Governance & Compliance", "Medium", "Beginner", "Triage AI is regulated medical-device territory; know what your tools are cleared for."]
+    ["NeMo Guardrails", "High", "Constrain a report-drafting agent so it can't emit unverified findings."],
+    ["Guardrails AI", "High", "Validate drafted reports against structured rules before the radiologist signs."],
+    ["EU AI Act", "High", "Triage and drafting on patients fall squarely under high-risk obligations."],
+    ["doc-coauthoring", "Medium", "Human-in-the-loop drafting workflow so the radiologist stays the author."],
+    ["CLAUDE.md", "Low", "Scope exactly what the drafting agent may and may not do in your setup."]
   ]},
   { p: "Medical Resident", d: "Healthcare", t: "Learning procedural case log annotation", s: [
-    ["Data Annotation & Labeling QA", "High", "Intermediate", "Consistent, guideline-driven labeling is the skill being learned."],
-    ["Clinical NLP", "Medium", "Beginner", "Understanding how models extract procedures from notes improves annotation choices."],
-    ["Prompt Engineering", "High", "Intermediate", "AI-assisted pre-labeling works only with precise extraction prompts."],
-    ["AI Literacy & Verification", "High", "Intermediate", "Pre-labels must be treated as suggestions to verify, not answers."],
-    ["Structured Output", "Medium", "Beginner", "Case logs are structured records; schema-constrained extraction keeps them clean."],
-    ["Privacy-Preserving AI", "High", "Beginner", "Case data is PHI; know what may enter which AI tool."]
+    ["prompt-master", "High", "Precise extraction prompts are what make AI-assisted labeling reliable."],
+    ["CLAUDE.md", "High", "Scope the annotation agent — what it may label and the format it must use."],
+    ["pdf", "Medium", "Pull procedures out of scanned records and reports into structured text."],
+    ["Responsible AI Toolbox", "Low", "Spot-check pre-labels for systematic error before trusting them."]
   ]},
   { p: "Medical Resident", d: "Healthcare", t: "AI-assisted literature review for journal club", s: [
-    ["Literature Search & Research Agents", "High", "Intermediate", "Deep-research tools surface and summarize relevant trials quickly."],
-    ["Hallucination Detection & Fact Verification", "High", "Intermediate", "Citations and effect sizes must be checked against the actual papers."],
-    ["Prompt Engineering", "Medium", "Beginner", "Good appraisal questions (PICO framing) get better AI synthesis."],
-    ["Statistical Analysis", "Medium", "Intermediate", "Judging a trial still requires reading its statistics yourself."],
-    ["Scientific Writing with AI", "Low", "Beginner", "AI can structure the presentation; the critical appraisal stays yours."]
+    ["academic-research-skills", "High", "End-to-end research pipeline: find, appraise, synthesize, write."],
+    ["scientific-agent-skills", "High", "Science agent skills for reading and comparing trials rigorously."],
+    ["notebooklm-py", "Medium", "Programmatic NotebookLM access to summarize sources with citations you can check."],
+    ["humanizer", "Low", "Clean AI phrasing out of your written summary."]
   ]},
   { p: "Physician (Primary Care)", d: "Healthcare", t: "Adopting ambient clinical documentation", s: [
-    ["Clinical Documentation AI", "High", "Intermediate", "Ambient scribes change the visit workflow; editing and sign-off discipline is the core skill."],
-    ["Speech & Voice AI", "Medium", "Beginner", "Knowing transcription failure modes (accents, cross-talk, negations) prevents chart errors."],
-    ["Human-in-the-Loop Design", "High", "Intermediate", "The physician remains the author; review checkpoints must be non-negotiable."],
-    ["Privacy-Preserving AI", "High", "Intermediate", "Consent, recording policy, and BAA-covered tools are prerequisites."],
-    ["AI Literacy & Verification", "High", "Intermediate", "Plausible-but-wrong summaries are the main risk; verify medications and negatives."]
+    ["NeMo Guardrails", "High", "Stop an ambient scribe from inventing clinical content or negations."],
+    ["EU AI Act", "High", "Clinical documentation AI carries high-risk obligations and consent duties."],
+    ["doc-coauthoring", "Medium", "Supervised note-drafting keeps the physician the author of record."],
+    ["CLAUDE.md", "Medium", "Bound what the documentation agent is allowed to do."],
+    ["Responsible AI Toolbox", "Low", "Check for systematic summarization error across patient groups."]
   ]},
   { p: "Physician (Primary Care)", d: "Healthcare", t: "Using AI clinical decision support safely", s: [
-    ["AI Literacy & Verification", "High", "Advanced", "Knowing when model suggestions are reliable vs. out-of-distribution is the central competency."],
-    ["Clinical NLP", "Medium", "Beginner", "Understanding what the system extracted from the chart explains its suggestions."],
-    ["Explainability (XAI)", "Medium", "Intermediate", "Demand and interpret the evidence behind a recommendation before acting."],
-    ["Bias & Fairness Auditing", "Medium", "Beginner", "Decision-support tools can underperform for underrepresented patient groups."],
-    ["AI Governance & Compliance", "Medium", "Beginner", "Know the tool's cleared indications and your liability boundaries."]
+    ["EU AI Act", "High", "Decision support is high-risk — know the obligations before relying on it."],
+    ["Responsible AI Toolbox", "High", "Audit the tool's fairness and reliability across your patient population."],
+    ["NIST AI Risk Management Framework", "Medium", "Frame and govern the risk of acting on model output."],
+    ["awesome-ai-governance", "Low", "Broader governance references for safe clinical adoption."]
   ]},
 
-  // ---------- Academia / Research ----------
+  // ---------- Academia ----------
   { p: "Academic Researcher", d: "Academia", t: "Conducting novel drug discovery research", s: [
-    ["Literature Search & Research Agents", "High", "Advanced", "Mapping prior art across papers, patents, and databases is the first mile of discovery."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Grounding AI answers in your corpus of papers and internal data prevents fabricated leads."],
-    ["Hypothesis Generation", "High", "Intermediate", "LLMs over knowledge graphs propose target-disease links worth testing."],
-    ["Agent Orchestration", "Medium", "Intermediate", "Multi-step research agents chain search, extraction, and analysis autonomously."],
-    ["Python", "High", "Intermediate", "The lingua franca for cheminformatics, data analysis, and model APIs."],
-    ["Scientific Data Analysis", "High", "Advanced", "Assay and screening data still need rigorous, reproducible analysis."],
-    ["Experiment Planning", "Medium", "Intermediate", "AI-assisted DOE narrows thousands of candidate conditions to a testable set."],
-    ["Molecular Property Prediction", "Medium", "Intermediate", "ADMET and activity predictions triage which molecules deserve bench time."]
+    ["scientific-agent-skills", "High", "The largest science agent-skills library — turns your agent into a research collaborator."],
+    ["academic-research-skills", "High", "Runs the full research → write → review → revise loop."],
+    ["AI-Research-SKILLs", "Medium", "Portable research/engineering skills for the analysis work."],
+    ["graphify", "Medium", "Turn papers, data, and configs into a queryable knowledge graph for target reasoning."],
+    ["notebooklm-py", "Low", "Programmatic NotebookLM for grounded literature synthesis."]
   ]},
   { p: "Academic Researcher", d: "Academia", t: "Writing a competitive grant proposal", s: [
-    ["Grant & Proposal Writing with AI", "High", "Intermediate", "AI drafts aims, significance, and boilerplate against funder templates fast."],
-    ["Literature Search & Research Agents", "High", "Intermediate", "The significance section depends on a complete, current view of the field."],
-    ["Scientific Writing with AI", "High", "Intermediate", "Iterative AI editing tightens prose while you keep intellectual ownership."],
-    ["Hallucination Detection & Fact Verification", "High", "Intermediate", "Every AI-suggested citation must exist and say what it claims."],
-    ["Responsible AI Practice", "Medium", "Beginner", "Funders increasingly require disclosure of AI use in proposals."]
+    ["academic-research-skills", "High", "Structures the proposal and grounds significance in the literature."],
+    ["doc-coauthoring", "High", "Human-in-the-loop drafting of aims and narrative you keep ownership of."],
+    ["humanizer", "Medium", "Remove tell-tale AI phrasing from the prose."],
+    ["pdf", "Low", "Pull requirements and prior work out of funder PDFs."]
   ]},
   { p: "Academic Researcher", d: "Academia", t: "Running a systematic literature review", s: [
-    ["Systematic Review Automation", "High", "Advanced", "AI screening and extraction cut months off PRISMA-style reviews."],
-    ["Literature Search & Research Agents", "High", "Advanced", "Comprehensive, multi-database search strategy is the foundation of validity."],
-    ["Embeddings & Semantic Search", "Medium", "Intermediate", "Semantic similarity catches relevant papers keyword queries miss."],
-    ["Structured Output", "Medium", "Intermediate", "Extraction into consistent schemas makes synthesis and meta-analysis possible."],
-    ["Data Annotation & Labeling QA", "Medium", "Intermediate", "Dual-screening with agreement stats still applies when one screener is an AI."],
-    ["Statistical Analysis", "Medium", "Advanced", "Meta-analysis and heterogeneity assessment remain human-led."]
+    ["academic-research-skills", "High", "Purpose-built screen → extract → synthesize research pipeline."],
+    ["scientific-agent-skills", "High", "Science agent skills for consistent extraction across many papers."],
+    ["notebooklm-py", "Medium", "Summarize and cross-question the corpus with citations."],
+    ["graphify", "Low", "Map entities and relationships across the reviewed corpus."]
   ]},
   { p: "PhD Student", d: "Academia", t: "Managing and synthesizing thesis literature", s: [
-    ["Literature Search & Research Agents", "High", "Intermediate", "Staying current across hundreds of papers is only feasible with AI triage."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "A personal RAG over your PDF library answers questions with citations you can check."],
-    ["Vector Databases", "Medium", "Beginner", "The storage layer behind a searchable personal corpus."],
-    ["Scientific Writing with AI", "Medium", "Intermediate", "AI editing accelerates chapters; committee-ready arguments stay yours."],
-    ["Hallucination Detection & Fact Verification", "High", "Intermediate", "A fabricated citation in a thesis is catastrophic; verify everything."]
+    ["academic-research-skills", "High", "End-to-end pipeline for staying on top of hundreds of papers."],
+    ["notebooklm-py", "High", "Ask your PDF library questions and get citations you can verify."],
+    ["graphify", "Medium", "Build a searchable knowledge graph of your reading."],
+    ["doc-coauthoring", "Low", "Draft chapters with a human-in-the-loop workflow."]
   ]},
   { p: "PhD Student", d: "Academia", t: "Building research prototypes with AI coding agents", s: [
-    ["Agentic Coding", "High", "Intermediate", "Coding agents build experiment harnesses and baselines in hours, not weeks."],
-    ["Python", "High", "Intermediate", "You must read and verify what the agent writes."],
-    ["Prompt Engineering", "Medium", "Intermediate", "Precise task specs and constraints determine agent output quality."],
-    ["LLM Evaluation (Evals)", "Medium", "Intermediate", "If the prototype is an AI system, an eval set is your experiment's instrument."],
-    ["Scientific Data Analysis", "High", "Intermediate", "Results processing and plots must be reproducible end to end."]
+    ["CLAUDE.md", "High", "Govern the coding agent's behavior and conventions on your repo."],
+    ["planning-with-files", "High", "Crash-proof file-based planning for long research coding runs."],
+    ["awesome-claude-code", "Medium", "Curated skills and tooling to build prototypes faster."],
+    ["scientific-agent-skills", "Medium", "Science-specific skills for baselines and experiment harnesses."],
+    ["claude-api", "Low", "Reference for wiring the model into your prototype."]
   ]},
   { p: "Research Scientist (Wet Lab)", d: "Scientific Research", t: "Designing experiments and automating lab records", s: [
-    ["Experiment Planning", "High", "Intermediate", "AI-assisted DOE and protocol drafting reduce wasted runs."],
-    ["Document Processing & OCR", "Medium", "Beginner", "Digitizing notebooks and instrument printouts makes records searchable."],
-    ["Structured Output", "Medium", "Intermediate", "Protocols and results captured as structured data feed later analysis."],
-    ["Literature Search & Research Agents", "High", "Intermediate", "Methods sections and prior protocols are minable with research agents."],
-    ["Workflow Automation", "Medium", "Beginner", "Instrument-to-notebook data flows can be automated without code."]
+    ["scientific-agent-skills", "High", "Science agent skills for protocol design and analysis."],
+    ["pdf", "High", "Digitize instrument printouts and notebooks into searchable records."],
+    ["academic-research-skills", "Medium", "Mine methods and prior protocols from the literature."],
+    ["xlsx", "Low", "Structure and clean tabular results for later analysis."]
   ]},
   { p: "Research Scientist (Wet Lab)", d: "Scientific Research", t: "Building a reproducible data analysis pipeline", s: [
-    ["Scientific Data Analysis", "High", "Advanced", "The core work: rigorous, versioned analysis of experimental data."],
-    ["Python", "High", "Intermediate", "Notebooks plus scripts are the standard reproducibility substrate."],
-    ["Agentic Coding", "Medium", "Intermediate", "AI agents write and refactor analysis code under your review."],
-    ["Statistical Analysis", "High", "Advanced", "Power, multiple comparisons, and effect sizes are non-delegable."],
-    ["Data Visualization", "Medium", "Intermediate", "Publication-quality figures, drafted faster with AI assistance."]
+    ["scientific-agent-skills", "High", "Science-focused skills for reproducible, versioned analysis."],
+    ["planning-with-files", "High", "Persistent planning keeps long analysis runs reproducible."],
+    ["CLAUDE.md", "Medium", "Govern the coding agent's behavior on the analysis repo."],
+    ["AI-Research-SKILLs", "Low", "Portable engineering skills for the pipeline code."]
   ]},
 
   // ---------- Software Engineering ----------
   { p: "Software Engineer", d: "Software Engineering", t: "Developing an AI coding assistant", s: [
-    ["LLM Fundamentals", "High", "Advanced", "Context limits, sampling, and failure modes drive every design decision."],
-    ["Tool Calling", "High", "Advanced", "File edits, search, and execution are tools the model must call reliably."],
-    ["Prompt Engineering", "High", "Advanced", "System prompts define the assistant's behavior, tone, and guardrails."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Repo-aware answers require code retrieval and context assembly."],
-    ["Vector Databases", "Medium", "Intermediate", "Code embedding indexes power semantic code search."],
-    ["Agent Orchestration", "High", "Advanced", "Multi-step edit-test-fix loops are agentic by nature."],
-    ["LLM Evaluation (Evals)", "High", "Intermediate", "A regression eval suite (e.g. SWE-bench-style) is the only way to ship changes safely."],
-    ["Model Context Protocol (MCP)", "Medium", "Intermediate", "MCP is the emerging standard for connecting assistants to dev tools."]
+    ["claude-api", "High", "The reference for tool use, MCP, caching, and streaming your assistant needs."],
+    ["mcp-builder", "High", "Build the MCP servers that give the assistant its tools."],
+    ["prompt-master", "High", "Author the system prompts that define its behavior."],
+    ["claude-code-infrastructure-showcase", "Medium", "Reference infra for auto-activation, hooks, and multi-agent orchestration."],
+    ["webapp-testing", "Medium", "Verify the assistant's UI with Playwright."],
+    ["OWASP Top 10 for LLM Apps", "Low", "Baseline security checklist for what you're shipping."]
   ]},
   { p: "Software Engineer", d: "Software Engineering", t: "AI-assisted feature development and code review", s: [
-    ["Agentic Coding", "High", "Advanced", "Delegating well-scoped tasks to coding agents is becoming the core productivity skill."],
-    ["Prompt Engineering", "High", "Intermediate", "Task specs, constraints, and repo conventions in prompts shape agent output."],
-    ["Context Engineering", "Medium", "Intermediate", "CLAUDE.md/AGENTS.md files and context curation govern agent behavior on the repo."],
-    ["AI Literacy & Verification", "High", "Advanced", "Reviewing AI code for subtle bugs is now a first-class review skill."],
-    ["LLM Evaluation (Evals)", "Low", "Beginner", "Even simple checks catch agent regressions in CI."]
+    ["CLAUDE.md", "High", "Govern the coding agent's behavior and conventions on your repo."],
+    ["AGENTS.md", "High", "Cross-tool instruction standard so any agent respects your boundaries."],
+    ["claude-code-tips", "Medium", "40+ practical tips to get more out of the coding agent."],
+    ["planning-with-files", "Medium", "Crash-proof planning for larger multi-step changes."],
+    ["awesome-claude-code", "Low", "Curated skills, agents, and tooling to pull from."]
   ]},
   { p: "DevOps / Platform Engineer", d: "Software Engineering", t: "Incident response copilots and AIOps", s: [
-    ["Security Copilots & SOC Automation", "Medium", "Intermediate", "The same triage patterns apply to ops alerts and logs."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Runbook- and postmortem-grounded answers during incidents."],
-    ["Anomaly Detection", "High", "Intermediate", "Detecting abnormal metrics/log patterns before pages fire."],
-    ["Tool Calling", "Medium", "Intermediate", "Copilots that query dashboards and run diagnostics need safe tool access."],
-    ["Human-in-the-Loop Design", "High", "Intermediate", "Remediation actions need approval gates; auto-heal only what's reversible."],
-    ["Workflow Automation", "Medium", "Intermediate", "Alert enrichment and ticket hygiene are automatable today."]
+    ["mcp-builder", "High", "Expose dashboards and diagnostics to the copilot via MCP."],
+    ["Anthropic-Cybersecurity-Skills", "Medium", "817 structured skills for security-relevant triage and log analysis."],
+    ["Rebuff", "Medium", "Guard the copilot against injections planted in logs and tickets."],
+    ["planning-with-files", "Medium", "Durable planning for long-running remediation runs."],
+    ["CLAUDE.md", "Low", "Bound what the copilot may execute automatically."]
   ]},
   { p: "DevOps / Platform Engineer", d: "Software Engineering", t: "Infrastructure-as-code with AI agents", s: [
-    ["Agentic Coding", "High", "Intermediate", "Agents draft Terraform/K8s manifests well; review discipline is essential."],
-    ["Prompt Engineering", "Medium", "Intermediate", "Constraints (regions, naming, cost limits) belong in the prompt, not cleanup."],
-    ["Guardrails", "High", "Intermediate", "Policy-as-code checks must gate anything an agent can apply."],
-    ["AI Literacy & Verification", "High", "Advanced", "A hallucinated resource setting can take down production; verify plans line by line."]
+    ["CLAUDE.md", "High", "Govern what the agent may edit and apply on infra repos."],
+    ["AGENTS.md", "High", "Cross-tool boundaries so any agent honors your guardrails."],
+    ["planning-with-files", "Medium", "Crash-proof planning for multi-step infra changes."],
+    ["claude-code-infrastructure-showcase", "Medium", "Reference patterns for hooks and safe automation."],
+    ["awesome-ai-agent-governance", "Low", "Policy-enforcement and audit-trail references for production agents."]
   ]},
 
   // ---------- Data Science ----------
   { p: "Data Scientist", d: "Data Science", t: "Building an LLM-powered analytics assistant", s: [
-    ["SQL & AI-Assisted Analytics", "High", "Advanced", "Text-to-SQL with schema grounding is the assistant's backbone."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Metric definitions and docs must ground answers to prevent invented numbers."],
-    ["Structured Output", "High", "Intermediate", "Charts and query plans require schema-conformant model output."],
-    ["LLM Evaluation (Evals)", "High", "Intermediate", "A question-answer eval set catches silent SQL errors."],
-    ["Prompt Engineering", "Medium", "Intermediate", "Few-shot examples of your schema idioms lift accuracy sharply."],
-    ["Human-in-the-Loop Design", "Medium", "Beginner", "Analysts must be able to inspect and correct generated queries."]
+    ["claude-api", "High", "Reference for tool use and structured output the assistant relies on."],
+    ["mcp-builder", "High", "Expose your warehouse and metrics to the assistant via MCP."],
+    ["Guardrails AI", "Medium", "Validate generated queries/answers against rules before they ship."],
+    ["xlsx", "Medium", "Let the assistant produce clean spreadsheets and charts."],
+    ["graphify", "Low", "Turn schemas and docs into a queryable graph for grounding."]
   ]},
   { p: "Data Scientist", d: "Data Science", t: "Classical ML model development, accelerated by AI", s: [
-    ["Machine Learning Basics", "High", "Advanced", "Feature engineering, validation, and model selection remain the craft."],
-    ["Agentic Coding", "High", "Intermediate", "Agents write boilerplate, tests, and experiment code under review."],
-    ["Statistical Analysis", "High", "Advanced", "Leakage, drift, and significance judgments are not delegable."],
-    ["Model Evaluation", "High", "Advanced", "Metric choice and error analysis decide whether the model ships."],
-    ["AI-Assisted Data Cleaning", "Medium", "Intermediate", "LLMs standardize messy categoricals and free text quickly."],
-    ["MLOps & Model Monitoring", "Medium", "Intermediate", "Models decay; monitoring is part of development, not an afterthought."]
+    ["scientific-agent-skills", "High", "Science/ML agent skills for feature work and validation."],
+    ["CLAUDE.md", "High", "Govern the coding agent on your modeling repo."],
+    ["Responsible AI Toolbox", "Medium", "Assess model fairness and reliability before deployment."],
+    ["planning-with-files", "Low", "Durable planning for longer experiment runs."]
   ]},
   { p: "ML Engineer", d: "Data Science", t: "Deploying and monitoring LLM applications in production", s: [
-    ["Model Deployment & Serving", "High", "Advanced", "Latency, cost, caching, and fallback routing define production readiness."],
-    ["MLOps & Model Monitoring", "High", "Advanced", "Token cost, drift, and quality dashboards catch silent degradation."],
-    ["LLM Evaluation (Evals)", "High", "Advanced", "Eval gates in CI prevent prompt or model updates from regressing quality."],
-    ["Guardrails", "High", "Intermediate", "Output filtering and policy enforcement protect users and the business."],
-    ["Prompt Injection Defense", "High", "Intermediate", "Any app that ingests untrusted content needs injection mitigations."],
-    ["Context Engineering", "Medium", "Intermediate", "Context assembly is a production system component with budgets and priorities."]
+    ["NeMo Guardrails", "High", "Programmable input/output guardrails for the production app."],
+    ["Guardrails AI", "High", "Validate and correct outputs against structured rules before users see them."],
+    ["Rebuff", "High", "Detect prompt injection in anything the app ingests."],
+    ["OWASP Top 10 for LLM Apps", "Medium", "Baseline vulnerability checklist for the deployment."],
+    ["claude-api", "Medium", "Reference for caching, streaming, and cost controls."]
   ]},
   { p: "ML Engineer", d: "Data Science", t: "Fine-tuning a domain-specific model", s: [
-    ["Fine-Tuning (LoRA/PEFT)", "High", "Advanced", "The core technique: adapting a foundation model efficiently."],
-    ["Dataset Curation", "High", "Advanced", "Fine-tune quality is dominated by training-data quality and coverage."],
-    ["PyTorch", "High", "Intermediate", "The practical substrate for training runs and debugging."],
-    ["LLM Evaluation (Evals)", "High", "Advanced", "Held-out evals prove the fine-tune beats prompting the base model."],
-    ["Synthetic Data Generation", "Medium", "Intermediate", "Model-generated examples fill coverage gaps cheaply — with QA."],
-    ["Model Deployment & Serving", "Medium", "Intermediate", "Adapters change serving topology and cost."]
+    ["scientific-agent-skills", "High", "ML-focused agent skills for the training and eval loop."],
+    ["Responsible AI Toolbox", "High", "Assess the fine-tune's fairness and reliability against the base."],
+    ["planning-with-files", "Medium", "Durable planning across long training runs."],
+    ["claude-api", "Low", "Reference for serving and comparing against a prompted base model."]
   ]},
   { p: "Data Analyst", d: "Data Science", t: "Natural-language BI and automated reporting", s: [
-    ["SQL & AI-Assisted Analytics", "High", "Advanced", "AI drafts queries; you verify semantics against the warehouse."],
-    ["Data Visualization", "High", "Intermediate", "Clear charts remain the deliverable; AI speeds the drafting."],
-    ["Prompt Engineering", "Medium", "Intermediate", "Reusable report prompts with metric definitions keep outputs consistent."],
-    ["AI-Assisted Data Cleaning", "Medium", "Intermediate", "Free-text fields and inconsistent categories yield to LLM normalization."],
-    ["AI Literacy & Verification", "High", "Intermediate", "A plausible wrong number in a report is worse than no report."],
-    ["Workflow Automation", "Medium", "Beginner", "Scheduled AI reporting pipelines remove repetitive manual runs."]
+    ["xlsx", "High", "Generate and clean spreadsheets, formulas, and charts directly."],
+    ["marketingskills", "Medium", "Includes analytics skills for reporting workflows."],
+    ["prompt-master", "Medium", "Reusable report prompts that keep outputs consistent."],
+    ["Guardrails AI", "Low", "Validate generated numbers/queries before circulating them."]
   ]},
 
   // ---------- Law ----------
   { p: "Corporate Lawyer", d: "Law", t: "Contract review and drafting with AI", s: [
-    ["Legal NLP & Contract Analysis", "High", "Advanced", "Clause extraction, risk flagging, and redline drafting are the daily workflow."],
-    ["Prompt Engineering", "High", "Intermediate", "Playbook-driven prompts encode your firm's negotiation positions."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Grounding drafts in precedent clauses and templates prevents invented terms."],
-    ["Hallucination Detection & Fact Verification", "High", "Advanced", "Fabricated citations have sanctioned real lawyers; verification is non-negotiable."],
-    ["Privacy-Preserving AI", "High", "Intermediate", "Client confidentiality dictates which tools may see which documents."],
-    ["Human-in-the-Loop Design", "Medium", "Intermediate", "AI proposes; the attorney of record disposes."]
+    ["pdf", "High", "Extract and OCR clauses from contract PDFs into workable text."],
+    ["Rebuff", "High", "Guard a document-ingesting agent against injected instructions in files."],
+    ["doc-coauthoring", "Medium", "Human-in-the-loop redlining keeps the attorney in control."],
+    ["EU AI Act", "Medium", "Know the obligations if the tool influences legal decisions."],
+    ["awesome-ai-governance", "Low", "Governance references for deploying AI on confidential matters."]
   ]},
   { p: "Corporate Lawyer", d: "Law", t: "Legal research and memo drafting", s: [
-    ["Literature Search & Research Agents", "High", "Intermediate", "AI research tools surface controlling authority across jurisdictions fast."],
-    ["Hallucination Detection & Fact Verification", "High", "Advanced", "Every case cite must be pulled and read; AI summaries are leads, not law."],
-    ["AI Writing & Editing", "Medium", "Intermediate", "Memo structure and first drafts accelerate with AI; analysis stays yours."],
-    ["Legal NLP & Contract Analysis", "Medium", "Intermediate", "Statutory and case-text extraction structures the research record."]
+    ["academic-research-skills", "High", "A research pipeline adaptable to authority-gathering and synthesis."],
+    ["doc-coauthoring", "High", "Draft memos with a human-in-the-loop workflow."],
+    ["pdf", "Medium", "Pull text out of filings, cases, and exhibits."],
+    ["humanizer", "Low", "Polish AI phrasing in the memo."]
   ]},
   { p: "Paralegal", d: "Law", t: "E-discovery document review", s: [
-    ["E-Discovery AI", "High", "Advanced", "Technology-assisted review prioritizes millions of documents defensibly."],
-    ["Document Processing & OCR", "High", "Intermediate", "Scans, emails, and attachments must become searchable text first."],
-    ["Embeddings & Semantic Search", "Medium", "Intermediate", "Concept search finds responsive documents keyword terms miss."],
-    ["Data Annotation & Labeling QA", "High", "Intermediate", "Seed-set coding quality drives the whole predictive ranking."],
-    ["AI Literacy & Verification", "High", "Intermediate", "Defensibility requires understanding what the model did and documenting it."]
+    ["pdf", "High", "OCR and extract text from the document set before review."],
+    ["graphify", "High", "Turn the corpus into a queryable graph of people, entities, and events."],
+    ["Rebuff", "Medium", "Protect a review agent from injected instructions in documents."],
+    ["Skill_Seekers", "Low", "Convert doc sets and repos into ready-to-use review skills."]
   ]},
   { p: "Paralegal", d: "Law", t: "Case file summarization and citation checking", s: [
-    ["Document Processing & OCR", "High", "Intermediate", "Filings and exhibits arrive as messy PDFs; structure comes first."],
-    ["AI Writing & Editing", "Medium", "Intermediate", "Chronologies and summaries draft quickly under attorney review."],
-    ["Hallucination Detection & Fact Verification", "High", "Advanced", "Cite-checking is precisely the skill of catching AI (and human) errors."],
-    ["Structured Output", "Medium", "Beginner", "Extraction into timelines and party tables keeps case files navigable."]
+    ["pdf", "High", "Extract structured text from filings and exhibits."],
+    ["doc-coauthoring", "Medium", "Draft chronologies and summaries under attorney review."],
+    ["graphify", "Medium", "Link parties, dates, and documents into a navigable graph."],
+    ["humanizer", "Low", "Clean AI phrasing from drafted summaries."]
   ]},
 
   // ---------- Finance ----------
   { p: "Financial Analyst", d: "Finance", t: "Earnings analysis and report automation", s: [
-    ["Financial NLP", "High", "Advanced", "Parsing filings, transcripts, and news into signals is the core workflow."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Q&A over filings must cite the actual 10-K language."],
-    ["SQL & AI-Assisted Analytics", "Medium", "Intermediate", "Fundamentals databases still answer the quantitative half."],
-    ["Structured Output", "Medium", "Intermediate", "Extracted metrics feed models only if they arrive schema-clean."],
-    ["Hallucination Detection & Fact Verification", "High", "Advanced", "A fabricated number in an investment memo is a career risk."],
-    ["Data Visualization", "Medium", "Intermediate", "Charts carry the thesis; AI accelerates drafting them."]
+    ["pdf", "High", "Extract figures and language from filings and transcripts."],
+    ["xlsx", "High", "Build and clean the models and charts behind the analysis."],
+    ["Guardrails AI", "Medium", "Validate extracted numbers before they enter a memo."],
+    ["marketingskills", "Low", "Analytics sub-skills useful for reporting."]
   ]},
   { p: "Quantitative Researcher", d: "Finance", t: "ML-driven signal research and backtesting", s: [
-    ["Quantitative Modeling with ML", "High", "Advanced", "Feature engineering and leakage control decide whether a signal is real."],
-    ["Statistical Analysis", "High", "Advanced", "Multiple-testing discipline separates alpha from noise."],
-    ["Python", "High", "Advanced", "The research stack is Python end to end."],
-    ["Agentic Coding", "Medium", "Intermediate", "Agents accelerate backtest infrastructure; results verification stays manual."],
-    ["Financial NLP", "Medium", "Intermediate", "Text-derived features (sentiment, events) are standard alternative data."],
-    ["Time-Series Forecasting", "Medium", "Advanced", "Regime awareness and horizon effects are domain fundamentals."]
+    ["scientific-agent-skills", "High", "ML/science agent skills for research code and validation."],
+    ["CLAUDE.md", "High", "Govern the coding agent on the research repo — leakage discipline matters."],
+    ["planning-with-files", "Medium", "Durable planning across long backtest builds."],
+    ["Responsible AI Toolbox", "Low", "Reliability assessment to guard against overfit signals."]
   ]},
   { p: "Compliance Officer", d: "Finance", t: "AML transaction monitoring and regulatory tracking", s: [
-    ["Anomaly Detection", "High", "Intermediate", "Modern AML rests on anomaly and network models, not just rules."],
-    ["Fraud Detection ML", "High", "Intermediate", "Understanding model outputs and false-positive economics drives triage."],
-    ["Explainability (XAI)", "High", "Intermediate", "Regulators require explainable alerts; SAR narratives need model rationale."],
-    ["RAG (Retrieval-Augmented Generation)", "Medium", "Intermediate", "Regulation-grounded Q&A keeps policies mapped to current rules."],
-    ["AI Governance & Compliance", "High", "Advanced", "Model risk management (SR 11-7 style) is itself a compliance obligation."],
-    ["Workflow Automation", "Medium", "Beginner", "Regulatory change feeds can auto-route to policy owners."]
+    ["awesome-ai-governance", "High", "Frameworks, regulations, and tools for enterprise AI governance."],
+    ["NIST AI Risk Management Framework", "High", "Model-risk governance aligned to supervisory expectations."],
+    ["Responsible AI Toolbox", "Medium", "Explainability and fairness auditing for alert models."],
+    ["ai-governance-framework-tools", "Medium", "Templates for implementing NIST AI RMF and ISO 42001."],
+    ["pdf", "Low", "Extract obligations from regulatory documents."]
   ]},
 
   // ---------- Education ----------
   { p: "K-12 Teacher", d: "Education", t: "Lesson planning and differentiated materials", s: [
-    ["Prompt Engineering", "High", "Intermediate", "Grade level, standards, and reading level belong in every prompt."],
-    ["AI Writing & Editing", "High", "Intermediate", "Worksheets, exemplars, and scaffolds draft in minutes."],
-    ["AI Tutoring & Adaptive Learning", "Medium", "Beginner", "Knowing how tutoring systems adapt helps you assign them well."],
-    ["AI Literacy & Verification", "High", "Intermediate", "Generated content needs accuracy and age-appropriateness review."],
-    ["Responsible AI Practice", "High", "Beginner", "Student data and AI-use policies constrain which tools are allowed."]
+    ["docx", "High", "Generate worksheets, exemplars, and scaffolds as Word documents."],
+    ["pptx", "High", "Build differentiated slide decks quickly."],
+    ["prompt-master", "Medium", "Reusable prompts that fix grade level and standards."],
+    ["Responsible AI Toolbox", "Low", "Sanity-check materials for bias and appropriateness."]
   ]},
   { p: "K-12 Teacher", d: "Education", t: "AI-assisted grading and feedback", s: [
-    ["Prompt Engineering", "High", "Intermediate", "Rubric-driven prompts produce consistent, criterion-referenced feedback."],
-    ["Human-in-the-Loop Design", "High", "Intermediate", "Grades stay teacher-owned; AI drafts feedback, never final marks."],
-    ["Bias & Fairness Auditing", "Medium", "Beginner", "AI feedback can systematically favor certain writing styles; spot-check."],
-    ["Assessment Generation", "Medium", "Intermediate", "Question variants and practice sets generate on demand."]
+    ["prompt-master", "High", "Rubric-driven prompts for consistent, criterion-referenced feedback."],
+    ["NeMo Guardrails", "Medium", "Keep a feedback agent within safe, on-task boundaries."],
+    ["Responsible AI Toolbox", "Medium", "Check feedback for systematic bias across writing styles."],
+    ["docx", "Low", "Return feedback in editable documents."]
   ]},
   { p: "Instructional Designer", d: "Education", t: "Building adaptive courseware", s: [
-    ["AI Tutoring & Adaptive Learning", "High", "Advanced", "Learner-model-driven sequencing is the product being built."],
-    ["Conversational AI Design", "High", "Intermediate", "Tutor personas need flows, tone, and graceful failure handling."],
-    ["Prompt Engineering", "High", "Advanced", "Pedagogical prompting (Socratic moves, hint ladders) is a distinct craft."],
-    ["LLM Evaluation (Evals)", "Medium", "Intermediate", "Tutor quality needs eval sets of learner scenarios, not vibes."],
-    ["Assessment Generation", "High", "Intermediate", "Item banks with validated difficulty power the adaptivity."],
-    ["Human-in-the-Loop Design", "Medium", "Intermediate", "Instructor dashboards and overrides keep the human educator in control."]
+    ["NeMo Guardrails", "High", "Keep a tutor agent safe, on-task, and age-appropriate."],
+    ["prompt-master", "High", "Pedagogical prompting — Socratic moves and hint ladders."],
+    ["web-artifacts-builder", "Medium", "Build interactive courseware artifacts in React/Tailwind."],
+    ["Guardrails AI", "Medium", "Validate tutor output against structured rules."],
+    ["pptx", "Low", "Produce lesson decks at scale."]
   ]},
 
   // ---------- Marketing ----------
   { p: "Marketing Manager", d: "Marketing", t: "Running an AI-assisted campaign content pipeline", s: [
-    ["Content Generation & Brand Voice", "High", "Advanced", "Style guides plus review loops keep scaled content on-brand."],
-    ["Prompt Engineering", "High", "Intermediate", "Reusable prompt templates encode voice, audience, and format."],
-    ["Workflow Automation", "High", "Intermediate", "Brief-to-draft-to-review pipelines run on automation platforms."],
-    ["Image & Video Generation", "Medium", "Intermediate", "Creative variants generate quickly; brand consistency needs control."],
-    ["Personalization & Segmentation", "Medium", "Intermediate", "Per-segment message variants are now cheap to produce and test."],
-    ["Responsible AI Practice", "Medium", "Beginner", "Disclosure norms and IP provenance for generated assets matter."]
+    ["marketingskills", "High", "CRO, copywriting, SEO, analytics, and growth skills for agents."],
+    ["brand-guidelines", "High", "Keep every generated asset on-brand automatically."],
+    ["humanizer", "Medium", "Strip tell-tale AI phrasing from campaign copy."],
+    ["canvas-design", "Medium", "Generate on-brand visual assets."],
+    ["claude-seo", "Low", "Optimize the content for search."]
   ]},
   { p: "Content Strategist", d: "Marketing", t: "SEO content at scale with brand voice", s: [
-    ["SEO & Content Optimization", "High", "Advanced", "AI answer engines change how content gets cited and surfaced."],
-    ["Content Generation & Brand Voice", "High", "Advanced", "Differentiated voice is the moat when everyone can generate text."],
-    ["AI Writing & Editing", "High", "Intermediate", "Human-edited AI drafts are the standard production model."],
-    ["Embeddings & Semantic Search", "Medium", "Beginner", "Topical clustering and content gaps reveal themselves in embedding space."],
-    ["Workflow Automation", "Medium", "Intermediate", "Brief generation and publishing steps chain without engineers."]
+    ["claude-seo", "High", "25 sub-skills covering technical SEO and E-E-A-T."],
+    ["geo-seo-claude", "High", "Optimize for AI-search citability, not just classic SEO."],
+    ["marketingskills", "Medium", "Copywriting and growth skills for the content engine."],
+    ["humanizer", "Medium", "Keep AI drafts reading as human, on-voice prose."],
+    ["brand-guidelines", "Low", "Hold voice and styling consistent across output."]
   ]},
 
   // ---------- Manufacturing ----------
   { p: "Manufacturing Engineer", d: "Manufacturing", t: "Deploying visual defect inspection", s: [
-    ["Visual Quality Inspection", "High", "Advanced", "Camera placement, lighting, and defect taxonomies make or break accuracy."],
-    ["Computer Vision", "High", "Intermediate", "Detection/segmentation fundamentals underpin the inspection models."],
-    ["Dataset Curation", "High", "Intermediate", "Rare defects demand deliberate collection and augmentation."],
-    ["Synthetic Data Generation", "Medium", "Intermediate", "Simulated defects cover cases the line hasn't produced yet."],
-    ["Model Evaluation", "High", "Intermediate", "Escape rate vs. false-reject rate is a business decision, measured precisely."],
-    ["MLOps & Model Monitoring", "Medium", "Intermediate", "Product and lighting changes silently degrade deployed models."]
+    ["Responsible AI Toolbox", "High", "Assess the inspection model's reliability before it gates a line."],
+    ["scientific-agent-skills", "High", "Agent skills for the data and evaluation work."],
+    ["NIST AI Risk Management Framework", "Medium", "Govern the model's operational risk."],
+    ["planning-with-files", "Low", "Durable planning for the build-out."]
   ]},
   { p: "Manufacturing Engineer", d: "Manufacturing", t: "Predictive maintenance program", s: [
-    ["Predictive Maintenance", "High", "Advanced", "Failure-mode-aware modeling of sensor data is the core discipline."],
-    ["Time-Series Forecasting", "High", "Intermediate", "Remaining-useful-life estimates are forecasting problems."],
-    ["Anomaly Detection", "High", "Intermediate", "Unlabeled failures start as anomalies in vibration and temperature."],
-    ["Data Visualization", "Medium", "Beginner", "Maintenance teams act on dashboards, not model files."],
-    ["Statistical Analysis", "Medium", "Intermediate", "Distinguishing degradation from noise requires statistical care."]
+    ["scientific-agent-skills", "High", "ML/science agent skills for sensor-data modeling."],
+    ["xlsx", "Medium", "Structure and analyze maintenance and sensor records."],
+    ["Responsible AI Toolbox", "Medium", "Reliability assessment for the failure models."],
+    ["planning-with-files", "Low", "Durable planning across the program build."]
   ]},
   { p: "Quality Engineer", d: "Manufacturing", t: "AI-assisted root-cause analysis and SOP intelligence", s: [
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Answers grounded in SOPs, specs, and past NCRs beat tribal memory."],
-    ["Document Processing & OCR", "High", "Intermediate", "Decades of quality records live in scanned PDFs."],
-    ["Statistical Analysis", "High", "Advanced", "SPC and DOE remain the analytical backbone of root cause."],
-    ["Prompt Engineering", "Medium", "Intermediate", "Structured 5-why and fishbone prompts make AI a disciplined partner."],
-    ["Knowledge Graphs", "Low", "Beginner", "Linking failures, parts, and suppliers pays off as the corpus grows."]
+    ["graphify", "High", "Turn SOPs, specs, and NCRs into a queryable knowledge graph."],
+    ["pdf", "High", "Digitize decades of quality records into searchable text."],
+    ["prompt-master", "Medium", "Structured 5-why / fishbone prompts for disciplined analysis."],
+    ["Skill_Seekers", "Low", "Convert SOP docs into ready-to-use agent skills."]
   ]},
 
   // ---------- Government ----------
   { p: "Policy Analyst", d: "Government", t: "Legislative analysis and briefing generation", s: [
-    ["Document Processing & OCR", "High", "Intermediate", "Bills, amendments, and reports must become analyzable text."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Briefings must cite the actual statutory language."],
-    ["AI Writing & Editing", "High", "Intermediate", "Brief structure and plain-language summaries draft rapidly."],
-    ["Hallucination Detection & Fact Verification", "High", "Advanced", "A wrong claim in a ministerial briefing has real consequences."],
-    ["Literature Search & Research Agents", "Medium", "Intermediate", "Comparative policy evidence gathers faster with research agents."]
+    ["pdf", "High", "Extract text from bills, amendments, and reports."],
+    ["internal-comms", "High", "Draft briefings and plain-language summaries."],
+    ["academic-research-skills", "Medium", "Gather comparative policy evidence systematically."],
+    ["graphify", "Low", "Map relationships across statutes and documents."]
   ]},
   { p: "Policy Analyst", d: "Government", t: "Analyzing public comments at scale", s: [
-    ["Sentiment & Intent Analysis", "High", "Intermediate", "Position and theme classification across thousands of submissions."],
-    ["Embeddings & Semantic Search", "High", "Intermediate", "Clustering surfaces the distinct arguments, not just keywords."],
-    ["Structured Output", "Medium", "Intermediate", "Comment coding into consistent categories enables defensible tallies."],
-    ["Data Visualization", "Medium", "Beginner", "Stakeholder maps and theme charts communicate the analysis."],
-    ["Bias & Fairness Auditing", "Medium", "Beginner", "Form-letter campaigns and bot comments must not drown out individuals."]
+    ["graphify", "High", "Cluster and map themes across thousands of submissions."],
+    ["xlsx", "Medium", "Tally and structure coded comments defensibly."],
+    ["prompt-master", "Medium", "Consistent classification prompts for comment coding."],
+    ["Rebuff", "Low", "Guard against injected content in submitted text."]
   ]},
 
   // ---------- Journalism ----------
   { p: "Investigative Journalist", d: "Journalism", t: "Analyzing large document leaks", s: [
-    ["Document Processing & OCR", "High", "Advanced", "Leaks arrive as mixed scans, emails, and spreadsheets."],
-    ["Embeddings & Semantic Search", "High", "Intermediate", "Semantic search finds the story threads keyword search misses."],
-    ["Knowledge Graphs", "Medium", "Intermediate", "Entity-relationship mapping exposes networks of people and money."],
-    ["RAG (Retrieval-Augmented Generation)", "Medium", "Intermediate", "Question the corpus with citations back to source documents."],
-    ["Data Journalism", "High", "Intermediate", "Turning findings into verifiable, publishable analysis."],
-    ["Privacy-Preserving AI", "High", "Intermediate", "Source protection dictates local/air-gapped tooling choices."]
+    ["graphify", "High", "Turn a messy leak into a queryable graph of people, money, and events."],
+    ["pdf", "High", "OCR and extract text from mixed scans and documents."],
+    ["Rebuff", "Medium", "Protect the analysis agent from injected instructions in documents."],
+    ["Skill_Seekers", "Low", "Convert document sets into ready-to-query skills."]
   ]},
   { p: "Investigative Journalist", d: "Journalism", t: "Verifying synthetic media and AI-generated claims", s: [
-    ["Deepfake & Synthetic Media Detection", "High", "Advanced", "Detection tools, provenance standards (C2PA), and forensic tells."],
-    ["Fact-Checking & Verification AI", "High", "Advanced", "AI-assisted claim tracing at the speed misinformation spreads."],
-    ["Multimodal AI", "Medium", "Intermediate", "Understanding how generators work reveals what artifacts to look for."],
-    ["AI Literacy & Verification", "High", "Advanced", "Verification judgment is the professional core; tools only assist."]
+    ["Anthropic-Cybersecurity-Skills", "Medium", "Structured skills useful for forensic and provenance work."],
+    ["academic-research-skills", "Medium", "A research pipeline for source-tracing and verification."],
+    ["humanizer", "Low", "Recognize the tell-tale signs of AI-generated text."],
+    ["awesome-ai-governance", "Low", "References on provenance and responsible AI standards."]
   ]},
 
   // ---------- Design ----------
   { p: "UX Designer", d: "Design", t: "AI-assisted research synthesis and prototyping", s: [
-    ["UX Research with AI", "High", "Intermediate", "Interview and survey synthesis compresses from weeks to days."],
-    ["Design-to-Code AI", "High", "Intermediate", "Prompt-to-prototype tools make testable artifacts without engineers."],
-    ["Prompt Engineering", "High", "Intermediate", "Design intent must be specified precisely to get usable output."],
-    ["Conversational AI Design", "Medium", "Intermediate", "More products are conversations; designing them is a UX skill now."],
-    ["AI Literacy & Verification", "Medium", "Intermediate", "AI-synthesized insights need tracing back to real participant data."]
+    ["frontend-design", "High", "Guidance for distinctive, intentional UI — not templated output."],
+    ["web-artifacts-builder", "High", "Turn ideas into testable React/Tailwind prototypes."],
+    ["huashu-design", "Medium", "HTML-native high-fidelity prototyping."],
+    ["academic-research-skills", "Low", "Synthesize interviews and research into insights."]
   ]},
   { p: "Graphic Designer", d: "Design", t: "Generative image workflows with brand consistency", s: [
-    ["Image & Video Generation", "High", "Advanced", "Control techniques (reference, style, inpainting) turn generators into tools."],
-    ["Prompt Engineering", "High", "Intermediate", "Visual prompting is its own craft — composition, style, and negative prompts."],
-    ["Content Generation & Brand Voice", "Medium", "Intermediate", "Brand systems must constrain generation, not fight it."],
-    ["Responsible AI Practice", "Medium", "Beginner", "IP provenance and disclosure for generated assets are client requirements."],
-    ["Workflow Automation", "Low", "Beginner", "Batch variant generation and asset resizing automate cleanly."]
+    ["canvas-design", "High", "Create posters and static visual art from a design philosophy."],
+    ["brand-guidelines", "High", "Constrain generation to your brand colors and type."],
+    ["algorithmic-art", "Medium", "Generative art with p5.js for distinctive visuals."],
+    ["hallmark", "Medium", "Anti-AI-slop skill that pushes toward distinctive design."],
+    ["theme-factory", "Low", "Apply consistent visual themes across artifacts."]
   ]},
 
   // ---------- Cybersecurity ----------
   { p: "SOC Analyst", d: "Cybersecurity", t: "AI-driven alert triage and investigation", s: [
-    ["Security Copilots & SOC Automation", "High", "Advanced", "Copilot-assisted triage and log summarization is the emerging daily workflow."],
-    ["Prompt Engineering", "High", "Intermediate", "Investigation prompts must elicit evidence, not confident guesses."],
-    ["Anomaly Detection", "Medium", "Intermediate", "Understanding the detectors behind alerts sharpens triage decisions."],
-    ["Threat Intelligence AI", "Medium", "Intermediate", "LLM enrichment ties indicators to actors and campaigns fast."],
-    ["Prompt Injection Defense", "High", "Intermediate", "Attackers plant instructions in logs and phishing content your AI reads."],
-    ["Human-in-the-Loop Design", "Medium", "Intermediate", "Containment actions need approval gates, not autonomous response."]
+    ["Anthropic-Cybersecurity-Skills", "High", "817 skills mapped to MITRE ATT&CK and NIST CSF for triage."],
+    ["MITRE ATT&CK Navigator", "High", "Map and govern the attack surface against known techniques."],
+    ["Rebuff", "High", "Guard the copilot against injections planted in logs and tickets."],
+    ["mcp-builder", "Medium", "Expose SIEM and diagnostics to the copilot via MCP."],
+    ["OWASP Top 10 for LLM Apps", "Low", "Baseline for securing the copilot itself."]
   ]},
   { p: "Penetration Tester", d: "Cybersecurity", t: "Red-teaming AI systems (authorized engagements)", s: [
-    ["Red-Teaming & Adversarial Testing", "High", "Advanced", "Systematic probing of LLM apps is now a standard engagement type."],
-    ["Prompt Injection Defense", "High", "Advanced", "You must master the attack class to test and report it."],
-    ["LLM Fundamentals", "High", "Intermediate", "Model behavior under adversarial input follows from how models work."],
-    ["Agent Orchestration", "Medium", "Intermediate", "Agentic targets have tool-use attack surface beyond the chat box."],
-    ["LLM Evaluation (Evals)", "Medium", "Intermediate", "Findings become regression tests the client can rerun."],
-    ["Responsible AI Practice", "High", "Intermediate", "Scope, authorization, and disclosure discipline define professional work."]
+    ["OWASP Top 10 for LLM Apps", "High", "The baseline vulnerability checklist to test against."],
+    ["Anthropic-Cybersecurity-Skills", "High", "Structured offensive/defensive skills mapped to frameworks."],
+    ["Rebuff", "High", "Understand and probe prompt-injection defenses."],
+    ["Llama Guard / PurpleLlama", "Medium", "Score prompts and outputs against a harm taxonomy while testing."],
+    ["MITRE ATT&CK Navigator", "Low", "Structure findings against adversary techniques."]
   ]},
 
   // ---------- Biology / Chemistry / Drug Discovery ----------
   { p: "Molecular Biologist", d: "Biology", t: "Protein structure prediction and design", s: [
-    ["Protein Structure Prediction", "High", "Advanced", "AlphaFold-class tools are now standard instruments; interpreting confidence metrics is key."],
-    ["Python", "High", "Intermediate", "Running pipelines and parsing outputs requires working code literacy."],
-    ["Bioinformatics Pipelines", "Medium", "Intermediate", "Structure work sits inside larger sequence-analysis workflows."],
-    ["Literature Search & Research Agents", "Medium", "Intermediate", "Structural hypotheses need grounding in current literature."],
-    ["Scientific Data Analysis", "High", "Intermediate", "Downstream validation data still needs rigorous analysis."]
+    ["scientific-agent-skills", "High", "The largest science agent-skills library for structural work."],
+    ["AI-Research-SKILLs", "Medium", "Portable research/engineering skills for the analysis."],
+    ["planning-with-files", "Medium", "Durable planning across long design-analysis runs."],
+    ["academic-research-skills", "Low", "Ground designs in prior structural evidence."]
   ]},
   { p: "Bioinformatician", d: "Biology", t: "Building NGS and single-cell analysis pipelines", s: [
-    ["Bioinformatics Pipelines", "High", "Advanced", "Pipeline construction and validation is the job itself."],
-    ["Agentic Coding", "High", "Intermediate", "AI agents scaffold Nextflow/Snakemake code and debug tool chains."],
-    ["Python", "High", "Advanced", "Custom analysis beyond standard tools lives in Python/R."],
-    ["Statistical Analysis", "High", "Advanced", "Differential expression and batch effects demand statistical rigor."],
-    ["Machine Learning Basics", "Medium", "Intermediate", "Cell-type classification and integration methods are ML under the hood."],
-    ["Data Visualization", "Medium", "Intermediate", "UMAPs and QC plots communicate the analysis."]
+    ["scientific-agent-skills", "High", "Science agent skills for omics pipeline work."],
+    ["CLAUDE.md", "High", "Govern the coding agent on the pipeline repo."],
+    ["planning-with-files", "Medium", "Crash-proof planning for long pipeline builds."],
+    ["graphify", "Low", "Link genes, pathways, and phenotypes for interpretation."]
   ]},
   { p: "Medicinal Chemist", d: "Chemistry", t: "Generative molecule optimization", s: [
-    ["Generative Chemistry", "High", "Advanced", "Generative models propose candidates; chemists steer with constraints."],
-    ["Molecular Property Prediction", "High", "Advanced", "ADMET predictions decide which proposals merit synthesis."],
-    ["Cheminformatics", "High", "Intermediate", "Representations and similarity search underpin every tool in the stack."],
-    ["Python", "Medium", "Intermediate", "RDKit workflows and model APIs require working Python."],
-    ["AI Literacy & Verification", "High", "Intermediate", "Synthesizability and novelty of AI proposals need expert judgment."]
+    ["scientific-agent-skills", "High", "Chemistry/science agent skills for design and screening."],
+    ["AI-Research-SKILLs", "Medium", "Portable skills for the modeling code."],
+    ["academic-research-skills", "Medium", "Ground candidates in prior activity/ADMET evidence."],
+    ["planning-with-files", "Low", "Durable planning across design-test cycles."]
   ]},
   { p: "Computational Chemist", d: "Chemistry", t: "High-throughput virtual screening with ML", s: [
-    ["Molecular Property Prediction", "High", "Advanced", "ML scoring functions triage libraries of millions of compounds."],
-    ["Cheminformatics", "High", "Advanced", "Fingerprints, docking prep, and filtering are the daily toolkit."],
-    ["Python", "High", "Advanced", "Screening pipelines are custom Python at scale."],
-    ["PyTorch", "Medium", "Intermediate", "Training custom property models on in-house assay data."],
-    ["Statistical Analysis", "Medium", "Intermediate", "Enrichment metrics and validation splits guard against self-deception."]
+    ["scientific-agent-skills", "High", "Science/ML agent skills for screening workflows."],
+    ["CLAUDE.md", "High", "Govern the coding agent on the screening repo."],
+    ["planning-with-files", "Medium", "Durable planning for large screening runs."],
+    ["Responsible AI Toolbox", "Low", "Reliability checks so models don't just fit history."]
   ]},
   { p: "Drug Discovery Scientist", d: "Drug Discovery", t: "Target identification with knowledge graphs", s: [
-    ["Knowledge Graphs", "High", "Advanced", "Gene-disease-pathway graphs are the substrate for target hypotheses."],
-    ["Hypothesis Generation", "High", "Intermediate", "LLM reasoning over graph evidence proposes ranked target candidates."],
-    ["Literature Search & Research Agents", "High", "Advanced", "Evidence for and against each target lives across thousands of papers."],
-    ["Bioinformatics Pipelines", "Medium", "Intermediate", "Omics evidence layers feed the graph."],
-    ["RAG (Retrieval-Augmented Generation)", "Medium", "Intermediate", "Cited answers over internal and public corpora keep target rationale traceable."]
+    ["graphify", "High", "Turn omics, papers, and configs into a queryable target-reasoning graph."],
+    ["scientific-agent-skills", "High", "Science agent skills for hypothesis and evidence work."],
+    ["academic-research-skills", "Medium", "Comprehensive prior-evidence gathering for each target."],
+    ["notebooklm-py", "Low", "Grounded synthesis over the target literature."]
   ]},
-
-  // ---------- Cybersecurity ----------
   { p: "Security Analyst", d: "Cybersecurity", t: "SOC alert triage with AI copilots", s: [
-    ["Security Copilots & SOC Automation", "High", "Advanced", "AI triage, log summarization, and playbook automation are the modern SOC."],
-    ["Threat Intelligence AI", "High", "Intermediate", "LLM enrichment correlates indicators, actors, and campaigns fast."],
-    ["Prompt Injection Defense", "High", "Advanced", "Attackers plant injections in logs and tickets the copilot reads."],
-    ["Anomaly Detection", "Medium", "Intermediate", "Behavioral models surface the alerts worth a human's time."],
-    ["RAG (Retrieval-Augmented Generation)", "Medium", "Intermediate", "Runbook-grounded responses keep triage consistent."],
-    ["AI Literacy & Verification", "High", "Advanced", "A confidently wrong triage call routes analysts away from real intrusions."]
+    ["Anthropic-Cybersecurity-Skills", "High", "817 structured skills mapped to ATT&CK and NIST CSF."],
+    ["MITRE ATT&CK Navigator", "High", "Map alerts to adversary techniques."],
+    ["Rebuff", "High", "Guard the copilot against injections in logs and tickets."],
+    ["mcp-builder", "Medium", "Wire dashboards and diagnostics into the copilot."],
+    ["OWASP Top 10 for LLM Apps", "Low", "Secure the copilot itself."]
   ]},
   { p: "AI Red Teamer", d: "Cybersecurity", t: "Testing LLM applications for vulnerabilities", s: [
-    ["Red-Teaming & Adversarial Testing", "High", "Advanced", "Systematic jailbreak and abuse-case probing is the whole job."],
-    ["Prompt Injection Defense", "High", "Advanced", "You attack it to prove the defenses hold; you must know both sides."],
-    ["LLM Fundamentals", "High", "Advanced", "Exploits target sampling, context handling, and tool-use seams."],
-    ["Guardrails", "High", "Intermediate", "Testing means knowing exactly what the guardrails claim to enforce."],
-    ["LLM Evaluation (Evals)", "Medium", "Intermediate", "Attack success needs measurable, repeatable eval harnesses."],
-    ["Tool Calling", "Medium", "Intermediate", "Agentic apps expand the attack surface through their tools."]
+    ["OWASP Top 10 for LLM Apps", "High", "The canonical LLM vulnerability checklist to test against."],
+    ["Rebuff", "High", "Probe and validate prompt-injection defenses."],
+    ["Llama Guard / PurpleLlama", "High", "Score prompts/outputs against a harm taxonomy."],
+    ["Anthropic-Cybersecurity-Skills", "Medium", "Structured skills for systematic testing."],
+    ["NeMo Guardrails", "Low", "Know exactly what guardrails claim to enforce."]
   ]},
-
-  // ---------- Biology / Chemistry / Drug Discovery ----------
   { p: "Computational Biologist", d: "Biology", t: "AI-assisted protein design and analysis", s: [
-    ["Protein Structure Prediction", "High", "Advanced", "AlphaFold-class models are now standard structural tools."],
-    ["Bioinformatics Pipelines", "High", "Advanced", "Sequence and structure workflows are the daily substrate."],
-    ["Python", "High", "Advanced", "Biopython, notebooks, and model APIs run on Python."],
-    ["Agentic Coding", "Medium", "Intermediate", "Agents build and debug pipeline code under review."],
-    ["Scientific Data Analysis", "High", "Advanced", "Statistical rigor on noisy biological data is essential."],
-    ["Literature Search & Research Agents", "Medium", "Intermediate", "Prior structural and functional evidence gathers faster with agents."]
+    ["scientific-agent-skills", "High", "The largest science agent-skills library for structural work."],
+    ["CLAUDE.md", "High", "Govern the coding agent on the analysis repo."],
+    ["planning-with-files", "Medium", "Durable planning across long runs."],
+    ["academic-research-skills", "Low", "Ground designs in prior structural/functional evidence."]
   ]},
   { p: "Medicinal Chemist", d: "Chemistry", t: "AI-guided molecule design and screening", s: [
-    ["Generative Chemistry", "High", "Advanced", "Generative models propose novel, synthesizable candidates."],
-    ["Molecular Property Prediction", "High", "Advanced", "ADMET and activity predictions triage the design space."],
-    ["Cheminformatics", "High", "Advanced", "RDKit representations and similarity search underpin everything."],
-    ["Python", "High", "Intermediate", "The cheminformatics and modeling stack is Python."],
-    ["Model Evaluation", "Medium", "Intermediate", "Prospective validation guards against models that only fit history."],
-    ["Experiment Planning", "Medium", "Intermediate", "AI-suggested syntheses still need feasible, prioritized bench plans."]
+    ["scientific-agent-skills", "High", "Chemistry/science agent skills for design and screening."],
+    ["AI-Research-SKILLs", "Medium", "Portable skills for the modeling code."],
+    ["planning-with-files", "Medium", "Durable planning across design-test cycles."],
+    ["academic-research-skills", "Low", "Ground candidates in prior evidence."]
   ]},
   { p: "Drug Discovery Scientist", d: "Drug Discovery", t: "Target identification and hit-to-lead with AI", s: [
-    ["Hypothesis Generation", "High", "Advanced", "Knowledge-graph reasoning proposes and ranks novel targets."],
-    ["Knowledge Graphs", "High", "Intermediate", "Linking genes, diseases, and compounds structures the evidence."],
-    ["Molecular Property Prediction", "High", "Advanced", "Property models decide which hits advance."],
-    ["Literature Search & Research Agents", "High", "Advanced", "Target rationale must be built on comprehensive prior evidence."],
-    ["Generative Chemistry", "Medium", "Intermediate", "Lead optimization increasingly uses generative proposals."],
-    ["Agent Orchestration", "Medium", "Intermediate", "End-to-end discovery agents chain search, prediction, and design."]
+    ["graphify", "High", "Queryable graph linking genes, disease, and compounds."],
+    ["scientific-agent-skills", "High", "Science agent skills for the discovery workflow."],
+    ["academic-research-skills", "Medium", "Comprehensive prior-evidence gathering."],
+    ["notebooklm-py", "Low", "Grounded synthesis over internal and public corpora."]
   ]},
 
-  // ---------- Robotics ----------
+  // ---------- Robotics / Climate ----------
   { p: "Robotics Engineer", d: "Robotics", t: "Building perception and manipulation with foundation models", s: [
-    ["Robotics Foundation Models", "High", "Advanced", "Vision-language-action models are reshaping manipulation and navigation."],
-    ["Computer Vision", "High", "Advanced", "Perception remains the sensor-side foundation of any robot."],
-    ["Reinforcement Learning", "High", "Advanced", "Policy learning and control are core to autonomous behavior."],
-    ["Simulation & Digital Twins", "High", "Intermediate", "Sim-to-real training avoids costly and unsafe hardware iterations."],
-    ["PyTorch", "High", "Advanced", "The training framework for perception and policy models."],
-    ["Multimodal AI", "Medium", "Intermediate", "Language-conditioned robots need joint vision-language grounding."]
+    ["scientific-agent-skills", "High", "Science/ML agent skills for perception and policy work."],
+    ["CLAUDE.md", "High", "Govern the coding agent across the robotics stack."],
+    ["planning-with-files", "Medium", "Durable planning for long training/eval runs."],
+    ["AI-Research-SKILLs", "Low", "Portable research skills for the modeling code."]
   ]},
-
-  // ---------- Climate Science ----------
   { p: "Climate Scientist", d: "Climate Science", t: "ML emulation and downscaling of climate models", s: [
-    ["Climate Modeling with ML", "High", "Advanced", "ML emulators accelerate ensembles physical models can't afford."],
-    ["Geospatial & Remote Sensing AI", "High", "Advanced", "Satellite data is the primary observational input."],
-    ["Time-Series Forecasting", "High", "Intermediate", "Temporal structure and extremes dominate climate signals."],
-    ["Python", "High", "Advanced", "xarray, notebooks, and ML frameworks are the working stack."],
-    ["Scientific Data Analysis", "High", "Advanced", "Uncertainty quantification is central to credible projections."],
-    ["Explainability (XAI)", "Medium", "Intermediate", "Physical plausibility checks guard against spurious ML skill."]
+    ["scientific-agent-skills", "High", "Science/ML agent skills for emulation and analysis."],
+    ["CLAUDE.md", "High", "Govern the coding agent on the modeling repo."],
+    ["planning-with-files", "Medium", "Durable planning for long analysis runs."],
+    ["academic-research-skills", "Low", "Ground methods and validation in the literature."]
   ]},
 
   // ---------- Operations ----------
   { p: "Operations Manager", d: "Operations", t: "Demand forecasting and process automation", s: [
-    ["Time-Series Forecasting", "High", "Advanced", "Demand and capacity planning are forecasting problems."],
-    ["Workflow Automation", "High", "Intermediate", "AI agents remove repetitive back-office steps end to end."],
-    ["SQL & AI-Assisted Analytics", "High", "Intermediate", "Operational questions live in the data warehouse."],
-    ["Anomaly Detection", "Medium", "Intermediate", "Process deviations surface before they cascade."],
-    ["Data Visualization", "Medium", "Intermediate", "Ops decisions run on live dashboards."],
-    ["AI Literacy & Verification", "Medium", "Intermediate", "Forecast overreliance without judgment causes real stockouts."]
+    ["xlsx", "High", "Build forecasts and clean operational data directly."],
+    ["mcp-builder", "Medium", "Wire the agent into your operational systems."],
+    ["planning-with-files", "Medium", "Durable planning for automation build-outs."],
+    ["internal-comms", "Low", "Auto-draft status and operational updates."]
   ]},
   { p: "Supply Chain Manager", d: "Operations", t: "AI-optimized inventory and logistics", s: [
-    ["Supply Chain Optimization AI", "High", "Advanced", "Forecasting, routing, and inventory optimization are the core levers."],
-    ["Time-Series Forecasting", "High", "Advanced", "Demand signals drive every downstream optimization."],
-    ["Agent Orchestration", "Medium", "Intermediate", "Multi-step planning agents coordinate suppliers and constraints."],
-    ["Anomaly Detection", "Medium", "Intermediate", "Disruption detection buys reaction time."],
-    ["Data Visualization", "Medium", "Beginner", "Control-tower views are how the team acts on the models."]
+    ["xlsx", "High", "Model inventory and logistics data with formulas and charts."],
+    ["scientific-agent-skills", "Medium", "ML/OR agent skills for forecasting and optimization."],
+    ["mcp-builder", "Medium", "Connect the agent to planning and ERP systems."],
+    ["planning-with-files", "Low", "Durable planning for multi-step optimization."]
   ]},
 
   // ---------- Customer Support ----------
   { p: "Customer Support Lead", d: "Customer Support", t: "Deploying an AI support agent", s: [
-    ["Conversational AI Design", "High", "Advanced", "Flows, tone, and escalation design determine customer experience."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Advanced", "Answers must be grounded in current help docs, not model memory."],
-    ["Guardrails", "High", "Intermediate", "Refund/policy boundaries and safe-response rules must be enforced."],
-    ["LLM Evaluation (Evals)", "High", "Intermediate", "Resolution-rate and accuracy evals gate every prompt change."],
-    ["Human-in-the-Loop Design", "High", "Intermediate", "Clean handoff to humans is the difference between help and harm."],
-    ["Sentiment & Intent Analysis", "Medium", "Intermediate", "Routing and prioritization depend on reading intent and frustration."]
+    ["NeMo Guardrails", "High", "Programmable dialog guardrails and safe-response rules."],
+    ["Guardrails AI", "High", "Validate answers against policy before they reach a customer."],
+    ["Rebuff", "High", "Detect prompt injection in customer-supplied content."],
+    ["mcp-builder", "Medium", "Ground the agent in help docs and account tools via MCP."],
+    ["OWASP Top 10 for LLM Apps", "Low", "Secure the deployment against common risks."]
   ]},
 
   // ---------- Sales ----------
   { p: "Sales Representative", d: "Sales", t: "AI-assisted prospecting and outreach", s: [
-    ["Sales Intelligence AI", "High", "Advanced", "Account research and signal detection compress hours of prep."],
-    ["Prompt Engineering", "High", "Intermediate", "Personalized-at-scale outreach lives or dies on prompt quality."],
-    ["RAG (Retrieval-Augmented Generation)", "Medium", "Intermediate", "Grounding messages in real account facts avoids generic spam."],
-    ["Workflow Automation", "Medium", "Intermediate", "Research-to-draft-to-CRM steps automate cleanly."],
-    ["AI Literacy & Verification", "Medium", "Intermediate", "A hallucinated fact about a prospect kills credibility instantly."]
+    ["marketingskills", "High", "Copywriting and growth skills for outreach at scale."],
+    ["prompt-master", "High", "Personalized-at-scale outreach lives on prompt quality."],
+    ["humanizer", "Medium", "Keep outreach reading human, not templated."],
+    ["mcp-builder", "Low", "Wire account and CRM data into the agent."]
   ]},
 
   // ---------- Human Resources ----------
   { p: "HR Manager", d: "Human Resources", t: "AI-assisted hiring and workforce analytics", s: [
-    ["Talent Analytics", "High", "Advanced", "Retention, skills-gap, and workforce-planning analysis is the core value."],
-    ["Bias & Fairness Auditing", "High", "Advanced", "Hiring AI is high-risk under the EU AI Act; fairness auditing is mandatory."],
-    ["AI Governance & Compliance", "High", "Advanced", "Automated employment decisions face NYC LL144 and similar audit rules."],
-    ["Prompt Engineering", "Medium", "Intermediate", "JD drafting and screening summaries need careful, unbiased prompting."],
-    ["Privacy-Preserving AI", "High", "Intermediate", "Candidate and employee data carry strict handling obligations."],
-    ["Human-in-the-Loop Design", "High", "Intermediate", "Hiring decisions must stay human; AI assists, never decides."]
+    ["EU AI Act", "High", "Hiring AI is high-risk under the Act — import its obligations."],
+    ["Responsible AI Toolbox", "High", "Audit screening tools for bias, as law increasingly requires."],
+    ["awesome-ai-governance", "Medium", "Frameworks for governing automated employment decisions."],
+    ["pm-claude-skills", "Low", "Includes compliance and CV-related professional skills."]
   ]},
-
-  // ==================== EXPANSION ====================
 
   // ---------- Product ----------
   { p: "Product Manager", d: "Product", t: "Designing AI-powered product workflows", s: [
-    ["Prompt Engineering", "High", "Intermediate", "Prompt design is now a product spec; PMs shape it, not just engineers."],
-    ["Workflow Automation", "High", "Intermediate", "The value is in orchestrating steps into a coherent user workflow."],
-    ["Agent Orchestration", "High", "Intermediate", "Multi-step AI features are agents; PMs must reason about their loops and limits."],
-    ["LLM Evaluation (Evals)", "High", "Intermediate", "Without evals you cannot tell if a change improved the product or regressed it."],
-    ["Human-in-the-Loop Design", "High", "Intermediate", "Deciding where users confirm vs. where AI acts is the core UX decision."],
-    ["AI Literacy & Verification", "High", "Intermediate", "PMs set realistic expectations by knowing where models fail."]
+    ["pm-claude-skills", "High", "515 PM Agent Skills for PRDs, launches, and compliance."],
+    ["prompt-master", "High", "The prompt is now a product spec — author it well."],
+    ["CLAUDE.md", "Medium", "Govern how the product's agent behaves."],
+    ["awesome-ai-agent-governance", "Medium", "Policy-enforcement and audit references for agentic products."],
+    ["mcp-builder", "Low", "Understand how tools connect into the workflow."]
   ]},
   { p: "Product Manager", d: "Product", t: "Scoping and shipping an LLM feature", s: [
-    ["LLM Fundamentals", "High", "Intermediate", "Context limits, latency, and cost shape what's feasible to ship."],
-    ["LLM Evaluation (Evals)", "High", "Advanced", "Launch gates and quality bars are defined by eval metrics, not demos."],
-    ["AI Cost & Latency Optimization", "High", "Intermediate", "Unit economics of tokens decide whether a feature is viable."],
-    ["Guardrails", "High", "Intermediate", "Scope, safety, and brand boundaries must be defined as product requirements."],
-    ["Responsible AI Practice", "Medium", "Intermediate", "Disclosure, consent, and appropriate-use decisions are the PM's to own."],
-    ["Prompt Engineering", "Medium", "Intermediate", "The PM often owns the system prompt as the feature's behavioral spec."]
+    ["pm-claude-skills", "High", "PRD, launch, and compliance skills for shipping the feature."],
+    ["Guardrails AI", "High", "Define output/scope guardrails as product requirements."],
+    ["EU AI Act", "Medium", "Know the obligations the feature triggers before launch."],
+    ["claude-api", "Low", "Reference for the cost, latency, and capability trade-offs."]
   ]},
   { p: "AI Platform Engineer", d: "Product", t: "Building an internal LLM gateway", s: [
-    ["Model Deployment & Serving", "High", "Advanced", "Routing, rate limits, and fallback across providers are the gateway's job."],
-    ["AI Cost & Latency Optimization", "High", "Advanced", "Caching, routing, and budgets are the platform's core value proposition."],
-    ["Guardrails", "High", "Advanced", "Centralized policy enforcement is why teams route through the gateway."],
-    ["Prompt Injection Defense", "High", "Advanced", "The gateway is the natural place to enforce injection defenses org-wide."],
-    ["Model Context Protocol (MCP)", "Medium", "Intermediate", "MCP standardizes how internal tools connect to every model."],
-    ["MLOps & Model Monitoring", "High", "Advanced", "Usage, cost, and quality observability are platform responsibilities."]
+    ["NeMo Guardrails", "High", "Centralize programmable guardrails at the gateway."],
+    ["Rebuff", "High", "Enforce injection defenses org-wide at the gateway."],
+    ["mcp-builder", "High", "Standardize how internal tools connect to every model."],
+    ["claude-api", "Medium", "Reference for routing, caching, and streaming."],
+    ["awesome-ai-agent-governance", "Low", "Audit-trail and policy references for the platform."]
   ]},
 
-  // ---------- Healthcare (more personas) ----------
+  // ---------- Healthcare (expanded personas) ----------
   { p: "Pharmacist", d: "Healthcare", t: "AI-assisted medication review and interaction checking", s: [
-    ["Clinical NLP", "High", "Intermediate", "Extracting meds, doses, and problems from notes drives interaction checks."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Answers must cite current formulary and interaction references, not model memory."],
-    ["Hallucination Detection & Fact Verification", "High", "Advanced", "A wrong dose or interaction is a patient-safety event; verification is mandatory."],
-    ["AI Literacy & Verification", "High", "Intermediate", "Knowing model limits keeps the pharmacist the final check."],
-    ["Privacy-Preserving AI", "High", "Intermediate", "Medication data is PHI with strict handling rules."]
+    ["NeMo Guardrails", "High", "Keep an interaction-checking agent from asserting unverified guidance."],
+    ["EU AI Act", "High", "Medication-safety AI carries high-risk obligations."],
+    ["Responsible AI Toolbox", "Medium", "Assess reliability before it informs dispensing."],
+    ["pdf", "Low", "Pull medication data from records and references."]
   ]},
   { p: "Public Health Epidemiologist", d: "Healthcare", t: "Outbreak surveillance and forecasting", s: [
-    ["Time-Series Forecasting", "High", "Advanced", "Case-count projection and nowcasting are forecasting problems."],
-    ["Geospatial & Remote Sensing AI", "High", "Intermediate", "Spatial spread and environmental drivers need geospatial modeling."],
-    ["Anomaly Detection", "High", "Intermediate", "Early outbreak signals are anomalies in noisy surveillance streams."],
-    ["Scientific Data Analysis", "High", "Advanced", "Reproducible, uncertainty-aware analysis underpins public trust."],
-    ["Python", "High", "Intermediate", "The epidemiological modeling stack runs on Python and R."],
-    ["Data Visualization", "Medium", "Intermediate", "Decision-makers act on clear dashboards, not model files."]
+    ["scientific-agent-skills", "High", "Science/ML agent skills for surveillance and forecasting."],
+    ["CLAUDE.md", "High", "Govern the coding agent on the modeling repo."],
+    ["xlsx", "Medium", "Structure and analyze surveillance data."],
+    ["academic-research-skills", "Low", "Ground methods in the epidemiological literature."]
   ]},
   { p: "Clinical Trial Coordinator", d: "Healthcare", t: "Patient recruitment and eligibility matching", s: [
-    ["Trial Matching & Recruitment AI", "High", "Advanced", "Matching patients to complex criteria from records is the core workflow."],
-    ["Clinical NLP", "High", "Intermediate", "Eligibility signals hide in unstructured notes and reports."],
-    ["Document Processing & OCR", "Medium", "Intermediate", "Referrals and outside records arrive as PDFs and scans."],
-    ["Privacy-Preserving AI", "High", "Advanced", "Screening on PHI demands consent-aware, de-identified handling."],
-    ["Structured Output", "Medium", "Intermediate", "Extracted eligibility must be schema-clean for defensible screening."]
+    ["pdf", "High", "Extract eligibility signals from referrals and outside records."],
+    ["EU AI Act", "High", "Screening on patient data is high-risk and consent-bound."],
+    ["Rebuff", "Medium", "Guard a record-ingesting agent against injected content."],
+    ["xlsx", "Low", "Track and structure screening results."]
   ]},
   { p: "Nurse Informaticist", d: "Healthcare", t: "Deploying clinical documentation and alerting tools", s: [
-    ["Clinical Documentation AI", "High", "Advanced", "Fitting AI scribes and alerts into nursing workflow is the role's core."],
-    ["Human-in-the-Loop Design", "High", "Advanced", "Alert fatigue and override paths are safety-critical design decisions."],
-    ["AI Governance & Compliance", "High", "Intermediate", "Clinical tools are regulated; know what's cleared and documented."],
-    ["Bias & Fairness Auditing", "Medium", "Intermediate", "Alerting can underperform for underrepresented patients; audit it."],
-    ["AI Literacy & Verification", "High", "Intermediate", "Frontline staff need trustworthy guidance on when to trust the tool."]
+    ["NeMo Guardrails", "High", "Bound alerting and documentation agents safely into workflow."],
+    ["EU AI Act", "High", "Clinical tools carry high-risk obligations."],
+    ["Responsible AI Toolbox", "Medium", "Audit alerting for bias across patient groups."],
+    ["CLAUDE.md", "Low", "Scope what the documentation agent may do."]
   ]},
   { p: "Mental Health Therapist", d: "Healthcare", t: "Using AI for notes and between-session support tools", s: [
-    ["Clinical Documentation AI", "High", "Intermediate", "AI drafts progress notes; the clinician edits and owns them."],
-    ["Privacy-Preserving AI", "High", "Advanced", "Therapy content is exceptionally sensitive; tooling and consent must reflect that."],
-    ["Responsible AI Practice", "High", "Advanced", "Boundaries on AI's role in care and crisis are ethical necessities."],
-    ["Human-in-the-Loop Design", "High", "Intermediate", "Any patient-facing tool needs clear escalation to a human."],
-    ["AI Literacy & Verification", "High", "Intermediate", "Understanding failure modes prevents over-reliance in a high-stakes setting."]
+    ["NeMo Guardrails", "High", "Essential safety and escalation guardrails for any patient-facing tool."],
+    ["EU AI Act", "High", "Mental-health AI is high-risk and highly sensitive."],
+    ["doc-coauthoring", "Medium", "Supervised note-drafting keeps the clinician the author."],
+    ["Responsible AI Toolbox", "Low", "Check reliability before relying on summaries."]
   ]},
 
-  // ---------- Academia (more) ----------
+  // ---------- Academia (expanded) ----------
   { p: "University Professor", d: "Academia", t: "Designing AI-integrated courses and assessment policy", s: [
-    ["AI Literacy & Verification", "High", "Advanced", "You are teaching judgment about AI as much as content."],
-    ["Responsible AI Practice", "High", "Intermediate", "Academic-integrity and disclosure policy is yours to set and model."],
-    ["Assessment Generation", "Medium", "Intermediate", "AI-resistant and AI-embracing assessments both need deliberate design."],
-    ["Prompt Engineering", "Medium", "Intermediate", "Modeling good prompting teaches students to use AI well."],
-    ["AI Tutoring & Adaptive Learning", "Medium", "Beginner", "Knowing how tutors adapt helps you deploy them responsibly."]
+    ["awesome-ai-governance", "High", "References for setting academic AI-use and integrity policy."],
+    ["academic-research-skills", "Medium", "Model good research/AI practice for students."],
+    ["docx", "Medium", "Generate syllabi, assessments, and materials."],
+    ["Responsible AI Toolbox", "Low", "Frame responsible-use expectations concretely."]
   ]},
   { p: "Peer Reviewer", d: "Academia", t: "AI-assisted manuscript review", s: [
-    ["AI Literacy & Verification", "High", "Advanced", "Reviewers must judge both the science and any AI used to produce it."],
-    ["Hallucination Detection & Fact Verification", "High", "Advanced", "Checking cited claims and detecting fabricated results is the review's core."],
-    ["Responsible AI Practice", "High", "Intermediate", "Confidentiality rules limit pasting manuscripts into public AI tools."],
-    ["Statistical Analysis", "High", "Advanced", "Rigor of methods and stats stays a human judgment."],
-    ["Scientific Writing with AI", "Low", "Beginner", "AI can help phrase feedback; the assessment is yours."]
+    ["academic-research-skills", "High", "A structured pipeline for rigorous appraisal."],
+    ["pdf", "Medium", "Extract and check claims and figures from the manuscript."],
+    ["awesome-ai-governance", "Low", "Confidentiality/disclosure norms for AI use in review."],
+    ["humanizer", "Low", "Phrase feedback cleanly; the judgment stays yours."]
   ]},
   { p: "Research Software Engineer", d: "Academia", t: "Building reproducible research infrastructure", s: [
-    ["Agentic Coding", "High", "Advanced", "Agents scaffold pipelines and tests; RSEs review and harden them."],
-    ["Python", "High", "Advanced", "The research computing substrate across disciplines."],
-    ["MLOps & Model Monitoring", "Medium", "Intermediate", "Reproducibility means versioned data, models, and environments."],
-    ["Scientific Data Analysis", "High", "Advanced", "Correct, reproducible analysis is the deliverable researchers depend on."],
-    ["LLM Evaluation (Evals)", "Medium", "Intermediate", "If the tool uses an LLM, evals are its reproducibility guarantee."]
+    ["CLAUDE.md", "High", "Govern coding agents across research repos."],
+    ["planning-with-files", "High", "Crash-proof planning for long infra builds."],
+    ["scientific-agent-skills", "Medium", "Science-specific skills for pipelines and baselines."],
+    ["claude-code-infrastructure-showcase", "Low", "Reference patterns for hooks and orchestration."]
   ]},
 
-  // ---------- Scientific Research (more) ----------
+  // ---------- Scientific Research (expanded) ----------
   { p: "Materials Scientist", d: "Scientific Research", t: "AI-accelerated materials discovery", s: [
-    ["Materials Informatics", "High", "Advanced", "Property prediction and inverse design are the field's AI core."],
-    ["Generative Design", "High", "Intermediate", "Generative models propose candidate structures under constraints."],
-    ["Simulation & Digital Twins", "High", "Intermediate", "DFT/MD simulation grounds and validates ML predictions."],
-    ["Python", "High", "Intermediate", "pymatgen and ML frameworks are the working stack."],
-    ["Scientific Data Analysis", "High", "Advanced", "Sparse, noisy experimental data demands careful analysis."],
-    ["Experiment Planning", "Medium", "Intermediate", "Active learning chooses the next experiment worth running."]
+    ["scientific-agent-skills", "High", "The largest science agent-skills library for discovery work."],
+    ["AI-Research-SKILLs", "Medium", "Portable skills for property-prediction code."],
+    ["planning-with-files", "Medium", "Durable planning across long discovery loops."],
+    ["academic-research-skills", "Low", "Ground candidates in prior materials literature."]
   ]},
   { p: "Bioinformatician", d: "Biology", t: "Single-cell and omics analysis with AI", s: [
-    ["Bioinformatics Pipelines", "High", "Advanced", "Building and debugging omics workflows is the daily work."],
-    ["Agentic Coding", "High", "Intermediate", "Agents accelerate pipeline and analysis code under review."],
-    ["Python", "High", "Advanced", "scanpy, Bioconductor bridges, and ML APIs run here."],
-    ["Scientific Data Analysis", "High", "Advanced", "High-dimensional, batch-effect-prone data needs statistical care."],
-    ["Statistical Analysis", "High", "Advanced", "Multiple testing and normalization are make-or-break."],
-    ["Knowledge Graphs", "Low", "Beginner", "Linking genes, pathways, and phenotypes aids interpretation."]
+    ["scientific-agent-skills", "High", "Science agent skills for omics workflows."],
+    ["CLAUDE.md", "High", "Govern the coding agent on the analysis repo."],
+    ["planning-with-files", "Medium", "Crash-proof planning for long pipeline runs."],
+    ["graphify", "Low", "Link genes, pathways, and phenotypes for interpretation."]
   ]},
 
-  // ---------- Software Engineering (more) ----------
+  // ---------- Software Engineering (expanded) ----------
   { p: "Frontend Engineer", d: "Software Engineering", t: "AI-assisted UI development", s: [
-    ["Design-to-Code AI", "High", "Advanced", "Mockup- and prompt-to-code tools are reshaping frontend build speed."],
-    ["Agentic Coding", "High", "Advanced", "Coding agents scaffold components; review discipline is essential."],
-    ["Prompt Engineering", "Medium", "Intermediate", "Design intent and constraints must be specified precisely."],
-    ["Accessibility AI", "High", "Intermediate", "AI-generated UI routinely misses WCAG; auditing it is now a core skill."],
-    ["AI Literacy & Verification", "High", "Advanced", "Reviewing generated UI for subtle correctness and a11y bugs."]
+    ["frontend-design", "High", "Guidance for distinctive, intentional UI — not templated output."],
+    ["web-artifacts-builder", "High", "Build multi-component React/Tailwind/shadcn artifacts."],
+    ["webapp-testing", "Medium", "Verify the UI with Playwright screenshots and logs."],
+    ["hallmark", "Medium", "Anti-AI-slop skill that pushes toward distinctive UI."],
+    ["CLAUDE.md", "Low", "Govern the coding agent's conventions on the repo."]
   ]},
   { p: "QA / Test Engineer", d: "Software Engineering", t: "AI-driven test generation and coverage", s: [
-    ["AI Test Generation", "High", "Advanced", "Generating and curating tests with AI is the central shift in QA."],
-    ["Agentic Coding", "High", "Intermediate", "Agents write and maintain test suites under review."],
-    ["LLM Evaluation (Evals)", "Medium", "Intermediate", "If the product uses AI, evals are a test category of their own."],
-    ["Prompt Engineering", "Medium", "Intermediate", "Test-generation quality depends on precise, contextual prompts."],
-    ["AI Literacy & Verification", "High", "Advanced", "Generated tests can assert the wrong thing; verifying them is the job."]
+    ["webapp-testing", "High", "Playwright-based testing — screenshots, logs, UI verification."],
+    ["CLAUDE.md", "High", "Govern the agent that writes and maintains tests."],
+    ["planning-with-files", "Medium", "Durable planning for large test build-outs."],
+    ["awesome-claude-code", "Low", "Curated testing and QA skills to pull from."]
   ]},
   { p: "Application Security Engineer", d: "Software Engineering", t: "Securing AI features and reviewing code with AI", s: [
-    ["Prompt Injection Defense", "High", "Advanced", "Any feature ingesting untrusted content is an injection target."],
-    ["Red-Teaming & Adversarial Testing", "High", "Advanced", "Probing AI features for abuse is now part of AppSec."],
-    ["Security Copilots & SOC Automation", "Medium", "Intermediate", "AI-assisted code and log review speeds triage."],
-    ["Guardrails", "High", "Intermediate", "Knowing what output filtering enforces is prerequisite to testing it."],
-    ["AI Literacy & Verification", "High", "Advanced", "AI-suggested fixes can introduce vulnerabilities; verify them."]
+    ["OWASP Top 10 for LLM Apps", "High", "The baseline LLM/agent vulnerability checklist."],
+    ["Rebuff", "High", "Detect prompt injection in anything a feature ingests."],
+    ["Anthropic-Cybersecurity-Skills", "High", "817 structured security skills for code and system review."],
+    ["Llama Guard / PurpleLlama", "Medium", "Score prompts and outputs against a harm taxonomy."],
+    ["NeMo Guardrails", "Low", "Know what output guardrails claim to enforce."]
   ]},
   { p: "Technical Writer", d: "Software Engineering", t: "AI-assisted documentation at scale", s: [
-    ["AI Writing & Editing", "High", "Advanced", "Human-edited AI drafts are the modern docs production model."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Grounding docs in the actual codebase and specs prevents invented behavior."],
-    ["Prompt Engineering", "High", "Intermediate", "Style, audience, and structure live in reusable prompt templates."],
-    ["Hallucination Detection & Fact Verification", "High", "Advanced", "Docs that describe non-existent behavior erode all trust; verify against source."],
-    ["Structured Output", "Medium", "Intermediate", "API references and tables need schema-consistent generation."]
+    ["doc-coauthoring", "High", "Structured human-in-the-loop doc workflow."],
+    ["graphify", "High", "Turn the codebase and specs into a queryable source for grounded docs."],
+    ["humanizer", "Medium", "Keep AI drafts reading as clean human prose."],
+    ["docx", "Low", "Produce and edit polished document deliverables."]
   ]},
 
-  // ---------- Data Science (more) ----------
+  // ---------- Data Science (expanded) ----------
   { p: "Data Engineer", d: "Data Science", t: "Building data pipelines for RAG and AI systems", s: [
-    ["Vector Databases", "High", "Advanced", "Embedding stores and indexes are new first-class pipeline outputs."],
-    ["Document Processing & OCR", "High", "Advanced", "Turning messy source documents into clean chunks is upstream of every RAG system."],
-    ["Embeddings & Semantic Search", "High", "Intermediate", "Chunking and embedding strategy decide retrieval quality."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "You own the data quality the whole RAG system depends on."],
-    ["Data Governance", "High", "Intermediate", "Lineage, access, and freshness contracts keep AI systems trustworthy."],
-    ["Python", "High", "Advanced", "The pipeline and orchestration substrate."]
+    ["mcp-builder", "High", "Expose data sources to agents through MCP servers."],
+    ["graphify", "High", "Turn schemas, docs, and configs into a queryable graph."],
+    ["pdf", "Medium", "Parse source documents into clean chunks upstream of RAG."],
+    ["CLAUDE.md", "Medium", "Govern the coding agent on pipeline repos."],
+    ["planning-with-files", "Low", "Durable planning for long pipeline builds."]
   ]},
   { p: "Analytics Engineer", d: "Data Science", t: "Semantic layer and natural-language analytics", s: [
-    ["SQL & AI-Assisted Analytics", "High", "Advanced", "A governed semantic layer is what makes text-to-SQL trustworthy."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Metric and column definitions must ground every generated query."],
-    ["Structured Output", "High", "Intermediate", "Query plans and metric specs need schema-conformant output."],
-    ["LLM Evaluation (Evals)", "High", "Intermediate", "A question-answer eval set catches silent semantic errors."],
-    ["Data Visualization", "Medium", "Intermediate", "The last-mile deliverable is still a clear chart."]
+    ["mcp-builder", "High", "Expose the semantic layer to the analytics agent."],
+    ["xlsx", "High", "Generate and validate spreadsheet outputs and charts."],
+    ["Guardrails AI", "Medium", "Validate generated queries against rules before they run."],
+    ["graphify", "Low", "Model metric and column relationships for grounding."]
   ]},
 
-  // ---------- Law (more) ----------
+  // ---------- Law (expanded) ----------
   { p: "Privacy & Compliance Counsel", d: "Law", t: "Standing up an AI governance program", s: [
-    ["AI Governance & Compliance", "High", "Advanced", "EU AI Act and sectoral rules define the program's backbone."],
-    ["Privacy-Preserving AI", "High", "Advanced", "Data-protection obligations shape what AI may touch."],
-    ["Responsible AI Practice", "High", "Advanced", "Transparency, consent, and appropriate-use policy are the deliverables."],
-    ["Bias & Fairness Auditing", "High", "Intermediate", "High-risk systems require documented fairness assessments."],
-    ["Red-Teaming & Adversarial Testing", "Medium", "Beginner", "Understanding how systems are tested informs what to require."],
-    ["Model Cards & Documentation", "Medium", "Intermediate", "Documentation and audit trails are compliance evidence."]
+    ["EU AI Act", "High", "The binding regulation your program must satisfy."],
+    ["NIST AI Risk Management Framework", "High", "The risk backbone for the whole program."],
+    ["awesome-ai-governance", "High", "Curated frameworks, standards, and tools for enterprise governance."],
+    ["ai-governance-framework-tools", "Medium", "Templates for implementing NIST AI RMF and ISO 42001."],
+    ["Responsible AI Toolbox", "Low", "Concrete fairness/reliability assessment tooling to require."]
   ]},
   { p: "Patent Agent", d: "Law", t: "Prior-art search and patent drafting", s: [
-    ["Patent Analysis AI", "High", "Advanced", "Prior-art search and claim analysis are the core AI-augmented tasks."],
-    ["Literature Search & Research Agents", "High", "Intermediate", "Non-patent literature must be searched comprehensively."],
-    ["RAG (Retrieval-Augmented Generation)", "Medium", "Intermediate", "Grounded drafting keeps claim language tied to real references."],
-    ["Hallucination Detection & Fact Verification", "High", "Advanced", "A fabricated reference or misread claim has legal consequences."],
-    ["Document Processing & OCR", "Medium", "Intermediate", "Patents and references arrive as complex structured PDFs."]
+    ["academic-research-skills", "High", "A research pipeline for comprehensive prior-art search."],
+    ["pdf", "High", "Extract claims and references from patent PDFs."],
+    ["graphify", "Medium", "Map relationships across references and claims."],
+    ["doc-coauthoring", "Low", "Draft applications with a human-in-the-loop workflow."]
   ]},
 
-  // ---------- Finance (more) ----------
+  // ---------- Finance (expanded) ----------
   { p: "Financial Advisor", d: "Finance", t: "AI-assisted client research and planning prep", s: [
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Grounding summaries in real product docs and holdings avoids invented facts."],
-    ["Financial NLP", "Medium", "Intermediate", "Parsing statements, filings, and news structures the prep work."],
-    ["AI Literacy & Verification", "High", "Advanced", "AI drafts research; the licensed advisor makes and owns every recommendation."],
-    ["Privacy-Preserving AI", "High", "Advanced", "Client financial data demands strict tooling and consent."],
-    ["Responsible AI Practice", "High", "Intermediate", "Suitability and disclosure obligations bound how AI may be used."]
+    ["pdf", "High", "Extract data from statements, filings, and product docs."],
+    ["Guardrails AI", "High", "Validate outputs before they inform any client-facing work."],
+    ["awesome-ai-governance", "Medium", "Suitability, disclosure, and governance references."],
+    ["xlsx", "Low", "Model and organize the planning inputs."]
   ]},
   { p: "Auditor", d: "Finance", t: "AI-assisted audit analytics", s: [
-    ["Audit Analytics AI", "High", "Advanced", "Full-population testing and evidence extraction are the modern audit."],
-    ["Anomaly Detection", "High", "Intermediate", "Outlier transactions and journal entries are prime risk signals."],
-    ["Document Processing & OCR", "High", "Intermediate", "Contracts, invoices, and confirmations must become analyzable data."],
-    ["Explainability (XAI)", "High", "Intermediate", "Findings must be defensible and traceable to evidence."],
-    ["AI Governance & Compliance", "Medium", "Intermediate", "Auditing AI-driven controls is itself becoming audit scope."],
-    ["Structured Output", "Medium", "Intermediate", "Extraction into consistent workpaper schemas keeps evidence organized."]
+    ["xlsx", "High", "Full-population testing and evidence analysis in spreadsheets."],
+    ["pdf", "High", "Extract evidence from contracts, invoices, and confirmations."],
+    ["Responsible AI Toolbox", "Medium", "Explainable, defensible model-driven findings."],
+    ["awesome-ai-governance", "Low", "References for auditing AI-driven controls."]
   ]},
   { p: "Actuary", d: "Finance", t: "ML-enhanced risk and pricing models", s: [
-    ["Quantitative Modeling with ML", "High", "Advanced", "ML augments classical actuarial models for pricing and reserving."],
-    ["Statistical Analysis", "High", "Advanced", "Actuarial rigor and validation remain non-delegable."],
-    ["Explainability (XAI)", "High", "Advanced", "Regulators require interpretable, justifiable pricing decisions."],
-    ["Bias & Fairness Auditing", "High", "Intermediate", "Pricing models face strict anti-discrimination scrutiny."],
-    ["Time-Series Forecasting", "Medium", "Intermediate", "Claims and mortality trends are temporal forecasting problems."]
+    ["scientific-agent-skills", "High", "ML/science agent skills for pricing and reserving models."],
+    ["Responsible AI Toolbox", "High", "Explainability and fairness auditing for pricing models."],
+    ["EU AI Act", "Medium", "Insurance pricing can be high-risk — know the obligations."],
+    ["CLAUDE.md", "Low", "Govern the coding agent on the modeling repo."]
   ]},
 
-  // ---------- Education (more) ----------
+  // ---------- Education (expanded) ----------
   { p: "EdTech Product Manager", d: "Education", t: "Building an AI tutoring product", s: [
-    ["AI Tutoring & Adaptive Learning", "High", "Advanced", "Learner-model-driven adaptivity is the product itself."],
-    ["LLM Evaluation (Evals)", "High", "Advanced", "Tutor quality needs eval sets of learner scenarios, not vibes."],
-    ["Conversational AI Design", "High", "Intermediate", "Tutor persona, hint ladders, and failure handling define the experience."],
-    ["Guardrails", "High", "Intermediate", "Age-appropriateness and safety boundaries are hard product requirements."],
-    ["Bias & Fairness Auditing", "Medium", "Intermediate", "Tutoring must serve all learners equitably."],
-    ["Human-in-the-Loop Design", "Medium", "Intermediate", "Teacher oversight and overrides keep the educator in control."]
+    ["NeMo Guardrails", "High", "Age-appropriateness and safety guardrails as product requirements."],
+    ["pm-claude-skills", "High", "PRD, launch, and compliance skills for shipping the product."],
+    ["Guardrails AI", "Medium", "Validate tutor output against structured rules."],
+    ["Responsible AI Toolbox", "Medium", "Assess fairness across learners before launch."],
+    ["web-artifacts-builder", "Low", "Build interactive tutoring artifacts."]
   ]},
   { p: "Academic Advisor", d: "Education", t: "Student success and early-warning analytics", s: [
-    ["Personalization & Segmentation", "High", "Intermediate", "Tailoring outreach to at-risk student segments is the core intervention."],
-    ["Bias & Fairness Auditing", "High", "Advanced", "Early-warning models can entrench bias; auditing is essential and often required."],
-    ["Privacy-Preserving AI", "High", "Advanced", "Student records (FERPA) demand strict handling."],
-    ["Explainability (XAI)", "Medium", "Intermediate", "Advisors need to know why a student was flagged to act well."],
-    ["Data Visualization", "Medium", "Beginner", "Advisors act on dashboards, not model scores."]
+    ["Responsible AI Toolbox", "High", "Early-warning models can entrench bias — audit them."],
+    ["EU AI Act", "Medium", "Profiling students can trigger high-risk obligations."],
+    ["xlsx", "Medium", "Structure and analyze the student-success data."],
+    ["awesome-ai-governance", "Low", "Governance references for fair, private student analytics."]
   ]},
 
-  // ---------- Marketing (more) ----------
+  // ---------- Marketing (expanded) ----------
   { p: "Social Media Manager", d: "Marketing", t: "AI content and community management", s: [
-    ["Content Generation & Brand Voice", "High", "Advanced", "On-brand content at platform cadence is only feasible with AI plus review."],
-    ["Image & Video Generation", "High", "Intermediate", "Visual and short-video variants generate fast; consistency needs control."],
-    ["Sentiment & Intent Analysis", "High", "Intermediate", "Reading community mood and surfacing issues guides response."],
-    ["Workflow Automation", "Medium", "Intermediate", "Draft-schedule-monitor loops automate cleanly."],
-    ["Responsible AI Practice", "Medium", "Beginner", "Disclosure and provenance for generated content matter publicly."]
+    ["marketingskills", "High", "Copywriting, growth, and analytics skills for social."],
+    ["slack-gif-creator", "Medium", "Produce optimized animated GIFs for posts and comms."],
+    ["canvas-design", "Medium", "Generate on-brand visual assets."],
+    ["humanizer", "Medium", "Keep posts reading human, not templated."],
+    ["brand-guidelines", "Low", "Hold voice and styling consistent."]
   ]},
   { p: "Growth / Performance Marketer", d: "Marketing", t: "AI-driven experimentation and targeting", s: [
-    ["A/B Testing & Experimentation", "High", "Advanced", "Rigorous experiments separate real lift from noise."],
-    ["Causal Inference", "High", "Intermediate", "Attribution and incrementality require causal, not correlational, thinking."],
-    ["Personalization & Segmentation", "High", "Intermediate", "Per-segment creative and targeting drive performance."],
-    ["Recommender Systems", "Medium", "Intermediate", "Ranking and next-best-action power personalized funnels."],
-    ["SQL & AI-Assisted Analytics", "Medium", "Intermediate", "Performance questions live in the warehouse."]
+    ["marketingskills", "High", "CRO, growth engineering, and analytics skills."],
+    ["claude-seo", "Medium", "Technical SEO and E-E-A-T for organic performance."],
+    ["geo-seo-claude", "Medium", "Optimize for AI-search citability."],
+    ["xlsx", "Low", "Analyze experiment results."]
   ]},
   { p: "Market Research Analyst", d: "Marketing", t: "AI-assisted survey and voice-of-customer analysis", s: [
-    ["Sentiment & Intent Analysis", "High", "Advanced", "Coding open-ended responses at scale is the core task."],
-    ["Embeddings & Semantic Search", "High", "Intermediate", "Clustering reveals the real themes behind free text."],
-    ["Structured Output", "Medium", "Intermediate", "Consistent coding schemas enable defensible tallies."],
-    ["Statistical Analysis", "High", "Advanced", "Sampling and significance keep conclusions honest."],
-    ["Data Visualization", "Medium", "Intermediate", "Findings land through clear charts and segment maps."]
+    ["graphify", "High", "Cluster and map themes across open-ended responses."],
+    ["xlsx", "High", "Code, tally, and analyze survey data."],
+    ["marketingskills", "Medium", "Analytics sub-skills for VoC work."],
+    ["prompt-master", "Low", "Consistent classification prompts for response coding."]
   ]},
 
-  // ---------- Manufacturing (more) ----------
+  // ---------- Manufacturing / Design (expanded) ----------
   { p: "Process Engineer", d: "Manufacturing", t: "Simulation-based process optimization", s: [
-    ["Simulation & Digital Twins", "High", "Advanced", "A validated digital twin is where optimization is explored safely."],
-    ["Optimization & Operations Research", "High", "Advanced", "Setpoint and schedule optimization is the decision layer."],
-    ["Time-Series Forecasting", "Medium", "Intermediate", "Throughput and yield trends inform the model."],
-    ["Statistical Analysis", "High", "Advanced", "DOE and SPC remain the analytical backbone."],
-    ["Predictive Maintenance", "Medium", "Intermediate", "Uptime constraints feed realistic process optimization."]
+    ["scientific-agent-skills", "High", "Science/OR agent skills for optimization and analysis."],
+    ["xlsx", "Medium", "Model process data, DOE, and SPC."],
+    ["planning-with-files", "Medium", "Durable planning for optimization build-outs."],
+    ["Responsible AI Toolbox", "Low", "Reliability checks on the process models."]
   ]},
   { p: "Industrial Designer", d: "Design", t: "Generative design for physical products", s: [
-    ["Generative Design", "High", "Advanced", "AI-driven exploration of form and structure under constraints is the workflow."],
-    ["Simulation & Digital Twins", "High", "Intermediate", "Structural and thermal simulation validates generated geometry."],
-    ["Image & Video Generation", "Medium", "Intermediate", "Concept visualization and rendering accelerate ideation."],
-    ["Prompt Engineering", "Medium", "Intermediate", "Design intent and constraints must be specified precisely."],
-    ["Optimization & Operations Research", "Low", "Beginner", "Manufacturability and cost constraints frame the design space."]
+    ["canvas-design", "High", "Generate concept visuals and renders."],
+    ["algorithmic-art", "Medium", "Generative form exploration with p5.js."],
+    ["frontend-design", "Medium", "Design-craft guidance for distinctive results."],
+    ["theme-factory", "Low", "Apply consistent visual themes across concepts."]
   ]},
 
-  // ---------- Government (more) ----------
+  // ---------- Government (expanded) ----------
   { p: "Urban Planner", d: "Government", t: "AI for land use and mobility planning", s: [
-    ["Geospatial & Remote Sensing AI", "High", "Advanced", "Land use, imagery, and mobility data are inherently spatial."],
-    ["Simulation & Digital Twins", "High", "Intermediate", "City-scale simulation tests scenarios before they're built."],
-    ["Time-Series Forecasting", "Medium", "Intermediate", "Demand, traffic, and growth projections drive plans."],
-    ["Data Visualization", "High", "Intermediate", "Public engagement depends on legible maps and scenarios."],
-    ["Bias & Fairness Auditing", "Medium", "Intermediate", "Planning models can entrench inequity; assess distributional effects."]
+    ["graphify", "High", "Model relationships across land use, zoning, and mobility data."],
+    ["xlsx", "Medium", "Analyze demand, traffic, and growth projections."],
+    ["Responsible AI Toolbox", "Medium", "Assess distributional/equity effects of planning models."],
+    ["academic-research-skills", "Low", "Gather comparative planning evidence."]
   ]},
   { p: "Public Sector Data Officer", d: "Government", t: "Responsible AI adoption across agencies", s: [
-    ["AI Governance & Compliance", "High", "Advanced", "Public-sector AI faces the strictest transparency and accountability rules."],
-    ["Responsible AI Practice", "High", "Advanced", "Equity, contestability, and disclosure are baseline obligations."],
-    ["Bias & Fairness Auditing", "High", "Advanced", "Automated public decisions require documented fairness review."],
-    ["Privacy-Preserving AI", "High", "Advanced", "Citizen data carries strict statutory protections."],
-    ["Red-Teaming & Adversarial Testing", "Medium", "Intermediate", "Public-facing systems must be probed before deployment."],
-    ["Model Cards & Documentation", "Medium", "Intermediate", "Transparency documentation is often legally required."]
+    ["EU AI Act", "High", "Public-sector AI faces the strictest obligations."],
+    ["NIST AI Risk Management Framework", "High", "The risk framework to standardize across agencies."],
+    ["Responsible AI Toolbox", "High", "Concrete fairness/reliability auditing to mandate."],
+    ["awesome-ai-governance", "Medium", "Curated frameworks and regulations for the program."],
+    ["ai-governance-framework-tools", "Low", "Implementation templates for NIST AI RMF and ISO 42001."]
   ]},
   { p: "Emergency Management Analyst", d: "Government", t: "AI-assisted disaster response", s: [
-    ["Geospatial & Remote Sensing AI", "High", "Advanced", "Satellite and aerial imagery drive damage assessment and routing."],
-    ["Time-Series Forecasting", "High", "Intermediate", "Hazard progression and resource demand are forecast-driven."],
-    ["Anomaly Detection", "Medium", "Intermediate", "Sensor and social signals surface emerging incidents."],
-    ["Multimodal AI", "Medium", "Intermediate", "Fusing imagery, text reports, and maps speeds situational awareness."],
-    ["RAG (Retrieval-Augmented Generation)", "Medium", "Intermediate", "Plans and protocols must ground AI guidance during response."]
+    ["scientific-agent-skills", "High", "Science/ML agent skills for hazard forecasting and analysis."],
+    ["graphify", "Medium", "Fuse reports, maps, and records into a queryable picture."],
+    ["mcp-builder", "Medium", "Connect the agent to live data and mapping systems."],
+    ["planning-with-files", "Low", "Durable planning during extended response operations."]
   ]},
 
-  // ---------- Journalism (more) ----------
+  // ---------- Journalism (expanded) ----------
   { p: "News Editor", d: "Journalism", t: "Setting newsroom AI workflows and standards", s: [
-    ["AI Writing & Editing", "High", "Intermediate", "AI-assisted drafting and headlines need editorial guardrails."],
-    ["Fact-Checking & Verification AI", "High", "Advanced", "Verification standards are the newsroom's credibility."],
-    ["Responsible AI Practice", "High", "Advanced", "Disclosure, sourcing, and correction policy for AI use are the editor's to set."],
-    ["Hallucination Detection & Fact Verification", "High", "Advanced", "No AI claim publishes unverified."],
-    ["Content Generation & Brand Voice", "Medium", "Intermediate", "House style must survive AI assistance."]
+    ["awesome-ai-governance", "High", "References for newsroom AI-use, sourcing, and disclosure policy."],
+    ["humanizer", "Medium", "Keep AI-assisted copy on-voice and human."],
+    ["internal-comms", "Medium", "Draft standards and editorial communications."],
+    ["Responsible AI Toolbox", "Low", "Frame responsible-use expectations concretely."]
   ]},
   { p: "Data Journalist", d: "Journalism", t: "Data-driven investigative stories", s: [
-    ["Data Journalism", "High", "Advanced", "Finding and telling stories in data is the discipline itself."],
-    ["SQL & AI-Assisted Analytics", "High", "Intermediate", "Most datasets are queried; AI accelerates the analysis."],
-    ["Data Visualization", "High", "Advanced", "The story lands through honest, clear graphics."],
-    ["Document Processing & OCR", "Medium", "Intermediate", "Records and disclosures arrive as messy PDFs."],
-    ["Embeddings & Semantic Search", "Medium", "Intermediate", "Semantic search finds threads across large corpora."],
-    ["AI Literacy & Verification", "High", "Advanced", "Every AI-surfaced finding must be independently confirmed."]
+    ["xlsx", "High", "Clean, analyze, and chart the datasets behind the story."],
+    ["graphify", "High", "Map entities and relationships across records."],
+    ["pdf", "Medium", "Extract data from disclosures and filings."],
+    ["academic-research-skills", "Low", "Verify and source findings rigorously."]
   ]},
 
-  // ---------- Design (more) ----------
+  // ---------- Design (expanded) ----------
   { p: "Product Designer", d: "Design", t: "Designing AI-native product experiences", s: [
-    ["UX Research with AI", "High", "Intermediate", "AI-accelerated synthesis speeds the research-to-design loop."],
-    ["Conversational AI Design", "High", "Advanced", "AI-native products are often conversations; designing them is core."],
-    ["Design-to-Code AI", "High", "Intermediate", "Prompt-to-prototype makes testable artifacts without engineers."],
-    ["Prompt Engineering", "High", "Intermediate", "Designing the model's behavior is now a design surface."],
-    ["LLM Evaluation (Evals)", "Medium", "Beginner", "Designers should read eval results to iterate on AI UX."]
+    ["frontend-design", "High", "Guidance for distinctive, intentional product UI."],
+    ["web-artifacts-builder", "High", "Turn ideas into testable prototypes fast."],
+    ["huashu-design", "Medium", "HTML-native high-fidelity prototyping."],
+    ["hallmark", "Medium", "Push toward distinctive, non-slop design."],
+    ["NeMo Guardrails", "Low", "Shape safe behavior for conversational surfaces."]
   ]},
   { p: "Motion / Video Creator", d: "Design", t: "Generative video and motion workflows", s: [
-    ["Image & Video Generation", "High", "Advanced", "Generative video with control and consistency is the craft."],
-    ["Prompt Engineering", "High", "Advanced", "Visual and temporal prompting is its own discipline."],
-    ["Workflow Automation", "Medium", "Intermediate", "Batch rendering and variant pipelines automate cleanly."],
-    ["Responsible AI Practice", "High", "Intermediate", "Provenance (C2PA), likeness, and IP are real client obligations."],
-    ["Content Generation & Brand Voice", "Medium", "Intermediate", "Brand systems must constrain generation."]
+    ["algorithmic-art", "High", "Generative visuals and motion with p5.js."],
+    ["canvas-design", "High", "Produce visual assets and frames."],
+    ["slack-gif-creator", "Medium", "Create optimized animated GIFs."],
+    ["brand-guidelines", "Low", "Keep generated motion assets on-brand."]
   ]},
 
-  // ---------- Cybersecurity (more) ----------
+  // ---------- Cybersecurity (expanded) ----------
   { p: "AI Security Engineer", d: "Cybersecurity", t: "Securing LLM and agentic systems", s: [
-    ["Prompt Injection Defense", "High", "Advanced", "Injection is the defining vulnerability class of LLM apps."],
-    ["Red-Teaming & Adversarial Testing", "High", "Advanced", "You attack the system to prove its defenses hold."],
-    ["Guardrails", "High", "Advanced", "Designing and enforcing output and action limits is the core control."],
-    ["LLM Fundamentals", "High", "Advanced", "Exploits target sampling, context, and tool-use seams."],
-    ["Model Deployment & Serving", "Medium", "Intermediate", "The serving layer is where many controls are enforced."],
-    ["AI Governance & Compliance", "Medium", "Intermediate", "Security work feeds the org's AI risk documentation."]
+    ["Rebuff", "High", "Prompt-injection detection is the defining control for LLM apps."],
+    ["OWASP Top 10 for LLM Apps", "High", "The baseline vulnerability checklist to defend against."],
+    ["Llama Guard / PurpleLlama", "High", "Score prompts and outputs against a harm taxonomy."],
+    ["NeMo Guardrails", "Medium", "Programmable input/output/dialog guardrails."],
+    ["Anthropic-Cybersecurity-Skills", "Low", "Structured skills for the broader security work."]
   ]},
   { p: "GRC Analyst", d: "Cybersecurity", t: "Mapping AI systems to risk and compliance frameworks", s: [
-    ["AI Governance & Compliance", "High", "Advanced", "Mapping systems to NIST AI RMF and the EU AI Act is the core task."],
-    ["Model Cards & Documentation", "High", "Advanced", "Standardized documentation is the evidence GRC runs on."],
-    ["Responsible AI Practice", "High", "Intermediate", "Policy translates principles into enforceable controls."],
-    ["Bias & Fairness Auditing", "Medium", "Intermediate", "Fairness assessments are required artifacts for high-risk systems."],
-    ["Red-Teaming & Adversarial Testing", "Medium", "Beginner", "Understanding testing informs what evidence to demand."]
+    ["NIST AI Risk Management Framework", "High", "The framework you map systems onto."],
+    ["EU AI Act", "High", "The binding regulation to classify systems against."],
+    ["awesome-ai-agent-governance", "High", "Policy-enforcement, audit-trail, and EU AI Act references."],
+    ["ai-governance-framework-tools", "Medium", "Templates for NIST AI RMF and ISO 42001."],
+    ["Responsible AI Toolbox", "Low", "Concrete assessment evidence for high-risk systems."]
   ]},
   { p: "Incident Responder", d: "Cybersecurity", t: "AI-assisted investigation and forensics", s: [
-    ["Security Copilots & SOC Automation", "High", "Advanced", "AI summarization and triage compress investigation time."],
-    ["Threat Intelligence AI", "High", "Intermediate", "Enriching indicators and attributing activity accelerates response."],
-    ["RAG (Retrieval-Augmented Generation)", "Medium", "Intermediate", "Playbook- and log-grounded answers keep response consistent."],
-    ["Anomaly Detection", "High", "Intermediate", "Deviations in logs and behavior localize the intrusion."],
-    ["AI Literacy & Verification", "High", "Advanced", "A confidently wrong lead wastes the golden hour; verify."]
+    ["Anthropic-Cybersecurity-Skills", "High", "817 structured skills for investigation and forensics."],
+    ["MITRE ATT&CK Navigator", "High", "Localize the intrusion against adversary techniques."],
+    ["Rebuff", "Medium", "Guard the copilot against injections in logs."],
+    ["graphify", "Medium", "Map indicators, hosts, and events into a queryable graph."],
+    ["mcp-builder", "Low", "Wire forensic data sources into the agent."]
   ]},
 
-  // ---------- Biology / Chemistry (more) ----------
+  // ---------- Biology / Chemistry / Drug Discovery (expanded) ----------
   { p: "Genomics Researcher", d: "Biology", t: "Variant interpretation with AI", s: [
-    ["Genomics AI", "High", "Advanced", "Deep-learning variant effect prediction is now standard."],
-    ["Bioinformatics Pipelines", "High", "Advanced", "Calling and annotating variants is the upstream workflow."],
-    ["Knowledge Graphs", "Medium", "Intermediate", "Gene-disease-variant links structure interpretation."],
-    ["Python", "High", "Advanced", "The genomics analysis and ML stack."],
-    ["Scientific Data Analysis", "High", "Advanced", "Statistical rigor on population data is essential."]
+    ["scientific-agent-skills", "High", "Science agent skills for variant and sequence analysis."],
+    ["graphify", "Medium", "Link genes, variants, and disease for interpretation."],
+    ["CLAUDE.md", "Medium", "Govern the coding agent on the analysis repo."],
+    ["academic-research-skills", "Low", "Ground interpretation in the literature."]
   ]},
   { p: "Synthetic Biologist", d: "Biology", t: "AI-guided protein and pathway design", s: [
-    ["Generative Biology", "High", "Advanced", "Sequence- and structure-design models propose novel constructs."],
-    ["Protein Structure Prediction", "High", "Advanced", "Structure prediction validates and guides designs."],
-    ["Bioinformatics Pipelines", "High", "Intermediate", "Design-build-test data flows through these workflows."],
-    ["Simulation & Digital Twins", "Medium", "Intermediate", "In silico screening narrows candidates before the bench."],
-    ["Experiment Planning", "Medium", "Intermediate", "Active learning prioritizes which designs to build and test."]
+    ["scientific-agent-skills", "High", "The largest science agent-skills library for design work."],
+    ["planning-with-files", "Medium", "Durable planning across design-build-test cycles."],
+    ["CLAUDE.md", "Medium", "Govern coding agents on the design pipeline."],
+    ["academic-research-skills", "Low", "Ground designs in prior evidence."]
   ]},
   { p: "Analytical Chemist", d: "Chemistry", t: "AI for spectral and signal interpretation", s: [
-    ["Multimodal AI", "Medium", "Intermediate", "Spectra and instrument outputs suit ML pattern models."],
-    ["Anomaly Detection", "High", "Intermediate", "Out-of-spec and contaminant signals are anomalies."],
-    ["Model Evaluation", "High", "Intermediate", "Calibration and validation guard against overconfident models."],
-    ["Python", "High", "Intermediate", "The signal-processing and ML substrate."],
-    ["Scientific Data Analysis", "High", "Advanced", "Reproducible, uncertainty-aware analysis underpins results."]
+    ["scientific-agent-skills", "High", "Science/ML agent skills for spectral pattern models."],
+    ["CLAUDE.md", "Medium", "Govern the coding agent on the analysis repo."],
+    ["xlsx", "Medium", "Structure and analyze instrument outputs."],
+    ["Responsible AI Toolbox", "Low", "Calibration and reliability checks on the models."]
   ]},
   { p: "Regulatory Affairs Specialist", d: "Drug Discovery", t: "AI-assisted regulatory submissions", s: [
-    ["Regulatory Intelligence AI", "High", "Advanced", "Tracking rules and mapping them to obligations is the core work."],
-    ["Document Processing & OCR", "High", "Intermediate", "Submissions assemble from vast, structured document sets."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Answers and drafts must cite the exact guidance and data."],
-    ["Structured Output", "Medium", "Intermediate", "Submissions demand rigid, schema-conformant formatting."],
-    ["Hallucination Detection & Fact Verification", "High", "Advanced", "A wrong citation in a submission has regulatory consequences."]
+    ["pdf", "High", "Assemble and extract from vast submission document sets."],
+    ["doc-coauthoring", "High", "Draft submissions with a human-in-the-loop workflow."],
+    ["EU AI Act", "Medium", "Understand AI-related obligations in submissions."],
+    ["awesome-ai-governance", "Low", "Governance references relevant to regulated AI."]
   ]},
 
-  // ---------- Robotics (more) ----------
+  // ---------- Robotics / Climate (expanded) ----------
   { p: "Autonomous Vehicle Engineer", d: "Robotics", t: "Perception and planning for self-driving", s: [
-    ["Computer Vision", "High", "Advanced", "Detection, segmentation, and tracking are perception's foundation."],
-    ["Sensor Fusion", "High", "Advanced", "Fusing camera, lidar, and radar is core to reliable perception."],
-    ["Reinforcement Learning", "High", "Advanced", "Planning and control policies are learned and optimized."],
-    ["Simulation & Digital Twins", "High", "Advanced", "Sim testing covers the rare, dangerous scenarios roads can't."],
-    ["PyTorch", "High", "Advanced", "The training framework for perception and planning models."],
-    ["Anomaly Detection", "Medium", "Intermediate", "Detecting out-of-distribution scenes is safety-critical."]
+    ["scientific-agent-skills", "High", "Science/ML agent skills for perception and planning."],
+    ["CLAUDE.md", "High", "Govern coding agents across the AV stack."],
+    ["planning-with-files", "Medium", "Durable planning for long training/eval runs."],
+    ["Responsible AI Toolbox", "Low", "Reliability assessment for safety-critical models."]
   ]},
-
-  // ---------- Climate (more) ----------
   { p: "Sustainability Analyst", d: "Climate Science", t: "Carbon accounting and ESG reporting with AI", s: [
-    ["Carbon Accounting AI", "High", "Advanced", "Extracting and estimating emissions across scopes is the core workflow."],
-    ["Document Processing & OCR", "High", "Intermediate", "Emissions data hides in invoices, bills, and supplier documents."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Reporting must ground claims in standards and source records."],
-    ["Structured Output", "Medium", "Intermediate", "Disclosures require rigid, auditable schemas."],
-    ["Data Visualization", "Medium", "Intermediate", "Stakeholders act on clear ESG dashboards."]
+    ["pdf", "High", "Extract emissions data from invoices, bills, and supplier docs."],
+    ["xlsx", "High", "Build emissions inventories and ESG calculations."],
+    ["awesome-ai-governance", "Medium", "Governance references for defensible ESG/AI reporting."],
+    ["doc-coauthoring", "Low", "Draft disclosures grounded in source records."]
   ]},
   { p: "Energy Analyst", d: "Climate Science", t: "Grid load forecasting and optimization", s: [
-    ["Time-Series Forecasting", "High", "Advanced", "Load and generation forecasting is the analytical core."],
-    ["Optimization & Operations Research", "High", "Advanced", "Dispatch and storage decisions are optimization problems."],
-    ["Anomaly Detection", "Medium", "Intermediate", "Grid faults and unusual demand surface as anomalies."],
-    ["Geospatial & Remote Sensing AI", "Medium", "Intermediate", "Renewable resource and weather data are spatial."],
-    ["Python", "High", "Intermediate", "The forecasting and optimization stack."]
+    ["scientific-agent-skills", "High", "Science/ML/OR agent skills for forecasting and dispatch."],
+    ["xlsx", "Medium", "Analyze load and generation data."],
+    ["CLAUDE.md", "Medium", "Govern the coding agent on the modeling repo."],
+    ["planning-with-files", "Low", "Durable planning for optimization build-outs."]
   ]},
 
-  // ---------- Operations (more) ----------
+  // ---------- Operations (expanded) ----------
   { p: "Business Analyst", d: "Operations", t: "AI-assisted process discovery and automation", s: [
-    ["Process Mining", "High", "Advanced", "Reconstructing real workflows from logs reveals automation targets."],
-    ["Workflow Automation", "High", "Intermediate", "Turning discovered inefficiencies into automated flows is the payoff."],
-    ["SQL & AI-Assisted Analytics", "High", "Intermediate", "Operational data is queried to quantify opportunities."],
-    ["RAG (Retrieval-Augmented Generation)", "Medium", "Intermediate", "Grounding answers in SOPs and process docs keeps them accurate."],
-    ["Data Visualization", "Medium", "Intermediate", "Process maps and dashboards drive stakeholder buy-in."]
+    ["graphify", "High", "Reconstruct and query real process flows from logs and docs."],
+    ["xlsx", "High", "Quantify opportunities from operational data."],
+    ["mcp-builder", "Medium", "Wire the agent into operational systems for automation."],
+    ["internal-comms", "Low", "Draft findings and process documentation."]
   ]},
   { p: "Project Manager", d: "Operations", t: "AI-assisted planning, status, and reporting", s: [
-    ["Workflow Automation", "High", "Intermediate", "Status collection, reminders, and reporting automate well."],
-    ["AI Writing & Editing", "High", "Intermediate", "Status reports and stakeholder updates draft in minutes."],
-    ["RAG (Retrieval-Augmented Generation)", "Medium", "Intermediate", "Grounding updates in the actual project record avoids drift."],
-    ["Structured Output", "Medium", "Beginner", "Consistent status schemas make roll-ups possible."],
-    ["AI Literacy & Verification", "Medium", "Intermediate", "AI summaries of risk and status must be sanity-checked."]
+    ["pm-claude-skills", "High", "Professional PM Agent Skills for PRDs, launches, and reporting."],
+    ["internal-comms", "High", "Draft status reports and stakeholder updates."],
+    ["planning-with-files", "Medium", "Durable planning for multi-step projects."],
+    ["docx", "Low", "Produce polished planning and status documents."]
   ]},
 
-  // ---------- Customer Support (more) ----------
+  // ---------- Customer Support / Sales / HR (expanded) ----------
   { p: "CX Analyst", d: "Customer Support", t: "Voice-of-customer analytics", s: [
-    ["Sentiment & Intent Analysis", "High", "Advanced", "Classifying emotion, intent, and topics across channels is the core."],
-    ["Embeddings & Semantic Search", "High", "Intermediate", "Clustering surfaces emerging issues before they trend."],
-    ["Structured Output", "Medium", "Intermediate", "Consistent tagging enables trend tracking and roll-ups."],
-    ["Data Visualization", "High", "Intermediate", "Insight lands through clear driver and trend charts."],
-    ["Anomaly Detection", "Medium", "Intermediate", "Spikes in complaint themes flag operational problems early."]
+    ["graphify", "High", "Cluster and map issue themes across channels."],
+    ["xlsx", "High", "Tag, tally, and chart feedback data."],
+    ["marketingskills", "Medium", "Analytics sub-skills for VoC work."],
+    ["prompt-master", "Low", "Consistent classification prompts for tagging."]
   ]},
-
-  // ---------- Sales (more) ----------
   { p: "Sales Engineer", d: "Sales", t: "AI-assisted demos and technical qualification", s: [
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Grounded answers about the product and integrations build trust in demos."],
-    ["Prompt Engineering", "High", "Intermediate", "Tailoring technical narratives to each prospect scales with good prompting."],
-    ["Conversational AI Design", "Medium", "Intermediate", "Building demo assistants and POCs is increasingly the SE's job."],
-    ["Sales Intelligence AI", "Medium", "Intermediate", "Account and stack research sharpens technical qualification."],
-    ["AI Literacy & Verification", "High", "Intermediate", "A hallucinated capability claim in a demo destroys credibility."]
+    ["mcp-builder", "High", "Build demo assistants and POCs that call real tools."],
+    ["prompt-master", "High", "Tailor technical narratives to each prospect."],
+    ["web-artifacts-builder", "Medium", "Spin up interactive demo artifacts fast."],
+    ["Guardrails AI", "Low", "Keep demo assistants from overclaiming."]
   ]},
   { p: "RevOps Analyst", d: "Sales", t: "Pipeline forecasting and lead scoring", s: [
-    ["Time-Series Forecasting", "High", "Advanced", "Pipeline and revenue forecasting is the analytical core."],
-    ["Recommender Systems", "High", "Intermediate", "Lead and account scoring is a ranking problem."],
-    ["SQL & AI-Assisted Analytics", "High", "Intermediate", "CRM and warehouse data drive every RevOps question."],
-    ["Causal Inference", "Medium", "Intermediate", "Attribution requires causal, not correlational, reasoning."],
-    ["Data Visualization", "Medium", "Intermediate", "Leadership acts on clear pipeline dashboards."]
+    ["xlsx", "High", "Build forecasts and scoring analyses in spreadsheets."],
+    ["mcp-builder", "Medium", "Wire CRM and warehouse data into the agent."],
+    ["marketingskills", "Medium", "Analytics and growth-engineering sub-skills."],
+    ["scientific-agent-skills", "Low", "ML agent skills for scoring models."]
   ]},
-
-  // ---------- Human Resources (more) ----------
   { p: "Recruiter", d: "Human Resources", t: "AI-assisted sourcing and screening", s: [
-    ["Talent Analytics", "High", "Intermediate", "Matching and funnel analytics guide sourcing decisions."],
-    ["Bias & Fairness Auditing", "High", "Advanced", "Screening AI is high-risk and legally required to be audited for bias."],
-    ["AI Governance & Compliance", "High", "Advanced", "NYC LL144 and the EU AI Act govern automated hiring tools."],
-    ["Embeddings & Semantic Search", "Medium", "Intermediate", "Skill-based candidate matching beats keyword filters."],
-    ["Prompt Engineering", "Medium", "Intermediate", "Job descriptions and outreach need careful, unbiased prompting."],
-    ["Privacy-Preserving AI", "High", "Intermediate", "Candidate data carries strict handling obligations."]
+    ["EU AI Act", "High", "Screening AI is high-risk — import its obligations."],
+    ["Responsible AI Toolbox", "High", "Audit screening tools for bias, as law increasingly requires."],
+    ["awesome-ai-governance", "Medium", "Frameworks for governing automated hiring decisions."],
+    ["prompt-master", "Low", "Careful, unbiased prompts for JD and outreach drafting."]
   ]},
   { p: "L&D Specialist", d: "Human Resources", t: "AI upskilling programs and skills mapping", s: [
-    ["Skills Taxonomy & Ontology", "High", "Advanced", "A structured skills model is what makes gap analysis and pathing possible."],
-    ["AI Tutoring & Adaptive Learning", "High", "Intermediate", "Adaptive learning personalizes upskilling at scale."],
-    ["Personalization & Segmentation", "Medium", "Intermediate", "Learning paths tailored to role and level drive completion."],
-    ["Assessment Generation", "Medium", "Intermediate", "Validated assessments measure real skill gain."],
-    ["Knowledge Management AI", "Medium", "Intermediate", "Turning internal expertise into learning content is a core lever."]
+    ["pm-claude-skills", "High", "Professional Agent Skills spanning L&D-relevant workflows."],
+    ["awesome-agent-skills", "Medium", "1000+ agent skills to curate an upskilling catalog from."],
+    ["skill-creator", "Medium", "Build custom internal skills for your programs."],
+    ["book-to-skill", "Low", "Convert internal knowledge books into referenceable skills."]
   ]},
 
-  // ==================== MEDICAL EXPANSION ====================
-
+  // ---------- Healthcare (clinical specialties) ----------
   { p: "Surgeon", d: "Healthcare", t: "AI-assisted surgical planning and intraoperative guidance", s: [
-    ["Medical Imaging AI", "High", "Advanced", "Patient-specific 3D reconstruction from CT/MRI drives preoperative planning."],
-    ["Multimodal AI", "High", "Intermediate", "Fusing imaging, video, and notes supports planning and guidance."],
-    ["Computer Vision", "High", "Intermediate", "Intraoperative video, instrument tracking, and anatomy recognition."],
-    ["Simulation & Digital Twins", "Medium", "Intermediate", "Rehearsing on patient-specific models de-risks complex cases."],
-    ["Human-in-the-Loop Design", "High", "Advanced", "The surgeon must stay fully in control; guidance never acts autonomously."],
-    ["AI Literacy & Verification", "High", "Advanced", "Guidance must be verified against the actual anatomy in real time."]
+    ["EU AI Act", "High", "Surgical guidance AI is high-risk — import its obligations."],
+    ["NeMo Guardrails", "High", "Keep guidance tools strictly within safe, supervised bounds."],
+    ["Responsible AI Toolbox", "Medium", "Assess reliability before anything informs the OR."],
+    ["scientific-agent-skills", "Low", "Science agent skills for the planning-data work."]
   ]},
   { p: "Pathologist", d: "Healthcare", t: "Building a digital pathology whole-slide classifier", s: [
-    ["Digital Pathology AI", "High", "Advanced", "Whole-slide tiling, stain normalization, and region classification are the core."],
-    ["Computer Vision", "High", "Advanced", "The underlying detection and segmentation methods."],
-    ["Dataset Curation", "High", "Intermediate", "Scanner and staining variation must be represented and controlled."],
-    ["Data Annotation & Labeling QA", "High", "Intermediate", "Pathologist consensus labels with agreement checks are the ground truth."],
-    ["Model Evaluation", "High", "Advanced", "Slide- and patient-level validation determines clinical credibility."],
-    ["Privacy-Preserving AI", "High", "Intermediate", "Slide metadata and linked records are PHI."]
+    ["EU AI Act", "High", "Diagnostic pathology AI is high-risk under the Act."],
+    ["Responsible AI Toolbox", "High", "Audit the classifier's fairness and reliability before use."],
+    ["scientific-agent-skills", "Medium", "Science/ML agent skills for the imaging pipeline."],
+    ["NIST AI Risk Management Framework", "Low", "Govern the model's lifecycle risk."]
   ]},
   { p: "Cardiologist", d: "Healthcare", t: "AI interpretation of ECG and echocardiography", s: [
-    ["Physiological Signal AI", "High", "Advanced", "ECG waveform models detect arrhythmia and structural disease."],
-    ["Medical Imaging AI", "High", "Intermediate", "Echo video analysis measures function automatically."],
-    ["Model Evaluation", "High", "Advanced", "Sensitivity/specificity and external validation gate clinical use."],
-    ["Explainability (XAI)", "Medium", "Intermediate", "Clinicians need to see what drove an abnormal reading."],
-    ["AI Literacy & Verification", "High", "Advanced", "Automated measurements must be confirmed before acting."],
-    ["Multimodal AI", "Medium", "Intermediate", "Combining ECG, imaging, and history sharpens diagnosis."]
+    ["EU AI Act", "High", "Diagnostic interpretation AI is high-risk."],
+    ["Responsible AI Toolbox", "High", "Validate reliability and fairness before clinical use."],
+    ["scientific-agent-skills", "Medium", "Science/ML skills for the signal/imaging models."],
+    ["NeMo Guardrails", "Low", "Bound any patient-facing interpretation tool."]
   ]},
   { p: "Oncologist", d: "Healthcare", t: "AI decision support for treatment planning", s: [
-    ["Clinical Predictive Modeling", "High", "Advanced", "Response and outcome prediction informs therapy selection."],
-    ["Genomics AI", "High", "Intermediate", "Tumor genomic interpretation guides targeted therapy."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Recommendations must ground in current guidelines and trial evidence."],
-    ["Trial Matching & Recruitment AI", "Medium", "Intermediate", "Matching patients to trials expands treatment options."],
-    ["Explainability (XAI)", "High", "Intermediate", "Every AI suggestion must be justifiable at the tumor board."],
-    ["AI Literacy & Verification", "High", "Advanced", "The oncologist owns every decision the AI informs."]
+    ["EU AI Act", "High", "Treatment decision support is high-risk."],
+    ["NeMo Guardrails", "High", "Keep a planning agent from asserting unverified recommendations."],
+    ["Responsible AI Toolbox", "Medium", "Assess fairness across patient populations."],
+    ["scientific-agent-skills", "Low", "Science agent skills for genomic and outcome analysis."]
   ]},
   { p: "Emergency Physician", d: "Healthcare", t: "AI triage and sepsis early-warning", s: [
-    ["Clinical Predictive Modeling", "High", "Advanced", "Sepsis and deterioration early-warning scores are the core tools."],
-    ["Clinical NLP", "Medium", "Intermediate", "Signals hide in triage notes and prior records."],
-    ["Human-in-the-Loop Design", "High", "Advanced", "Alert fatigue and override design are safety-critical."],
-    ["Bias & Fairness Auditing", "High", "Intermediate", "Triage models can underperform for specific groups; audit them."],
-    ["Explainability (XAI)", "High", "Intermediate", "Clinicians must know why a patient was flagged to act fast."],
-    ["AI Literacy & Verification", "High", "Advanced", "A false alarm or miss has immediate consequences."]
+    ["EU AI Act", "High", "Triage and early-warning AI is high-risk."],
+    ["Responsible AI Toolbox", "High", "Audit the model for bias and reliability across groups."],
+    ["NeMo Guardrails", "Medium", "Bound alerting behavior and escalation."],
+    ["NIST AI Risk Management Framework", "Low", "Govern the operational risk of acting on alerts."]
   ]},
   { p: "Dermatologist", d: "Healthcare", t: "Skin lesion classification", s: [
-    ["Computer Vision", "High", "Advanced", "Lesion classification from clinical and dermoscopic images."],
-    ["Medical Imaging AI", "High", "Intermediate", "Dermoscopy-specific preprocessing and augmentation."],
-    ["Bias & Fairness Auditing", "High", "Advanced", "Skin-tone underrepresentation is a well-documented failure mode."],
-    ["Dataset Curation", "High", "Intermediate", "Balanced skin-tone and lesion-type coverage is decisive."],
-    ["Model Evaluation", "High", "Intermediate", "Sensitivity for melanoma drives real clinical value."],
-    ["Multimodal AI", "Medium", "Beginner", "Combining images with history improves accuracy."]
+    ["Responsible AI Toolbox", "High", "Skin-tone bias is well-documented — audit fairness explicitly."],
+    ["EU AI Act", "High", "Diagnostic classification AI is high-risk."],
+    ["scientific-agent-skills", "Medium", "Science/ML agent skills for the imaging model."],
+    ["NIST AI Risk Management Framework", "Low", "Govern the model's lifecycle risk."]
   ]},
   { p: "Ophthalmologist", d: "Healthcare", t: "Diabetic retinopathy screening", s: [
-    ["Computer Vision", "High", "Advanced", "Grading fundus images is the core vision task."],
-    ["Medical Imaging AI", "High", "Advanced", "Retinal imaging pipelines and quality control."],
-    ["Model Evaluation", "High", "Advanced", "Screening sensitivity/specificity define program safety."],
-    ["Dataset Curation", "High", "Intermediate", "Camera and population diversity drive generalization."],
-    ["AI Governance & Compliance", "Medium", "Beginner", "Autonomous screening is FDA-cleared, regulated territory."],
-    ["Explainability (XAI)", "Medium", "Beginner", "Referable-vs-not decisions benefit from visible evidence."]
+    ["EU AI Act", "High", "Autonomous screening is high-risk and tightly regulated."],
+    ["Responsible AI Toolbox", "High", "Validate screening sensitivity and fairness across cameras/populations."],
+    ["scientific-agent-skills", "Medium", "Science/ML agent skills for the fundus-image model."],
+    ["NIST AI Risk Management Framework", "Low", "Govern the screening program's risk."]
   ]},
   { p: "Intensivist", d: "Healthcare", t: "Predictive deterioration modeling in the ICU", s: [
-    ["Clinical Predictive Modeling", "High", "Advanced", "Deterioration and mortality risk models are the ICU's AI backbone."],
-    ["Time-Series Forecasting", "High", "Advanced", "Continuous vitals and labs are streaming time series."],
-    ["Anomaly Detection", "High", "Intermediate", "Sudden physiologic shifts surface as anomalies."],
-    ["Explainability (XAI)", "High", "Intermediate", "Bedside teams need the reason behind a rising risk score."],
-    ["Human-in-the-Loop Design", "High", "Intermediate", "Alerts must support, not overwhelm, clinical judgment."]
+    ["EU AI Act", "High", "ICU risk prediction is high-risk."],
+    ["Responsible AI Toolbox", "High", "Audit reliability and fairness before it drives alerts."],
+    ["scientific-agent-skills", "Medium", "Science/ML agent skills for the vitals modeling."],
+    ["NeMo Guardrails", "Low", "Bound bedside alerting behavior."]
   ]},
   { p: "Neurologist", d: "Healthcare", t: "AI for stroke imaging and EEG interpretation", s: [
-    ["Medical Imaging AI", "High", "Advanced", "Large-vessel-occlusion detection on CT/MRI speeds stroke care."],
-    ["Physiological Signal AI", "High", "Intermediate", "EEG models detect seizures and abnormal patterns."],
-    ["Computer Vision", "Medium", "Intermediate", "Underlying detection methods for imaging."],
-    ["Model Evaluation", "High", "Intermediate", "Time-critical decisions demand rigorously validated models."],
-    ["AI Literacy & Verification", "High", "Advanced", "Automated reads are confirmed before treatment."]
+    ["EU AI Act", "High", "Time-critical diagnostic AI is high-risk."],
+    ["Responsible AI Toolbox", "High", "Validate reliability before acting on automated reads."],
+    ["scientific-agent-skills", "Medium", "Science/ML agent skills for imaging and signal models."],
+    ["NIST AI Risk Management Framework", "Low", "Govern the model's lifecycle risk."]
   ]},
   { p: "Nurse Practitioner", d: "Healthcare", t: "Using AI clinical decision support in primary care", s: [
-    ["AI Literacy & Verification", "High", "Advanced", "Judging when suggestions are reliable is the central competency."],
-    ["Clinical Documentation AI", "High", "Intermediate", "Ambient notes and drafts need supervised editing."],
-    ["Clinical NLP", "Medium", "Beginner", "Understanding chart extraction explains the tool's output."],
-    ["Explainability (XAI)", "Medium", "Intermediate", "Demand the evidence behind a recommendation before acting."],
-    ["Human-in-the-Loop Design", "High", "Intermediate", "The clinician remains the decision-maker."],
-    ["Privacy-Preserving AI", "High", "Intermediate", "Patient data governs which tools are permissible."]
+    ["EU AI Act", "High", "Decision support is high-risk — know the obligations."],
+    ["Responsible AI Toolbox", "High", "Audit fairness across your patient population."],
+    ["doc-coauthoring", "Medium", "Supervised drafting keeps the clinician the author."],
+    ["awesome-ai-governance", "Low", "Broader governance references for safe adoption."]
   ]},
   { p: "Genetic Counselor", d: "Healthcare", t: "AI-assisted variant interpretation and patient communication", s: [
-    ["Genomics AI", "High", "Advanced", "Variant effect prediction and interpretation are the core."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Answers must ground in ClinVar, guidelines, and the literature."],
-    ["Clinical NLP", "Medium", "Intermediate", "Family history and records structure the assessment."],
-    ["AI Writing & Editing", "Medium", "Intermediate", "Plain-language patient explanations draft faster with AI."],
-    ["Hallucination Detection & Fact Verification", "High", "Advanced", "A misstated variant significance misinforms real decisions."],
-    ["Privacy-Preserving AI", "High", "Advanced", "Genetic data is uniquely sensitive and identifying."]
+    ["EU AI Act", "High", "Genetic interpretation AI is high-risk and highly sensitive."],
+    ["academic-research-skills", "High", "Ground interpretations in ClinVar, guidelines, and literature."],
+    ["doc-coauthoring", "Medium", "Draft patient-facing explanations under review."],
+    ["Responsible AI Toolbox", "Low", "Check reliability before relying on predictions."]
   ]},
   { p: "Medical Coder", d: "Healthcare", t: "AI-assisted medical coding and billing", s: [
-    ["Medical Coding AI", "High", "Advanced", "Assisted and autonomous ICD/CPT coding is the workflow itself."],
-    ["Clinical NLP", "High", "Advanced", "Codes are derived from unstructured clinical documentation."],
-    ["Structured Output", "High", "Intermediate", "Codes must emit in strict, billable schemas."],
-    ["Human-in-the-Loop Design", "High", "Intermediate", "Coder review and audit keep billing compliant."],
-    ["AI Governance & Compliance", "Medium", "Intermediate", "Coding errors carry audit and fraud exposure."],
-    ["Document Processing & OCR", "Medium", "Intermediate", "Scanned records must become analyzable text."]
+    ["pdf", "High", "Extract codes and context from scanned clinical documentation."],
+    ["Guardrails AI", "High", "Validate emitted codes against structured rules before billing."],
+    ["EU AI Act", "Medium", "Automated coding decisions can carry compliance obligations."],
+    ["Rebuff", "Low", "Guard the coding agent against injected content in records."]
   ]},
   { p: "Biostatistician", d: "Healthcare", t: "AI-assisted clinical trial analysis", s: [
-    ["Statistical Analysis", "High", "Advanced", "Trial rigor — endpoints, power, multiplicity — is non-delegable."],
-    ["Causal Inference", "High", "Advanced", "Estimands and confounding control are the discipline's core."],
-    ["Scientific Data Analysis", "High", "Advanced", "Reproducible, auditable analysis pipelines are mandatory."],
-    ["Python", "High", "Advanced", "Analysis and simulation run in Python/R."],
-    ["Agentic Coding", "Medium", "Intermediate", "Agents accelerate analysis code under strict review."],
-    ["Model Evaluation", "Medium", "Intermediate", "When models are used, validation is part of the statistics."]
+    ["scientific-agent-skills", "High", "Science/stats agent skills for rigorous trial analysis."],
+    ["CLAUDE.md", "High", "Govern the coding agent — analysis must be reproducible and audited."],
+    ["planning-with-files", "Medium", "Durable, reproducible planning across the analysis."],
+    ["academic-research-skills", "Low", "Ground methods and reporting in the literature."]
   ]},
   { p: "Clinical Data Manager", d: "Healthcare", t: "Trial data cleaning and query automation", s: [
-    ["AI-Assisted Data Cleaning", "High", "Advanced", "Standardizing and reconciling messy trial data is the core work."],
-    ["Structured Output", "High", "Intermediate", "Clean data must conform to CDISC-style schemas."],
-    ["Document Processing & OCR", "Medium", "Intermediate", "Source documents and forms feed the database."],
-    ["Privacy-Preserving AI", "High", "Intermediate", "Trial data carries strict handling obligations."],
-    ["Workflow Automation", "Medium", "Intermediate", "Query generation and reconciliation automate well."]
+    ["xlsx", "High", "Standardize, reconcile, and clean trial data."],
+    ["pdf", "Medium", "Digitize source documents and forms."],
+    ["EU AI Act", "Medium", "Trial-data AI carries obligations and strict handling rules."],
+    ["Rebuff", "Low", "Guard data-ingesting agents against injected content."]
   ]},
   { p: "Pharmacovigilance Specialist", d: "Healthcare", t: "Adverse event detection and safety reporting", s: [
-    ["Pharmacovigilance AI", "High", "Advanced", "Detecting and coding adverse events is the role's core."],
-    ["Clinical NLP", "High", "Advanced", "Events hide in reports, narratives, and literature."],
-    ["Anomaly Detection", "Medium", "Intermediate", "Signal detection surfaces emerging safety issues."],
-    ["Structured Output", "Medium", "Intermediate", "Cases must emit in regulatory (MedDRA/E2B) formats."],
-    ["AI Governance & Compliance", "High", "Intermediate", "Reporting timelines and audit trails are regulated."],
-    ["Hallucination Detection & Fact Verification", "High", "Advanced", "A missed or misstated event is a safety and legal risk."]
+    ["pdf", "High", "Extract adverse-event signals from reports and literature."],
+    ["Guardrails AI", "High", "Validate coded cases against structured rules before reporting."],
+    ["EU AI Act", "Medium", "Safety-reporting AI carries regulatory obligations."],
+    ["academic-research-skills", "Low", "Mine literature for emerging safety signals."]
   ]},
   { p: "Health Data Scientist", d: "Healthcare", t: "Building EHR-based clinical prediction models", s: [
-    ["Clinical Predictive Modeling", "High", "Advanced", "Risk models on EHR data are the central deliverable."],
-    ["Machine Learning Basics", "High", "Advanced", "Feature engineering and validation remain the craft."],
-    ["Clinical NLP", "High", "Intermediate", "Much predictive signal lives in free-text notes."],
-    ["Bias & Fairness Auditing", "High", "Advanced", "Clinical models can encode and amplify disparities."],
-    ["Model Evaluation", "High", "Advanced", "Calibration and decision-curve analysis matter as much as AUROC."],
-    ["Privacy-Preserving AI", "High", "Advanced", "PHI governs data access and model handling."],
-    ["MLOps & Model Monitoring", "Medium", "Intermediate", "Clinical models drift; monitoring is part of the build."]
+    ["EU AI Act", "High", "Clinical prediction models are high-risk."],
+    ["Responsible AI Toolbox", "High", "Audit fairness and reliability across patient subgroups."],
+    ["scientific-agent-skills", "Medium", "Science/ML agent skills for the modeling work."],
+    ["CLAUDE.md", "Low", "Govern the coding agent on the modeling repo."]
   ]},
   { p: "Physical Therapist", d: "Healthcare", t: "AI movement analysis for rehabilitation", s: [
-    ["Computer Vision", "High", "Intermediate", "Pose estimation quantifies movement and progress."],
-    ["Multimodal AI", "Medium", "Beginner", "Combining video with wearable data enriches assessment."],
-    ["AI Literacy & Verification", "High", "Intermediate", "Automated measures guide but don't replace clinical judgment."],
-    ["Human-in-the-Loop Design", "Medium", "Intermediate", "Home-exercise tools need clear escalation to the therapist."],
-    ["Privacy-Preserving AI", "Medium", "Beginner", "Patient video is sensitive and needs careful handling."]
+    ["EU AI Act", "Medium", "Patient-facing assessment tools may carry obligations."],
+    ["NeMo Guardrails", "Medium", "Bound any home-exercise agent with clear escalation."],
+    ["scientific-agent-skills", "Medium", "Science/ML agent skills for movement analysis."],
+    ["Responsible AI Toolbox", "Low", "Check reliability of automated measures."]
   ]},
   { p: "Medical Writer", d: "Healthcare", t: "AI-assisted regulatory and scientific medical writing", s: [
-    ["Scientific Writing with AI", "High", "Advanced", "Drafting and editing clinical and regulatory documents is the core."],
-    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Documents must ground in study data and source references."],
-    ["Hallucination Detection & Fact Verification", "High", "Advanced", "Every claim and citation in a submission must be verified."],
-    ["Regulatory Intelligence AI", "Medium", "Intermediate", "Documents must conform to evolving agency guidance."],
-    ["Structured Output", "Medium", "Intermediate", "Regulatory documents demand rigid structure."],
-    ["Responsible AI Practice", "Medium", "Intermediate", "Disclosure of AI use is increasingly expected."]
+    ["doc-coauthoring", "High", "Structured human-in-the-loop drafting of regulated documents."],
+    ["academic-research-skills", "High", "Ground documents in study data and references."],
+    ["pdf", "Medium", "Extract from source studies and guidance."],
+    ["humanizer", "Low", "Keep prose clean without altering meaning."]
   ]},
   { p: "Hospital Operations Manager", d: "Healthcare", t: "AI patient-flow and staffing optimization", s: [
-    ["Time-Series Forecasting", "High", "Advanced", "Census, admissions, and demand are forecasting problems."],
-    ["Optimization & Operations Research", "High", "Advanced", "Bed and staff allocation are optimization decisions."],
-    ["Anomaly Detection", "Medium", "Intermediate", "Surges and bottlenecks surface as anomalies."],
-    ["Data Visualization", "Medium", "Intermediate", "Operations run on live capacity dashboards."],
-    ["AI Literacy & Verification", "Medium", "Intermediate", "Forecast overreliance without judgment causes real harm."]
+    ["xlsx", "High", "Model census, demand, and staffing."],
+    ["scientific-agent-skills", "Medium", "Science/OR agent skills for forecasting and optimization."],
+    ["mcp-builder", "Medium", "Wire the agent into EHR/operational systems."],
+    ["planning-with-files", "Low", "Durable planning for optimization build-outs."]
   ]},
   { p: "Health Payer Analyst", d: "Healthcare", t: "AI-assisted prior-authorization and claims review", s: [
-    ["Document Processing & OCR", "High", "Advanced", "Claims and records arrive as high-volume mixed documents."],
-    ["Clinical NLP", "High", "Intermediate", "Medical necessity signals live in clinical text."],
-    ["Structured Output", "High", "Intermediate", "Decisions must emit in auditable, structured form."],
-    ["Bias & Fairness Auditing", "High", "Intermediate", "Coverage decisions face strict fairness and legal scrutiny."],
-    ["AI Governance & Compliance", "High", "Intermediate", "Automated coverage decisions are heavily regulated."],
-    ["Fraud Detection ML", "Medium", "Intermediate", "Anomalous claims patterns flag potential fraud."]
+    ["pdf", "High", "Extract medical-necessity signals from records and claims."],
+    ["EU AI Act", "High", "Automated coverage decisions are high-risk."],
+    ["Responsible AI Toolbox", "High", "Audit coverage models for bias — legal scrutiny is strict."],
+    ["Guardrails AI", "Low", "Validate decisions against structured, auditable rules."]
   ]},
   { p: "Sonographer", d: "Healthcare", t: "AI-guided ultrasound image acquisition", s: [
-    ["Medical Imaging AI", "High", "Intermediate", "Real-time quality and view recognition guide acquisition."],
-    ["Computer Vision", "High", "Intermediate", "Frame-level guidance and measurement automation."],
-    ["Multimodal AI", "Medium", "Beginner", "Combining image and probe data assists positioning."],
-    ["Human-in-the-Loop Design", "Medium", "Intermediate", "Guidance assists the operator, who stays in control."],
-    ["AI Literacy & Verification", "Medium", "Intermediate", "Automated measurements are confirmed, not trusted blindly."]
+    ["EU AI Act", "High", "Real-time acquisition guidance is high-risk medical AI."],
+    ["Responsible AI Toolbox", "Medium", "Validate reliability before it guides scanning."],
+    ["scientific-agent-skills", "Medium", "Science/ML agent skills for the imaging model."],
+    ["NeMo Guardrails", "Low", "Bound guidance so the operator stays in control."]
   ]},
 
-  // ==================== FURTHER EXPANSION ====================
-
+  // ---------- Further expansion ----------
   { p: "Insurance Underwriter", d: "Finance", t: "AI-assisted underwriting", s: [
-    ["Fraud Detection ML", "High", "Intermediate", "Risk and misrepresentation signals drive underwriting."],
-    ["Bias & Fairness Auditing", "High", "Advanced", "Underwriting models face strict anti-discrimination law."],
-    ["Explainability (XAI)", "High", "Advanced", "Adverse decisions must be explainable to applicants and regulators."],
-    ["Document Processing & OCR", "High", "Intermediate", "Applications and records arrive as mixed documents."],
-    ["AI Governance & Compliance", "High", "Intermediate", "Automated underwriting is a regulated, high-risk use."]
+    ["EU AI Act", "High", "Automated underwriting is a high-risk use under the Act."],
+    ["Responsible AI Toolbox", "High", "Audit models for bias — anti-discrimination law is strict."],
+    ["pdf", "Medium", "Extract data from applications and records."],
+    ["awesome-ai-governance", "Low", "Governance references for regulated underwriting AI."]
   ]},
   { p: "Architect", d: "Design", t: "Generative architectural design", s: [
-    ["Generative Design", "High", "Advanced", "AI exploration of massing and layout under constraints is the workflow."],
-    ["Image & Video Generation", "High", "Intermediate", "Concept visualization and rendering accelerate ideation."],
-    ["Simulation & Digital Twins", "Medium", "Intermediate", "Energy, daylight, and structural simulation validate designs."],
-    ["Geospatial & Remote Sensing AI", "Medium", "Beginner", "Site and context data ground the design."],
-    ["Prompt Engineering", "Medium", "Intermediate", "Design intent and constraints must be specified precisely."]
+    ["canvas-design", "High", "Generate concept visuals and renders."],
+    ["algorithmic-art", "Medium", "Generative form exploration with p5.js."],
+    ["web-artifacts-builder", "Medium", "Build interactive design artifacts."],
+    ["frontend-design", "Low", "Design-craft guidance for distinctive results."]
   ]},
   { p: "Localization Specialist", d: "Localization", t: "AI-assisted translation and localization", s: [
-    ["Translation & Localization AI", "High", "Advanced", "AI translation with terminology control and post-editing is the core."],
-    ["AI Writing & Editing", "High", "Intermediate", "Post-editing AI output to native quality is the daily craft."],
-    ["RAG (Retrieval-Augmented Generation)", "Medium", "Intermediate", "Grounding in glossaries and past translations keeps terms consistent."],
-    ["Prompt Engineering", "Medium", "Intermediate", "Tone, register, and locale live in reusable prompts."],
-    ["Hallucination Detection & Fact Verification", "Medium", "Intermediate", "Mistranslations and invented content must be caught."],
-    ["Responsible AI Practice", "Low", "Beginner", "Cultural appropriateness and disclosure matter across markets."]
+    ["humanizer", "High", "Post-edit machine output to natural, human quality."],
+    ["Humanizer-zh", "High", "Chinese-localized de-AI-ifying for CJK workflows."],
+    ["doc-coauthoring", "Medium", "Human-in-the-loop review of translated content."],
+    ["prompt-master", "Low", "Encode tone, register, and locale in reusable prompts."]
   ]},
   { p: "Game Developer", d: "Gaming", t: "AI for game content and interactive NPCs", s: [
-    ["Image & Video Generation", "High", "Intermediate", "Asset and texture generation accelerates content pipelines."],
-    ["Conversational AI Design", "High", "Advanced", "Believable, safe NPC dialogue is a distinct design craft."],
-    ["Agent Orchestration", "Medium", "Intermediate", "NPCs with memory and goals are agents."],
-    ["Reinforcement Learning", "Medium", "Advanced", "Learned behaviors and difficulty tuning use RL."],
-    ["Guardrails", "High", "Intermediate", "Generative NPCs need strong content and safety boundaries."],
-    ["Prompt Engineering", "Medium", "Intermediate", "Character voice and behavior live in prompts."]
-  ]},
+    ["Claude-Code-Game-Studios", "High", "A full game-dev studio — 49 agents and 72 workflow skills."],
+    ["algorithmic-art", "Medium", "Generative art and procedural visuals."],
+    ["NeMo Guardrails", "Medium", "Keep generative NPC dialogue safe and on-rails."],
+    ["web-artifacts-builder", "Low", "Prototype interactive game UI quickly."]
+  ]}
 ];
 
-// Bridge to the "All Skill List" directory: competency -> real entries in data.js
-// that genuinely help you build it (Agent Skills / governance files). Only honest
-// matches; competencies without a real counterpart are intentionally absent.
-const SKILL_TO_DIRECTORY = {
-  "Prompt Engineering": ["prompt-master"],
-  "Context Engineering": ["CLAUDE.md", "AGENTS.md", "Cursor Rules", "Windsurf Rules", "copilot-instructions.md", "planning-with-files"],
-  "Model Context Protocol (MCP)": ["mcp-builder"],
-  "Tool Calling": ["mcp-builder", "claude-api"],
-  "LLM Fundamentals": ["claude-api"],
-  "Agent Orchestration": ["awesome-agent-skills"],
-  "Multi-Agent Systems": ["awesome-agent-skills"],
-  "Agentic Coding": ["awesome-claude-code", "claude-code-tips", "planning-with-files", "claude-code-infrastructure-showcase", "awesome-claude-code-and-skills"],
-  "AI Test Generation": ["webapp-testing"],
-  "Guardrails": ["NeMo Guardrails", "Guardrails AI", "Llama Guard / PurpleLlama", "Rebuff"],
-  "Prompt Injection Defense": ["Rebuff", "Llama Guard / PurpleLlama"],
-  "AI Governance & Compliance": ["EU AI Act", "NIST AI Risk Management Framework", "ai-governance-framework-tools", "awesome-ai-governance", "awesome-ai-agent-governance"],
-  "Responsible AI Practice": ["Responsible AI Toolbox", "awesome-ai-governance"],
-  "Bias & Fairness Auditing": ["Responsible AI Toolbox"],
-  "Explainability (XAI)": ["Responsible AI Toolbox"],
-  "Red-Teaming & Adversarial Testing": ["OWASP Top 10 for LLM Apps", "Anthropic-Cybersecurity-Skills"],
-  "Security Copilots & SOC Automation": ["Anthropic-Cybersecurity-Skills"],
-  "Threat Intelligence AI": ["MITRE ATT&CK Navigator", "Anthropic-Cybersecurity-Skills"],
-  "Literature Search & Research Agents": ["academic-research-skills", "scientific-agent-skills", "AI-Research-SKILLs", "Auto-claude-code-research-in-sleep"],
-  "Systematic Review Automation": ["academic-research-skills", "scientific-agent-skills"],
-  "Hypothesis Generation": ["scientific-agent-skills", "AI-Research-SKILLs"],
-  "Scientific Writing with AI": ["academic-research-skills", "notebooklm-py"],
-  "Scientific Data Analysis": ["scientific-agent-skills", "notebooklm-py"],
-  "AI Writing & Editing": ["humanizer", "doc-coauthoring", "Humanizer-zh"],
-  "Content Generation & Brand Voice": ["marketingskills", "brand-guidelines"],
-  "SEO & Content Optimization": ["claude-seo", "geo-seo-claude", "marketingskills"],
-  "Design-to-Code AI": ["frontend-design", "web-artifacts-builder", "theme-factory", "huashu-design", "hallmark"],
-  "Document Processing & OCR": ["pdf", "docx", "xlsx", "pptx"],
-  "Image & Video Generation": ["slack-gif-creator", "canvas-design", "algorithmic-art"],
-  "Skills Taxonomy & Ontology": ["skill-creator", "Skill_Seekers", "book-to-skill"],
-  "Knowledge Management AI": ["notebooklm-py"]
-};
-
-// Expose for app-rec.js
-if (typeof window !== "undefined") { window.SKILL_LIB = SKILL_LIB; window.RECS = RECS; window.SKILL_TO_DIRECTORY = SKILL_TO_DIRECTORY; }
+// Expose for app-rec.js (which reads directory metadata from data.js by name).
+if (typeof window !== "undefined") { window.RECS = RECS; }
