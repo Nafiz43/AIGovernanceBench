@@ -25,10 +25,45 @@
         <span class="brand-tag">Tracking what governs AI agents</span>
       </div>
     </div>
-    <a class="badge-first" href="#about">🏁 Early tracker — est. 2026</a>
+    <nav class="mainnav" id="mainNav">
+      <button class="nav-tab active" data-view="recommend">Skill Recommender</button>
+      <button class="nav-tab" data-view="directory">All Skill List</button>
+    </nav>
   </div>
 </header>
 
+<!-- ============ RECOMMENDER VIEW (landing) ============ -->
+<div class="view" id="view-recommend">
+<section class="hero">
+  <div class="hero-inner">
+    <h1>Which AI skills should <span>you</span> learn?</h1>
+    <p>Pick who you are and what you're trying to do. We'll recommend the AI skillset that actually moves the needle for that role and task — with why each skill matters and how deep to go.</p>
+    <div class="stats">
+      <div class="stat"><strong id="recStatPairs">0</strong><span>persona · task pairs</span></div>
+      <div class="stat"><strong id="recStatPersonas">0</strong><span>personas</span></div>
+      <div class="stat"><strong id="recStatDomains">0</strong><span>domains</span></div>
+    </div>
+  </div>
+</section>
+
+<main class="content">
+  <div class="controls">
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="recSearch" type="text" placeholder="Search persona, task, or keyword — e.g. Radiologist, Drug Discovery, Image Classification…" autocomplete="off" list="recSuggest">
+      <datalist id="recSuggest"></datalist>
+    </div>
+    <select id="recPersona"></select>
+    <select id="recTask"><option value="">All tasks / workflows</option></select>
+  </div>
+
+  <div id="recResults" class="rec-results"></div>
+  <p class="empty-state" id="recEmpty" hidden>No persona · task matches that. Try a broader keyword.</p>
+</main>
+</div>
+
+<!-- ============ DIRECTORY VIEW (All Skill List) ============ -->
+<div class="view" id="view-directory" hidden>
 <section class="hero">
   <div class="hero-inner">
     <h1>The directory for AI <span>governance</span>.</h1>
@@ -75,12 +110,15 @@
 
   <div class="pagination" id="pagination"></div>
 </main>
+</div>
 
 <footer class="footer">
   <p>AIGovernanceBench is a community-maintained index of publicly available AI governance files and Agent Skills. Not affiliated with Anthropic. Missing something? <a href="https://github.com/Nafiz43/AIGovernanceBench" target="_blank" rel="noopener">Open a PR on GitHub</a>.</p>
 </footer>
 
 <script src="data.js"></script>
+<script src="rec-data.js"></script>
 <script src="app.js"></script>
+<script src="app-rec.js"></script>
 </body>
 </html>
