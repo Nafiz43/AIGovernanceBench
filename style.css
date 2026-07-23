@@ -75,7 +75,13 @@ h1,h2,.brand-name{font-family:"Lora",Georgia,serif;}
 .skill-item{padding:12px 18px;border-bottom:1px solid var(--line);}
 .skill-item:last-child{border-bottom:none;}
 .skill-item-top{display:flex;flex-wrap:wrap;align-items:center;gap:7px;}
-.skill-name{font-weight:600;color:var(--ink);font-size:.92rem;}
+.skill-name{
+  font-family:inherit;font-weight:600;color:var(--navy);font-size:.92rem;
+  background:none;border:none;padding:0;cursor:pointer;text-align:left;
+  border-bottom:1px dotted transparent;
+}
+.skill-name:hover{color:var(--blue);border-bottom-color:var(--blue);}
+.skill-name:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:2px;}
 .badge{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;padding:2px 8px;border-radius:999px;}
 .imp-high{background:#fde5e5;color:#b3261e;}
 .imp-medium{background:#fdf1d6;color:#8a6400;}

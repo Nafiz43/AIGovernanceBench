@@ -45,6 +45,18 @@ function initRec() {
   recTask.addEventListener("change", render);
   recSearch.addEventListener("input", render);
 
+  // Click a skill -> show every persona · task that recommends it.
+  recResults.addEventListener("click", (e) => {
+    const btn = e.target.closest(".skill-name");
+    if (!btn) return;
+    recPersona.value = "";
+    recTask.value = "";
+    syncTaskOptions();
+    recSearch.value = btn.dataset.skill;
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
   render();
 }
 
@@ -97,7 +109,7 @@ function skillRow([name, importance, proficiency, why]) {
   return `
   <li class="skill-item">
     <div class="skill-item-top">
-      <span class="skill-name">${esc(name)}</span>
+      <button type="button" class="skill-name" data-skill="${esc(name)}" title="See everyone who needs ${esc(name)}">${esc(name)}</button>
       <span class="badge imp-${importance.toLowerCase()}">${esc(importance)}</span>
       <span class="badge prof">${esc(proficiency)}</span>
       ${category ? `<span class="skill-cat">${esc(category)}</span>` : ""}

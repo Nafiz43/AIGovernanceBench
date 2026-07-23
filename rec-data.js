@@ -142,7 +142,15 @@ const SKILL_LIB = {
   "Audit Analytics AI": ["Domain Applications", "Full-population testing, anomaly flagging, and evidence extraction for assurance work."],
   "Carbon Accounting AI": ["Domain Applications", "Extracting emissions data from documents and estimating footprints across scopes for ESG reporting."],
   "Skills Taxonomy & Ontology": ["Domain Applications", "Structuring roles, skills, and learning content so AI can match people to gaps and paths."],
-  "Knowledge Management AI": ["Domain Applications", "Turning scattered organizational knowledge into a governed, searchable, AI-accessible corpus."]
+  "Knowledge Management AI": ["Domain Applications", "Turning scattered organizational knowledge into a governed, searchable, AI-accessible corpus."],
+
+  // --- Expansion: clinical & medical AI ---
+  "Digital Pathology AI": ["Multimodal", "Deep learning on whole-slide images — tiling, stain normalization, and region-level classification."],
+  "Physiological Signal AI": ["Multimodal", "Models over ECG, EEG, and waveform data for detection, classification, and monitoring."],
+  "Clinical Predictive Modeling": ["Life Sciences", "EHR-based risk models — sepsis, deterioration, readmission — with calibration and validation."],
+  "Medical Coding AI": ["Life Sciences", "AI-assisted and autonomous ICD/CPT coding from clinical documentation, with human audit."],
+  "Pharmacovigilance AI": ["Life Sciences", "Detecting and coding adverse drug events from reports and literature for safety reporting."],
+  "Translation & Localization AI": ["Domain Applications", "AI translation with terminology control, quality estimation, and human post-editing."]
 };
 
 // p: persona, d: domain, t: task/workflow, s: [skill, importance, proficiency, why]
@@ -1103,6 +1111,205 @@ const RECS = [
     ["Personalization & Segmentation", "Medium", "Intermediate", "Learning paths tailored to role and level drive completion."],
     ["Assessment Generation", "Medium", "Intermediate", "Validated assessments measure real skill gain."],
     ["Knowledge Management AI", "Medium", "Intermediate", "Turning internal expertise into learning content is a core lever."]
+  ]},
+
+  // ==================== MEDICAL EXPANSION ====================
+
+  { p: "Surgeon", d: "Healthcare", t: "AI-assisted surgical planning and intraoperative guidance", s: [
+    ["Medical Imaging AI", "High", "Advanced", "Patient-specific 3D reconstruction from CT/MRI drives preoperative planning."],
+    ["Multimodal AI", "High", "Intermediate", "Fusing imaging, video, and notes supports planning and guidance."],
+    ["Computer Vision", "High", "Intermediate", "Intraoperative video, instrument tracking, and anatomy recognition."],
+    ["Simulation & Digital Twins", "Medium", "Intermediate", "Rehearsing on patient-specific models de-risks complex cases."],
+    ["Human-in-the-Loop Design", "High", "Advanced", "The surgeon must stay fully in control; guidance never acts autonomously."],
+    ["AI Literacy & Verification", "High", "Advanced", "Guidance must be verified against the actual anatomy in real time."]
+  ]},
+  { p: "Pathologist", d: "Healthcare", t: "Building a digital pathology whole-slide classifier", s: [
+    ["Digital Pathology AI", "High", "Advanced", "Whole-slide tiling, stain normalization, and region classification are the core."],
+    ["Computer Vision", "High", "Advanced", "The underlying detection and segmentation methods."],
+    ["Dataset Curation", "High", "Intermediate", "Scanner and staining variation must be represented and controlled."],
+    ["Data Annotation & Labeling QA", "High", "Intermediate", "Pathologist consensus labels with agreement checks are the ground truth."],
+    ["Model Evaluation", "High", "Advanced", "Slide- and patient-level validation determines clinical credibility."],
+    ["Privacy-Preserving AI", "High", "Intermediate", "Slide metadata and linked records are PHI."]
+  ]},
+  { p: "Cardiologist", d: "Healthcare", t: "AI interpretation of ECG and echocardiography", s: [
+    ["Physiological Signal AI", "High", "Advanced", "ECG waveform models detect arrhythmia and structural disease."],
+    ["Medical Imaging AI", "High", "Intermediate", "Echo video analysis measures function automatically."],
+    ["Model Evaluation", "High", "Advanced", "Sensitivity/specificity and external validation gate clinical use."],
+    ["Explainability (XAI)", "Medium", "Intermediate", "Clinicians need to see what drove an abnormal reading."],
+    ["AI Literacy & Verification", "High", "Advanced", "Automated measurements must be confirmed before acting."],
+    ["Multimodal AI", "Medium", "Intermediate", "Combining ECG, imaging, and history sharpens diagnosis."]
+  ]},
+  { p: "Oncologist", d: "Healthcare", t: "AI decision support for treatment planning", s: [
+    ["Clinical Predictive Modeling", "High", "Advanced", "Response and outcome prediction informs therapy selection."],
+    ["Genomics AI", "High", "Intermediate", "Tumor genomic interpretation guides targeted therapy."],
+    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Recommendations must ground in current guidelines and trial evidence."],
+    ["Trial Matching & Recruitment AI", "Medium", "Intermediate", "Matching patients to trials expands treatment options."],
+    ["Explainability (XAI)", "High", "Intermediate", "Every AI suggestion must be justifiable at the tumor board."],
+    ["AI Literacy & Verification", "High", "Advanced", "The oncologist owns every decision the AI informs."]
+  ]},
+  { p: "Emergency Physician", d: "Healthcare", t: "AI triage and sepsis early-warning", s: [
+    ["Clinical Predictive Modeling", "High", "Advanced", "Sepsis and deterioration early-warning scores are the core tools."],
+    ["Clinical NLP", "Medium", "Intermediate", "Signals hide in triage notes and prior records."],
+    ["Human-in-the-Loop Design", "High", "Advanced", "Alert fatigue and override design are safety-critical."],
+    ["Bias & Fairness Auditing", "High", "Intermediate", "Triage models can underperform for specific groups; audit them."],
+    ["Explainability (XAI)", "High", "Intermediate", "Clinicians must know why a patient was flagged to act fast."],
+    ["AI Literacy & Verification", "High", "Advanced", "A false alarm or miss has immediate consequences."]
+  ]},
+  { p: "Dermatologist", d: "Healthcare", t: "Skin lesion classification", s: [
+    ["Computer Vision", "High", "Advanced", "Lesion classification from clinical and dermoscopic images."],
+    ["Medical Imaging AI", "High", "Intermediate", "Dermoscopy-specific preprocessing and augmentation."],
+    ["Bias & Fairness Auditing", "High", "Advanced", "Skin-tone underrepresentation is a well-documented failure mode."],
+    ["Dataset Curation", "High", "Intermediate", "Balanced skin-tone and lesion-type coverage is decisive."],
+    ["Model Evaluation", "High", "Intermediate", "Sensitivity for melanoma drives real clinical value."],
+    ["Multimodal AI", "Medium", "Beginner", "Combining images with history improves accuracy."]
+  ]},
+  { p: "Ophthalmologist", d: "Healthcare", t: "Diabetic retinopathy screening", s: [
+    ["Computer Vision", "High", "Advanced", "Grading fundus images is the core vision task."],
+    ["Medical Imaging AI", "High", "Advanced", "Retinal imaging pipelines and quality control."],
+    ["Model Evaluation", "High", "Advanced", "Screening sensitivity/specificity define program safety."],
+    ["Dataset Curation", "High", "Intermediate", "Camera and population diversity drive generalization."],
+    ["AI Governance & Compliance", "Medium", "Beginner", "Autonomous screening is FDA-cleared, regulated territory."],
+    ["Explainability (XAI)", "Medium", "Beginner", "Referable-vs-not decisions benefit from visible evidence."]
+  ]},
+  { p: "Intensivist", d: "Healthcare", t: "Predictive deterioration modeling in the ICU", s: [
+    ["Clinical Predictive Modeling", "High", "Advanced", "Deterioration and mortality risk models are the ICU's AI backbone."],
+    ["Time-Series Forecasting", "High", "Advanced", "Continuous vitals and labs are streaming time series."],
+    ["Anomaly Detection", "High", "Intermediate", "Sudden physiologic shifts surface as anomalies."],
+    ["Explainability (XAI)", "High", "Intermediate", "Bedside teams need the reason behind a rising risk score."],
+    ["Human-in-the-Loop Design", "High", "Intermediate", "Alerts must support, not overwhelm, clinical judgment."]
+  ]},
+  { p: "Neurologist", d: "Healthcare", t: "AI for stroke imaging and EEG interpretation", s: [
+    ["Medical Imaging AI", "High", "Advanced", "Large-vessel-occlusion detection on CT/MRI speeds stroke care."],
+    ["Physiological Signal AI", "High", "Intermediate", "EEG models detect seizures and abnormal patterns."],
+    ["Computer Vision", "Medium", "Intermediate", "Underlying detection methods for imaging."],
+    ["Model Evaluation", "High", "Intermediate", "Time-critical decisions demand rigorously validated models."],
+    ["AI Literacy & Verification", "High", "Advanced", "Automated reads are confirmed before treatment."]
+  ]},
+  { p: "Nurse Practitioner", d: "Healthcare", t: "Using AI clinical decision support in primary care", s: [
+    ["AI Literacy & Verification", "High", "Advanced", "Judging when suggestions are reliable is the central competency."],
+    ["Clinical Documentation AI", "High", "Intermediate", "Ambient notes and drafts need supervised editing."],
+    ["Clinical NLP", "Medium", "Beginner", "Understanding chart extraction explains the tool's output."],
+    ["Explainability (XAI)", "Medium", "Intermediate", "Demand the evidence behind a recommendation before acting."],
+    ["Human-in-the-Loop Design", "High", "Intermediate", "The clinician remains the decision-maker."],
+    ["Privacy-Preserving AI", "High", "Intermediate", "Patient data governs which tools are permissible."]
+  ]},
+  { p: "Genetic Counselor", d: "Healthcare", t: "AI-assisted variant interpretation and patient communication", s: [
+    ["Genomics AI", "High", "Advanced", "Variant effect prediction and interpretation are the core."],
+    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Answers must ground in ClinVar, guidelines, and the literature."],
+    ["Clinical NLP", "Medium", "Intermediate", "Family history and records structure the assessment."],
+    ["AI Writing & Editing", "Medium", "Intermediate", "Plain-language patient explanations draft faster with AI."],
+    ["Hallucination Detection & Fact Verification", "High", "Advanced", "A misstated variant significance misinforms real decisions."],
+    ["Privacy-Preserving AI", "High", "Advanced", "Genetic data is uniquely sensitive and identifying."]
+  ]},
+  { p: "Medical Coder", d: "Healthcare", t: "AI-assisted medical coding and billing", s: [
+    ["Medical Coding AI", "High", "Advanced", "Assisted and autonomous ICD/CPT coding is the workflow itself."],
+    ["Clinical NLP", "High", "Advanced", "Codes are derived from unstructured clinical documentation."],
+    ["Structured Output", "High", "Intermediate", "Codes must emit in strict, billable schemas."],
+    ["Human-in-the-Loop Design", "High", "Intermediate", "Coder review and audit keep billing compliant."],
+    ["AI Governance & Compliance", "Medium", "Intermediate", "Coding errors carry audit and fraud exposure."],
+    ["Document Processing & OCR", "Medium", "Intermediate", "Scanned records must become analyzable text."]
+  ]},
+  { p: "Biostatistician", d: "Healthcare", t: "AI-assisted clinical trial analysis", s: [
+    ["Statistical Analysis", "High", "Advanced", "Trial rigor — endpoints, power, multiplicity — is non-delegable."],
+    ["Causal Inference", "High", "Advanced", "Estimands and confounding control are the discipline's core."],
+    ["Scientific Data Analysis", "High", "Advanced", "Reproducible, auditable analysis pipelines are mandatory."],
+    ["Python", "High", "Advanced", "Analysis and simulation run in Python/R."],
+    ["Agentic Coding", "Medium", "Intermediate", "Agents accelerate analysis code under strict review."],
+    ["Model Evaluation", "Medium", "Intermediate", "When models are used, validation is part of the statistics."]
+  ]},
+  { p: "Clinical Data Manager", d: "Healthcare", t: "Trial data cleaning and query automation", s: [
+    ["AI-Assisted Data Cleaning", "High", "Advanced", "Standardizing and reconciling messy trial data is the core work."],
+    ["Structured Output", "High", "Intermediate", "Clean data must conform to CDISC-style schemas."],
+    ["Document Processing & OCR", "Medium", "Intermediate", "Source documents and forms feed the database."],
+    ["Privacy-Preserving AI", "High", "Intermediate", "Trial data carries strict handling obligations."],
+    ["Workflow Automation", "Medium", "Intermediate", "Query generation and reconciliation automate well."]
+  ]},
+  { p: "Pharmacovigilance Specialist", d: "Healthcare", t: "Adverse event detection and safety reporting", s: [
+    ["Pharmacovigilance AI", "High", "Advanced", "Detecting and coding adverse events is the role's core."],
+    ["Clinical NLP", "High", "Advanced", "Events hide in reports, narratives, and literature."],
+    ["Anomaly Detection", "Medium", "Intermediate", "Signal detection surfaces emerging safety issues."],
+    ["Structured Output", "Medium", "Intermediate", "Cases must emit in regulatory (MedDRA/E2B) formats."],
+    ["AI Governance & Compliance", "High", "Intermediate", "Reporting timelines and audit trails are regulated."],
+    ["Hallucination Detection & Fact Verification", "High", "Advanced", "A missed or misstated event is a safety and legal risk."]
+  ]},
+  { p: "Health Data Scientist", d: "Healthcare", t: "Building EHR-based clinical prediction models", s: [
+    ["Clinical Predictive Modeling", "High", "Advanced", "Risk models on EHR data are the central deliverable."],
+    ["Machine Learning Basics", "High", "Advanced", "Feature engineering and validation remain the craft."],
+    ["Clinical NLP", "High", "Intermediate", "Much predictive signal lives in free-text notes."],
+    ["Bias & Fairness Auditing", "High", "Advanced", "Clinical models can encode and amplify disparities."],
+    ["Model Evaluation", "High", "Advanced", "Calibration and decision-curve analysis matter as much as AUROC."],
+    ["Privacy-Preserving AI", "High", "Advanced", "PHI governs data access and model handling."],
+    ["MLOps & Model Monitoring", "Medium", "Intermediate", "Clinical models drift; monitoring is part of the build."]
+  ]},
+  { p: "Physical Therapist", d: "Healthcare", t: "AI movement analysis for rehabilitation", s: [
+    ["Computer Vision", "High", "Intermediate", "Pose estimation quantifies movement and progress."],
+    ["Multimodal AI", "Medium", "Beginner", "Combining video with wearable data enriches assessment."],
+    ["AI Literacy & Verification", "High", "Intermediate", "Automated measures guide but don't replace clinical judgment."],
+    ["Human-in-the-Loop Design", "Medium", "Intermediate", "Home-exercise tools need clear escalation to the therapist."],
+    ["Privacy-Preserving AI", "Medium", "Beginner", "Patient video is sensitive and needs careful handling."]
+  ]},
+  { p: "Medical Writer", d: "Healthcare", t: "AI-assisted regulatory and scientific medical writing", s: [
+    ["Scientific Writing with AI", "High", "Advanced", "Drafting and editing clinical and regulatory documents is the core."],
+    ["RAG (Retrieval-Augmented Generation)", "High", "Intermediate", "Documents must ground in study data and source references."],
+    ["Hallucination Detection & Fact Verification", "High", "Advanced", "Every claim and citation in a submission must be verified."],
+    ["Regulatory Intelligence AI", "Medium", "Intermediate", "Documents must conform to evolving agency guidance."],
+    ["Structured Output", "Medium", "Intermediate", "Regulatory documents demand rigid structure."],
+    ["Responsible AI Practice", "Medium", "Intermediate", "Disclosure of AI use is increasingly expected."]
+  ]},
+  { p: "Hospital Operations Manager", d: "Healthcare", t: "AI patient-flow and staffing optimization", s: [
+    ["Time-Series Forecasting", "High", "Advanced", "Census, admissions, and demand are forecasting problems."],
+    ["Optimization & Operations Research", "High", "Advanced", "Bed and staff allocation are optimization decisions."],
+    ["Anomaly Detection", "Medium", "Intermediate", "Surges and bottlenecks surface as anomalies."],
+    ["Data Visualization", "Medium", "Intermediate", "Operations run on live capacity dashboards."],
+    ["AI Literacy & Verification", "Medium", "Intermediate", "Forecast overreliance without judgment causes real harm."]
+  ]},
+  { p: "Health Payer Analyst", d: "Healthcare", t: "AI-assisted prior-authorization and claims review", s: [
+    ["Document Processing & OCR", "High", "Advanced", "Claims and records arrive as high-volume mixed documents."],
+    ["Clinical NLP", "High", "Intermediate", "Medical necessity signals live in clinical text."],
+    ["Structured Output", "High", "Intermediate", "Decisions must emit in auditable, structured form."],
+    ["Bias & Fairness Auditing", "High", "Intermediate", "Coverage decisions face strict fairness and legal scrutiny."],
+    ["AI Governance & Compliance", "High", "Intermediate", "Automated coverage decisions are heavily regulated."],
+    ["Fraud Detection ML", "Medium", "Intermediate", "Anomalous claims patterns flag potential fraud."]
+  ]},
+  { p: "Sonographer", d: "Healthcare", t: "AI-guided ultrasound image acquisition", s: [
+    ["Medical Imaging AI", "High", "Intermediate", "Real-time quality and view recognition guide acquisition."],
+    ["Computer Vision", "High", "Intermediate", "Frame-level guidance and measurement automation."],
+    ["Multimodal AI", "Medium", "Beginner", "Combining image and probe data assists positioning."],
+    ["Human-in-the-Loop Design", "Medium", "Intermediate", "Guidance assists the operator, who stays in control."],
+    ["AI Literacy & Verification", "Medium", "Intermediate", "Automated measurements are confirmed, not trusted blindly."]
+  ]},
+
+  // ==================== FURTHER EXPANSION ====================
+
+  { p: "Insurance Underwriter", d: "Finance", t: "AI-assisted underwriting", s: [
+    ["Fraud Detection ML", "High", "Intermediate", "Risk and misrepresentation signals drive underwriting."],
+    ["Bias & Fairness Auditing", "High", "Advanced", "Underwriting models face strict anti-discrimination law."],
+    ["Explainability (XAI)", "High", "Advanced", "Adverse decisions must be explainable to applicants and regulators."],
+    ["Document Processing & OCR", "High", "Intermediate", "Applications and records arrive as mixed documents."],
+    ["AI Governance & Compliance", "High", "Intermediate", "Automated underwriting is a regulated, high-risk use."]
+  ]},
+  { p: "Architect", d: "Design", t: "Generative architectural design", s: [
+    ["Generative Design", "High", "Advanced", "AI exploration of massing and layout under constraints is the workflow."],
+    ["Image & Video Generation", "High", "Intermediate", "Concept visualization and rendering accelerate ideation."],
+    ["Simulation & Digital Twins", "Medium", "Intermediate", "Energy, daylight, and structural simulation validate designs."],
+    ["Geospatial & Remote Sensing AI", "Medium", "Beginner", "Site and context data ground the design."],
+    ["Prompt Engineering", "Medium", "Intermediate", "Design intent and constraints must be specified precisely."]
+  ]},
+  { p: "Localization Specialist", d: "Localization", t: "AI-assisted translation and localization", s: [
+    ["Translation & Localization AI", "High", "Advanced", "AI translation with terminology control and post-editing is the core."],
+    ["AI Writing & Editing", "High", "Intermediate", "Post-editing AI output to native quality is the daily craft."],
+    ["RAG (Retrieval-Augmented Generation)", "Medium", "Intermediate", "Grounding in glossaries and past translations keeps terms consistent."],
+    ["Prompt Engineering", "Medium", "Intermediate", "Tone, register, and locale live in reusable prompts."],
+    ["Hallucination Detection & Fact Verification", "Medium", "Intermediate", "Mistranslations and invented content must be caught."],
+    ["Responsible AI Practice", "Low", "Beginner", "Cultural appropriateness and disclosure matter across markets."]
+  ]},
+  { p: "Game Developer", d: "Gaming", t: "AI for game content and interactive NPCs", s: [
+    ["Image & Video Generation", "High", "Intermediate", "Asset and texture generation accelerates content pipelines."],
+    ["Conversational AI Design", "High", "Advanced", "Believable, safe NPC dialogue is a distinct design craft."],
+    ["Agent Orchestration", "Medium", "Intermediate", "NPCs with memory and goals are agents."],
+    ["Reinforcement Learning", "Medium", "Advanced", "Learned behaviors and difficulty tuning use RL."],
+    ["Guardrails", "High", "Intermediate", "Generative NPCs need strong content and safety boundaries."],
+    ["Prompt Engineering", "Medium", "Intermediate", "Character voice and behavior live in prompts."]
   ]},
 ];
 
