@@ -11,43 +11,44 @@
 const RECS = [
   // ---------- Healthcare ----------
   { p: "Radiologist", d: "Healthcare", t: "Building an AI model for DSA vs. non-DSA image classification", s: [
+    ["awesome-medical-imaging-agents", "High", "Curated radiology and segmentation agents, benchmarks, and datasets to build the classifier from."],
+    ["universal-biomedical-skills", "High", "Digital-pathology/imaging SKILL.md units and reproducible clinical ML workflows."],
     ["EU AI Act", "High", "Medical imaging AI is high-risk under the Act — import its risk-tier obligations from day one."],
-    ["Responsible AI Toolbox", "High", "Audit the classifier's fairness and reliability before it ever touches patients."],
-    ["NIST AI Risk Management Framework", "Medium", "A lifecycle framework to govern the model's risk end to end."],
-    ["scientific-agent-skills", "Medium", "Science-focused agent skills for the data analysis and experiment work."],
-    ["academic-research-skills", "Low", "Validate and write up the model against the literature."]
+    ["Responsible AI Toolbox", "Medium", "Audit the classifier's fairness and reliability before it ever touches patients."],
+    ["scientific-agent-skills", "Low", "Science-focused agent skills for the data-analysis work."]
   ]},
   { p: "Radiologist", d: "Healthcare", t: "AI-assisted report drafting and worklist triage", s: [
+    ["medsci-skills", "High", "Radiology structured-reporting lexicons (BI-RADS/LI-RADS/etc.) and DICOM de-identification."],
     ["NeMo Guardrails", "High", "Constrain a report-drafting agent so it can't emit unverified findings."],
-    ["Guardrails AI", "High", "Validate drafted reports against structured rules before the radiologist signs."],
-    ["EU AI Act", "High", "Triage and drafting on patients fall squarely under high-risk obligations."],
-    ["doc-coauthoring", "Medium", "Human-in-the-loop drafting workflow so the radiologist stays the author."],
-    ["CLAUDE.md", "Low", "Scope exactly what the drafting agent may and may not do in your setup."]
+    ["Guardrails AI", "Medium", "Validate drafted reports against structured rules before the radiologist signs."],
+    ["EU AI Act", "Medium", "Triage and drafting on patients fall squarely under high-risk obligations."],
+    ["doc-coauthoring", "Low", "Human-in-the-loop drafting so the radiologist stays the author."]
   ]},
   { p: "Medical Resident", d: "Healthcare", t: "Learning procedural case log annotation", s: [
+    ["universal-biomedical-skills", "High", "Clinical SKILL.md units with metadata and human-review boundaries for annotation."],
     ["prompt-master", "High", "Precise extraction prompts are what make AI-assisted labeling reliable."],
-    ["CLAUDE.md", "High", "Scope the annotation agent — what it may label and the format it must use."],
-    ["pdf", "Medium", "Pull procedures out of scanned records and reports into structured text."],
-    ["Responsible AI Toolbox", "Low", "Spot-check pre-labels for systematic error before trusting them."]
+    ["CLAUDE.md", "Medium", "Scope the annotation agent — what it may label and the format it must use."],
+    ["pdf", "Low", "Pull procedures out of scanned records and reports into structured text."]
   ]},
   { p: "Medical Resident", d: "Healthcare", t: "AI-assisted literature review for journal club", s: [
-    ["academic-research-skills", "High", "End-to-end research pipeline: find, appraise, synthesize, write."],
-    ["scientific-agent-skills", "High", "Science agent skills for reading and comparing trials rigorously."],
-    ["notebooklm-py", "Medium", "Programmatic NotebookLM access to summarize sources with citations you can check."],
-    ["humanizer", "Low", "Clean AI phrasing out of your written summary."]
+    ["medsci-skills", "High", "Physician-built literature search plus reporting-guideline and citation checks."],
+    ["medical-research-skills", "High", "Evidence-insight and academic-writing skills for journal-club prep."],
+    ["scientific-agent-skills", "Medium", "Science agent skills for reading and comparing trials rigorously."],
+    ["notebooklm-py", "Low", "Programmatic NotebookLM to summarize sources with citations you can check."]
   ]},
   { p: "Physician (Primary Care)", d: "Healthcare", t: "Adopting ambient clinical documentation", s: [
+    ["healthcare-agents", "High", "Clinical-operations SKILL.md agents that fit ambient documentation into workflow."],
     ["NeMo Guardrails", "High", "Stop an ambient scribe from inventing clinical content or negations."],
-    ["EU AI Act", "High", "Clinical documentation AI carries high-risk obligations and consent duties."],
+    ["EU AI Act", "Medium", "Clinical documentation AI carries high-risk obligations and consent duties."],
     ["doc-coauthoring", "Medium", "Supervised note-drafting keeps the physician the author of record."],
-    ["CLAUDE.md", "Medium", "Bound what the documentation agent is allowed to do."],
     ["Responsible AI Toolbox", "Low", "Check for systematic summarization error across patient groups."]
   ]},
   { p: "Physician (Primary Care)", d: "Healthcare", t: "Using AI clinical decision support safely", s: [
+    ["informed-patient", "High", "Builds a cited evidence review to inform a specific clinical question."],
+    ["universal-biomedical-skills", "High", "Clinical decision-support workflows with citations and human-review gates."],
     ["EU AI Act", "High", "Decision support is high-risk — know the obligations before relying on it."],
-    ["Responsible AI Toolbox", "High", "Audit the tool's fairness and reliability across your patient population."],
-    ["NIST AI Risk Management Framework", "Medium", "Frame and govern the risk of acting on model output."],
-    ["awesome-ai-governance", "Low", "Broader governance references for safe clinical adoption."]
+    ["Responsible AI Toolbox", "Medium", "Audit the tool's fairness and reliability across your patient population."],
+    ["Global Responsible AI in Healthcare", "Low", "A guide to responsible-AI-in-health frameworks by region."]
   ]},
 
   // ---------- Academia ----------
@@ -466,34 +467,35 @@ const RECS = [
 
   // ---------- Healthcare (expanded personas) ----------
   { p: "Pharmacist", d: "Healthcare", t: "AI-assisted medication review and interaction checking", s: [
+    ["universal-biomedical-skills", "High", "Clinical SKILL.md units covering drug-safety and interaction workflows."],
+    ["OpenClaw-Medical-Skills", "High", "Broad medical skills library spanning pharmacology and clinical review."],
     ["NeMo Guardrails", "High", "Keep an interaction-checking agent from asserting unverified guidance."],
-    ["EU AI Act", "High", "Medication-safety AI carries high-risk obligations."],
-    ["Responsible AI Toolbox", "Medium", "Assess reliability before it informs dispensing."],
-    ["pdf", "Low", "Pull medication data from records and references."]
+    ["EU AI Act", "Medium", "Medication-safety AI carries high-risk obligations."]
   ]},
   { p: "Public Health Epidemiologist", d: "Healthcare", t: "Outbreak surveillance and forecasting", s: [
+    ["medical-research-skills", "High", "Data-analysis and evidence-insight skills for surveillance work."],
     ["scientific-agent-skills", "High", "Science/ML agent skills for surveillance and forecasting."],
-    ["CLAUDE.md", "High", "Govern the coding agent on the modeling repo."],
-    ["xlsx", "Medium", "Structure and analyze surveillance data."],
-    ["academic-research-skills", "Low", "Ground methods in the epidemiological literature."]
+    ["CLAUDE.md", "Medium", "Govern the coding agent on the modeling repo."],
+    ["xlsx", "Low", "Structure and analyze surveillance data."]
   ]},
   { p: "Clinical Trial Coordinator", d: "Healthcare", t: "Patient recruitment and eligibility matching", s: [
-    ["pdf", "High", "Extract eligibility signals from referrals and outside records."],
-    ["EU AI Act", "High", "Screening on patient data is high-risk and consent-bound."],
-    ["Rebuff", "Medium", "Guard a record-ingesting agent against injected content."],
-    ["xlsx", "Low", "Track and structure screening results."]
+    ["medical-research-skills", "High", "Protocol-design and trial-matching skills for eligibility work."],
+    ["healthcare-agents", "High", "Clinical-operations agents for recruitment workflows."],
+    ["EU AI Act", "Medium", "Screening on patient data is high-risk and consent-bound."],
+    ["pdf", "Low", "Extract eligibility signals from referrals and outside records."]
   ]},
   { p: "Nurse Informaticist", d: "Healthcare", t: "Deploying clinical documentation and alerting tools", s: [
+    ["healthcare-agents", "High", "51 healthcare-administration agents for documentation and clinical ops."],
+    ["Awesome-AI-Agents-for-Healthcare", "Medium", "Reference systems and frameworks for clinical AI agents to deploy."],
     ["NeMo Guardrails", "High", "Bound alerting and documentation agents safely into workflow."],
-    ["EU AI Act", "High", "Clinical tools carry high-risk obligations."],
-    ["Responsible AI Toolbox", "Medium", "Audit alerting for bias across patient groups."],
-    ["CLAUDE.md", "Low", "Scope what the documentation agent may do."]
+    ["EU AI Act", "Medium", "Clinical tools carry high-risk obligations."],
+    ["Responsible AI Toolbox", "Low", "Audit alerting for bias across patient groups."]
   ]},
   { p: "Mental Health Therapist", d: "Healthcare", t: "Using AI for notes and between-session support tools", s: [
+    ["informed-patient", "High", "Evidence-review skill for grounded, cited health answers."],
     ["NeMo Guardrails", "High", "Essential safety and escalation guardrails for any patient-facing tool."],
-    ["EU AI Act", "High", "Mental-health AI is high-risk and highly sensitive."],
-    ["doc-coauthoring", "Medium", "Supervised note-drafting keeps the clinician the author."],
-    ["Responsible AI Toolbox", "Low", "Check reliability before relying on summaries."]
+    ["EU AI Act", "Medium", "Mental-health AI is high-risk and highly sensitive."],
+    ["doc-coauthoring", "Low", "Supervised note-drafting keeps the clinician the author."]
   ]},
 
   // ---------- Academia (expanded) ----------
@@ -825,129 +827,136 @@ const RECS = [
 
   // ---------- Healthcare (clinical specialties) ----------
   { p: "Surgeon", d: "Healthcare", t: "AI-assisted surgical planning and intraoperative guidance", s: [
+    ["awesome-medical-imaging-agents", "High", "Imaging and segmentation agents for planning and intraoperative guidance."],
     ["EU AI Act", "High", "Surgical guidance AI is high-risk — import its obligations."],
     ["NeMo Guardrails", "High", "Keep guidance tools strictly within safe, supervised bounds."],
-    ["Responsible AI Toolbox", "Medium", "Assess reliability before anything informs the OR."],
-    ["scientific-agent-skills", "Low", "Science agent skills for the planning-data work."]
+    ["universal-biomedical-skills", "Medium", "Clinical workflow skills with explicit human-review boundaries."],
+    ["Responsible AI Toolbox", "Low", "Assess reliability before anything informs the OR."]
   ]},
   { p: "Pathologist", d: "Healthcare", t: "Building a digital pathology whole-slide classifier", s: [
+    ["awesome-medical-imaging-agents", "High", "Pathology and segmentation agents, benchmarks, and datasets to build from."],
+    ["universal-biomedical-skills", "High", "Digital-pathology SKILL.md units and reproducible clinical workflows."],
     ["EU AI Act", "High", "Diagnostic pathology AI is high-risk under the Act."],
-    ["Responsible AI Toolbox", "High", "Audit the classifier's fairness and reliability before use."],
-    ["scientific-agent-skills", "Medium", "Science/ML agent skills for the imaging pipeline."],
-    ["NIST AI Risk Management Framework", "Low", "Govern the model's lifecycle risk."]
+    ["Responsible AI Toolbox", "Medium", "Audit the classifier's fairness and reliability before use."],
+    ["scientific-agent-skills", "Low", "Science/ML agent skills for the imaging pipeline."]
   ]},
   { p: "Cardiologist", d: "Healthcare", t: "AI interpretation of ECG and echocardiography", s: [
+    ["universal-biomedical-skills", "High", "Physiological-signal and clinical-ML SKILL.md units for ECG and echo."],
+    ["awesome-medical-imaging-agents", "High", "Imaging agents for echocardiography analysis."],
     ["EU AI Act", "High", "Diagnostic interpretation AI is high-risk."],
-    ["Responsible AI Toolbox", "High", "Validate reliability and fairness before clinical use."],
-    ["scientific-agent-skills", "Medium", "Science/ML skills for the signal/imaging models."],
+    ["Responsible AI Toolbox", "Medium", "Validate reliability and fairness before clinical use."],
     ["NeMo Guardrails", "Low", "Bound any patient-facing interpretation tool."]
   ]},
   { p: "Oncologist", d: "Healthcare", t: "AI decision support for treatment planning", s: [
+    ["universal-biomedical-skills", "High", "Clinical, genomics, and trial-matching SKILL.md units for treatment planning."],
+    ["medical-research-skills", "Medium", "Evidence-synthesis skills to ground recommendations in the literature."],
     ["EU AI Act", "High", "Treatment decision support is high-risk."],
-    ["NeMo Guardrails", "High", "Keep a planning agent from asserting unverified recommendations."],
-    ["Responsible AI Toolbox", "Medium", "Assess fairness across patient populations."],
-    ["scientific-agent-skills", "Low", "Science agent skills for genomic and outcome analysis."]
+    ["NeMo Guardrails", "Medium", "Keep a planning agent from asserting unverified recommendations."],
+    ["Responsible AI Toolbox", "Low", "Assess fairness across patient populations."]
   ]},
   { p: "Emergency Physician", d: "Healthcare", t: "AI triage and sepsis early-warning", s: [
+    ["universal-biomedical-skills", "High", "Clinical-prediction workflows (sepsis/deterioration) with human-review gates."],
+    ["healthcare-agents", "Medium", "Clinical-operations agents for triage workflows."],
     ["EU AI Act", "High", "Triage and early-warning AI is high-risk."],
-    ["Responsible AI Toolbox", "High", "Audit the model for bias and reliability across groups."],
-    ["NeMo Guardrails", "Medium", "Bound alerting behavior and escalation."],
-    ["NIST AI Risk Management Framework", "Low", "Govern the operational risk of acting on alerts."]
+    ["Responsible AI Toolbox", "Medium", "Audit the model for bias and reliability across groups."],
+    ["NeMo Guardrails", "Low", "Bound alerting behavior and escalation."]
   ]},
   { p: "Dermatologist", d: "Healthcare", t: "Skin lesion classification", s: [
+    ["awesome-medical-imaging-agents", "High", "Imaging and classification agents plus datasets for lesion work."],
     ["Responsible AI Toolbox", "High", "Skin-tone bias is well-documented — audit fairness explicitly."],
     ["EU AI Act", "High", "Diagnostic classification AI is high-risk."],
-    ["scientific-agent-skills", "Medium", "Science/ML agent skills for the imaging model."],
-    ["NIST AI Risk Management Framework", "Low", "Govern the model's lifecycle risk."]
+    ["universal-biomedical-skills", "Low", "Reproducible clinical imaging workflows."]
   ]},
   { p: "Ophthalmologist", d: "Healthcare", t: "Diabetic retinopathy screening", s: [
+    ["awesome-medical-imaging-agents", "High", "Imaging and segmentation agents for fundus screening."],
     ["EU AI Act", "High", "Autonomous screening is high-risk and tightly regulated."],
-    ["Responsible AI Toolbox", "High", "Validate screening sensitivity and fairness across cameras/populations."],
-    ["scientific-agent-skills", "Medium", "Science/ML agent skills for the fundus-image model."],
-    ["NIST AI Risk Management Framework", "Low", "Govern the screening program's risk."]
+    ["Responsible AI Toolbox", "High", "Validate screening sensitivity and fairness across cameras and populations."],
+    ["universal-biomedical-skills", "Low", "Reproducible clinical imaging workflows."]
   ]},
   { p: "Intensivist", d: "Healthcare", t: "Predictive deterioration modeling in the ICU", s: [
+    ["universal-biomedical-skills", "High", "Clinical-prediction and physiological-signal SKILL.md units for ICU deterioration."],
     ["EU AI Act", "High", "ICU risk prediction is high-risk."],
-    ["Responsible AI Toolbox", "High", "Audit reliability and fairness before it drives alerts."],
-    ["scientific-agent-skills", "Medium", "Science/ML agent skills for the vitals modeling."],
-    ["NeMo Guardrails", "Low", "Bound bedside alerting behavior."]
+    ["Responsible AI Toolbox", "Medium", "Audit reliability and fairness before it drives alerts."],
+    ["scientific-agent-skills", "Low", "Science/ML agent skills for the vitals modeling."]
   ]},
   { p: "Neurologist", d: "Healthcare", t: "AI for stroke imaging and EEG interpretation", s: [
+    ["awesome-medical-imaging-agents", "High", "Imaging agents for stroke CT/MRI analysis."],
+    ["universal-biomedical-skills", "Medium", "Physiological-signal SKILL.md units for EEG interpretation."],
     ["EU AI Act", "High", "Time-critical diagnostic AI is high-risk."],
-    ["Responsible AI Toolbox", "High", "Validate reliability before acting on automated reads."],
-    ["scientific-agent-skills", "Medium", "Science/ML agent skills for imaging and signal models."],
-    ["NIST AI Risk Management Framework", "Low", "Govern the model's lifecycle risk."]
+    ["Responsible AI Toolbox", "Low", "Validate reliability before acting on automated reads."]
   ]},
   { p: "Nurse Practitioner", d: "Healthcare", t: "Using AI clinical decision support in primary care", s: [
+    ["informed-patient", "High", "Builds a cited evidence review for grounded clinical answers."],
+    ["healthcare-agents", "Medium", "Clinical-operations agents for primary-care workflows."],
     ["EU AI Act", "High", "Decision support is high-risk — know the obligations."],
-    ["Responsible AI Toolbox", "High", "Audit fairness across your patient population."],
-    ["doc-coauthoring", "Medium", "Supervised drafting keeps the clinician the author."],
-    ["awesome-ai-governance", "Low", "Broader governance references for safe adoption."]
+    ["Responsible AI Toolbox", "Low", "Audit fairness across your patient population."]
   ]},
   { p: "Genetic Counselor", d: "Healthcare", t: "AI-assisted variant interpretation and patient communication", s: [
+    ["universal-biomedical-skills", "High", "Genomics and variant-interpretation SKILL.md units with provenance."],
+    ["informed-patient", "Medium", "Evidence-review skill for patient-facing communication."],
     ["EU AI Act", "High", "Genetic interpretation AI is high-risk and highly sensitive."],
-    ["academic-research-skills", "High", "Ground interpretations in ClinVar, guidelines, and literature."],
-    ["doc-coauthoring", "Medium", "Draft patient-facing explanations under review."],
-    ["Responsible AI Toolbox", "Low", "Check reliability before relying on predictions."]
+    ["academic-research-skills", "Low", "Ground interpretations in ClinVar, guidelines, and literature."]
   ]},
   { p: "Medical Coder", d: "Healthcare", t: "AI-assisted medical coding and billing", s: [
+    ["healthcare-agents", "High", "Revenue-cycle and coding-workflow agents for US healthcare administration."],
     ["pdf", "High", "Extract codes and context from scanned clinical documentation."],
-    ["Guardrails AI", "High", "Validate emitted codes against structured rules before billing."],
-    ["EU AI Act", "Medium", "Automated coding decisions can carry compliance obligations."],
-    ["Rebuff", "Low", "Guard the coding agent against injected content in records."]
+    ["Guardrails AI", "Medium", "Validate emitted codes against structured rules before billing."],
+    ["EU AI Act", "Low", "Automated coding decisions can carry compliance obligations."]
   ]},
   { p: "Biostatistician", d: "Healthcare", t: "AI-assisted clinical trial analysis", s: [
-    ["scientific-agent-skills", "High", "Science/stats agent skills for rigorous trial analysis."],
-    ["CLAUDE.md", "High", "Govern the coding agent — analysis must be reproducible and audited."],
-    ["planning-with-files", "Medium", "Durable, reproducible planning across the analysis."],
-    ["academic-research-skills", "Low", "Ground methods and reporting in the literature."]
+    ["medsci-skills", "High", "Statistics, reporting-guideline, and publication-figure skills for trial analysis."],
+    ["medical-research-skills", "High", "Data-analysis and academic-writing skills for the trial write-up."],
+    ["scientific-agent-skills", "Medium", "Science/stats agent skills for rigorous analysis."],
+    ["CLAUDE.md", "Low", "Govern the coding agent — analysis must be reproducible and audited."]
   ]},
   { p: "Clinical Data Manager", d: "Healthcare", t: "Trial data cleaning and query automation", s: [
+    ["medical-research-skills", "High", "Protocol and data-analysis skills tailored to trial data."],
     ["xlsx", "High", "Standardize, reconcile, and clean trial data."],
     ["pdf", "Medium", "Digitize source documents and forms."],
-    ["EU AI Act", "Medium", "Trial-data AI carries obligations and strict handling rules."],
-    ["Rebuff", "Low", "Guard data-ingesting agents against injected content."]
+    ["EU AI Act", "Low", "Trial-data AI carries obligations and strict handling rules."]
   ]},
   { p: "Pharmacovigilance Specialist", d: "Healthcare", t: "Adverse event detection and safety reporting", s: [
-    ["pdf", "High", "Extract adverse-event signals from reports and literature."],
-    ["Guardrails AI", "High", "Validate coded cases against structured rules before reporting."],
-    ["EU AI Act", "Medium", "Safety-reporting AI carries regulatory obligations."],
-    ["academic-research-skills", "Low", "Mine literature for emerging safety signals."]
+    ["medical-research-skills", "High", "Evidence-mining skills for adverse-event detection across literature."],
+    ["pdf", "High", "Extract adverse-event signals from reports and case narratives."],
+    ["Guardrails AI", "Medium", "Validate coded cases against structured rules before reporting."],
+    ["EU AI Act", "Low", "Safety-reporting AI carries regulatory obligations."]
   ]},
   { p: "Health Data Scientist", d: "Healthcare", t: "Building EHR-based clinical prediction models", s: [
+    ["universal-biomedical-skills", "High", "Clinical-ML, EHR/FHIR, and prediction-model SKILL.md units."],
+    ["Awesome-AI-Agents-for-Healthcare", "Medium", "Reference systems and frameworks for clinical AI."],
     ["EU AI Act", "High", "Clinical prediction models are high-risk."],
-    ["Responsible AI Toolbox", "High", "Audit fairness and reliability across patient subgroups."],
-    ["scientific-agent-skills", "Medium", "Science/ML agent skills for the modeling work."],
-    ["CLAUDE.md", "Low", "Govern the coding agent on the modeling repo."]
+    ["Responsible AI Toolbox", "Medium", "Audit fairness and reliability across patient subgroups."],
+    ["Global Responsible AI in Healthcare", "Low", "A guide to responsible-AI-in-health frameworks by region."]
   ]},
   { p: "Physical Therapist", d: "Healthcare", t: "AI movement analysis for rehabilitation", s: [
-    ["EU AI Act", "Medium", "Patient-facing assessment tools may carry obligations."],
+    ["awesome-medical-imaging-agents", "Medium", "Vision agents relevant to pose and movement analysis."],
+    ["informed-patient", "Medium", "Evidence-review skill for patient-facing guidance."],
     ["NeMo Guardrails", "Medium", "Bound any home-exercise agent with clear escalation."],
-    ["scientific-agent-skills", "Medium", "Science/ML agent skills for movement analysis."],
-    ["Responsible AI Toolbox", "Low", "Check reliability of automated measures."]
+    ["EU AI Act", "Low", "Patient-facing assessment tools may carry obligations."]
   ]},
   { p: "Medical Writer", d: "Healthcare", t: "AI-assisted regulatory and scientific medical writing", s: [
-    ["doc-coauthoring", "High", "Structured human-in-the-loop drafting of regulated documents."],
-    ["academic-research-skills", "High", "Ground documents in study data and references."],
-    ["pdf", "Medium", "Extract from source studies and guidance."],
-    ["humanizer", "Low", "Keep prose clean without altering meaning."]
+    ["medsci-skills", "High", "Reporting-guideline, citation-check, and submission skills for medical writing."],
+    ["medical-research-skills", "High", "Academic-writing and evidence-insight skills."],
+    ["doc-coauthoring", "Medium", "Structured human-in-the-loop drafting of regulated documents."],
+    ["pdf", "Low", "Extract from source studies and guidance."]
   ]},
   { p: "Hospital Operations Manager", d: "Healthcare", t: "AI patient-flow and staffing optimization", s: [
+    ["healthcare-agents", "High", "Operations, revenue-cycle, and population-health SKILL.md agents."],
     ["xlsx", "High", "Model census, demand, and staffing."],
-    ["scientific-agent-skills", "Medium", "Science/OR agent skills for forecasting and optimization."],
-    ["mcp-builder", "Medium", "Wire the agent into EHR/operational systems."],
-    ["planning-with-files", "Low", "Durable planning for optimization build-outs."]
+    ["Awesome-AI-Agents-for-Healthcare", "Medium", "Reference systems for healthcare-operations AI."],
+    ["mcp-builder", "Low", "Wire the agent into EHR/operational systems."]
   ]},
   { p: "Health Payer Analyst", d: "Healthcare", t: "AI-assisted prior-authorization and claims review", s: [
+    ["healthcare-agents", "High", "Payer-relations and revenue-cycle SKILL.md agents."],
     ["pdf", "High", "Extract medical-necessity signals from records and claims."],
     ["EU AI Act", "High", "Automated coverage decisions are high-risk."],
-    ["Responsible AI Toolbox", "High", "Audit coverage models for bias — legal scrutiny is strict."],
+    ["Responsible AI Toolbox", "Medium", "Audit coverage models for bias — legal scrutiny is strict."],
     ["Guardrails AI", "Low", "Validate decisions against structured, auditable rules."]
   ]},
   { p: "Sonographer", d: "Healthcare", t: "AI-guided ultrasound image acquisition", s: [
+    ["awesome-medical-imaging-agents", "High", "Imaging agents relevant to real-time ultrasound guidance."],
     ["EU AI Act", "High", "Real-time acquisition guidance is high-risk medical AI."],
     ["Responsible AI Toolbox", "Medium", "Validate reliability before it guides scanning."],
-    ["scientific-agent-skills", "Medium", "Science/ML agent skills for the imaging model."],
     ["NeMo Guardrails", "Low", "Bound guidance so the operator stays in control."]
   ]},
 

@@ -534,5 +534,77 @@ const SKILLS = [
     "category": "Standards",
     "source": "European Union",
     "type": "governance"
+  },
+  {
+    "name": "medical-research-skills",
+    "url": "https://github.com/aipoch/medical-research-skills",
+    "purpose": "Hundreds of medical-research Agent Skills spanning protocol design, data analysis, evidence insights, and academic writing.",
+    "category": "Healthcare",
+    "source": "aipoch",
+    "type": "skill"
+  },
+  {
+    "name": "medsci-skills",
+    "url": "https://github.com/Aperivue/medsci-skills",
+    "purpose": "Physician-built medical-research skills — literature search, reporting-guideline & citation checks, statistics, figures, and submission.",
+    "category": "Healthcare",
+    "source": "Aperivue",
+    "type": "skill"
+  },
+  {
+    "name": "OpenClaw-Medical-Skills",
+    "url": "https://github.com/FreedomIntelligence/OpenClaw-Medical-Skills",
+    "purpose": "Large open-source medical AI skills library covering the full range of biomedical and clinical research workflows.",
+    "category": "Healthcare",
+    "source": "FreedomIntelligence",
+    "type": "skill"
+  },
+  {
+    "name": "universal-biomedical-skills",
+    "url": "https://github.com/mdbabumiamssm/LLMs-Universal-Life-Science-and-Clinical-Skills-",
+    "purpose": "1207 biomedical SKILL.md units across clinical, genomics, drug-discovery and EHR/FHIR, with a multi-LLM BioKernel runtime.",
+    "category": "Healthcare",
+    "source": "MD Babu Mia",
+    "type": "skill"
+  },
+  {
+    "name": "healthcare-agents",
+    "url": "https://github.com/ajhcs/healthcare-agents",
+    "purpose": "SKILL.md pack of 51 specialist agents for US healthcare administration — revenue cycle, quality, clinical ops, payer relations.",
+    "category": "Healthcare",
+    "source": "ajhcs",
+    "type": "skill"
+  },
+  {
+    "name": "informed-patient",
+    "url": "https://github.com/DrCatHicks/informed-patient",
+    "purpose": "A Claude Skill that builds a cited evidence review to answer a specific patient health question.",
+    "category": "Healthcare",
+    "source": "DrCatHicks",
+    "type": "skill"
+  },
+  {
+    "name": "awesome-medical-imaging-agents",
+    "url": "https://github.com/Nanboy-Ronan/awesome-medical-imaging-agents",
+    "purpose": "Curated list of medical-imaging agents — radiology, pathology, segmentation, medical VLMs — with benchmarks and datasets.",
+    "category": "Healthcare",
+    "source": "Nanboy-Ronan",
+    "type": "skill"
+  },
+  {
+    "name": "Awesome-AI-Agents-for-Healthcare",
+    "url": "https://github.com/AgenticHealthAI/Awesome-AI-Agents-for-Healthcare",
+    "purpose": "Curated advances in agentic AI and AI agents for healthcare — systems, frameworks, and papers.",
+    "category": "Healthcare",
+    "source": "AgenticHealthAI",
+    "type": "skill"
+  },
+  {
+    "name": "Global Responsible AI in Healthcare",
+    "url": "https://github.com/nliulab/Global-Responsible-AI",
+    "purpose": "A comprehensive guide to the global landscape of responsible AI in healthcare — frameworks and regulations by region.",
+    "category": "Healthcare",
+    "source": "nliulab",
+    "type": "governance"
   }
 ];
