@@ -10,6 +10,11 @@
 // skill.dir = exact directory-entry name (app-graph looks up the live GitHub
 // URL + type from SKILLS via DIR). href overrides with a deep link when a
 // directive lives in a specific sub-skill file.
+//
+// Nodes are hand-curated (real directives). EDGES are generated deterministically
+// by pipeline/rules.py from per-node predicates — regenerate with
+// `python3 pipeline/gen_graph.py`. Do not hand-edit the edges array; edit the
+// predicates in pipeline/rules.py instead.
 
 const GRAPHS = {
   "Radiologist|AI-assisted report drafting and worklist triage": {
@@ -104,6 +109,10 @@ const GRAPHS = {
         note: "Guideline-quoting and output validation push the same not-invented standard." },
       { a: "di-no-mapping", b: "di-audit-only", type: "reinforces",
         note: "Both minimize PHI exposure — reinforcing the same containment boundary." },
+      { a: "di-local-only", b: "di-no-mapping", type: "reinforces",
+        note: "“No AI/network on PHI” and “Never read re-id mapping” push the same way — reinforcing the same boundary." },
+      { a: "di-local-only", b: "di-audit-only", type: "reinforces",
+        note: "“No AI/network on PHI” and “Read only report + audit log” push the same way — reinforcing the same boundary." },
     ],
   },
 };

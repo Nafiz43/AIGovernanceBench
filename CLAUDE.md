@@ -26,15 +26,28 @@ Detects how the instructions *inside* a bundle of recommended skills depend on, 
 
 ### Regenerating a graph (offline build — Pages has no backend)
 
+**Live approach = deterministic rule engine (no LLM).** Nodes are hand-curated real
+directives; edges are derived from small per-node predicates.
+
 ```bash
-python3 pipeline/build_graph.py                       # scrape + extract + heuristic edges
-python3 pipeline/annotate_graph.py                    # local-LLM edge annotation (Ollama qwen3:14b, thinking ON)
+python3 pipeline/rules.py         # derive edges + score vs the 13-edge gold set
+python3 pipeline/test_rules.py    # assert 13/13 recall, 0 spurious
+python3 pipeline/gen_graph.py     # rewrite graph-data.js edges from the engine
 ```
 
-- **Two-tier design:** cheap topic+polarity prefilter proposes candidate cross-skill pairs → LLM classifies only survivors (cost ~linear).
-- **Local LLM, no API key:** Ollama `qwen3:14b`, **thinking ON** (thinking OFF collapses edges to "reinforces"). ~30–160s/pair.
-- **Known bottleneck:** regex extraction only catches modal-verb lines (must/never/only) and drops sharp directives like "paste into a fresh Claude" → classifier never sees them (GIGO). Upgrading extraction (LLM pass) is the next lever, not tuning the classifier.
-- Current live approach: **hand-verified nodes + local-LLM-annotated edges**.
+- **How it works:** each node carries `(stance/egress, overlap-class, produces/consumes, goal)`. Four rules → edges: conflict = one node *opens* an egress object another *restricts* (linked objects bridge draft⊇PHI); overlap = same class, different skill; depends = consumer needs producer's artifact; reinforces = shared goal. Precedence conflict>overlap>depends>reinforces.
+- **Perf:** reproduces all 13 hand-curated edges, 0 spurious, ~0.04 ms (vs qwen3:14b ~43 min, which collapsed 16/19 edges to "reinforces"). Explainable — every edge emits its "because".
+- **Human input is O(n) predicates/node**, not O(n²) edges. Edit predicates in `pipeline/rules.py`, never the edges array directly.
+- **Soft spot:** `reinforces` leans on a hand-assigned `goal` tag — the place a small NLI/BERT model could later auto-suggest tags. Structural rules (conflict/overlap/depends) are the strong part.
+
+### Legacy LLM pipeline (superseded, kept for reference)
+
+```bash
+python3 pipeline/build_graph.py       # scrape + extract + heuristic edges
+python3 pipeline/annotate_graph.py    # local-LLM edge annotation (Ollama qwen3:14b, thinking ON)
+```
+
+Two-tier: topic+polarity prefilter → LLM classifies survivors. Bottleneck was **extraction** (regex only caught modal-verb lines, dropped sharp directives like "paste into a fresh Claude"). The rule engine replaced it as the live path.
 
 ## Deploy
 
