@@ -33,7 +33,7 @@ function init() {
     applyFilters();
   });
 
-  render();
+  applyFilters();  // sorts rated skills to the top on first load
 }
 
 // Called by the recommender to show the directory entries behind a competency.
@@ -60,6 +60,13 @@ function applyFilters() {
     const matchesName = !nameFilter || nameFilter.has(s.name);
     return matchesQ && matchesCat && matchesType && matchesName;
   });
+  // rated skills float to the top (Gold > Silver > Bronze > unrated), then A–Z
+  const TIER_RANK = { gold: 3, silver: 2, bronze: 1, unrated: 0 };
+  const rank = s => {
+    const h = typeof SKILL_HEALTH !== "undefined" && SKILL_HEALTH[s.name];
+    return h ? (TIER_RANK[h.tier] ?? 0) : -1;
+  };
+  filtered.sort((a, b) => rank(b) - rank(a) || a.name.localeCompare(b.name));
   page = 1;
   render();
 }
@@ -70,15 +77,25 @@ function escapeHtml(str) {
   return d.innerHTML;
 }
 
+const TIER_MEDAL = { gold: "🥇", silver: "🥈", bronze: "🥉", unrated: "▫️" };
+
+function badgeMedallion(emoji, cls, title, meaning) {
+  return `<span class="hb-badge ${cls}" tabindex="0">` +
+    `<span class="hb-face">${emoji}</span>` +
+    `<span class="hb-tip"><strong>${escapeHtml(title)}</strong>${meaning ? `<span>${escapeHtml(meaning)}</span>` : ""}</span>` +
+    `</span>`;
+}
+
 function healthBadges(name) {
   if (typeof SKILL_HEALTH === "undefined") return "";
   const h = SKILL_HEALTH[name];
   if (!h) return "";
+  const tier = badgeMedallion(TIER_MEDAL[h.tier] || "▫️", `hb-tier hb-tier-${h.tier}`,
+    `${h.tier[0].toUpperCase() + h.tier.slice(1)} tier — ${h.passed}/${h.total} checks passed`,
+    "Overall skill health rating. Click any badge for the full rubric.");
   const chips = h.checks.filter(c => c.pass)
-    .map(c => `<span class="hb-chip" title="${escapeHtml(c.label)}">${c.emoji}</span>`).join("");
-  return `<a class="health-badges" href="badges.html" ` +
-    `title="${h.passed}/${h.total} health checks passed — what do these badges mean?">` +
-    `<span class="tier tier-${h.tier}">${h.tier}</span>${chips}</a>`;
+    .map(c => badgeMedallion(c.emoji, "hb-check", c.label, c.meaning || "")).join("");
+  return `<a class="health-badges" href="badges.html" aria-label="Skill health badges">${tier}${chips}</a>`;
 }
 
 function render() {

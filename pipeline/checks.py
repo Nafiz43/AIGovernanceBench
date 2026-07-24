@@ -75,21 +75,17 @@ def run_checks(name):
     else:
         tier = "unrated"
     return {"tier": tier, "repo": repo, "passed": passed, "total": 6,
-            "checks": [{"id": cid, "label": lbl, "emoji": em, "pass": results[cid]}
-                       for cid, lbl, em, _ in CHECKS]}
+            "checks": [{"id": cid, "label": lbl, "emoji": em, "meaning": meaning, "pass": results[cid]}
+                       for cid, lbl, em, meaning in CHECKS]}
 
 
-def verified_skills():
-    """Distinct skill dir-names shown in the live (verified) bundles."""
-    src = (f"const fs=require('fs');let s=fs.readFileSync('graph-data.js','utf8')"
-           f".replace(/if \\(typeof window[\\s\\S]*$/,'');s+=';globalThis.__V=GRAPHS;';eval(s);"
-           f"const set=new Set();Object.values(globalThis.__V).forEach(g=>Object.values(g.skills)"
-           f".forEach(sk=>set.add(sk.dir)));process.stdout.write(JSON.stringify([...set]))")
-    return json.loads(subprocess.run(["node", "-e", src], cwd=ROOT, capture_output=True, text=True).stdout)
+def all_cached_skills():
+    """Every skill with a node cache (the full directory, minus repo-less ones)."""
+    return sorted(json.loads(f.read_text())["name"] for f in CACHE.glob("*.json"))
 
 
 def main():
-    names = verified_skills()
+    names = all_cached_skills()
     print(f"Checking {len(names)} skills:\n")
     health = {}
     for name in names:

@@ -1,0 +1,37 @@
+{
+  "name": "awesome-claude-skills",
+  "url": "https://github.com/ComposioHQ/awesome-claude-skills",
+  "repo": "ComposioHQ/awesome-claude-skills",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "postgres - Execute safe read-only SQL",
+      "text": "postgres - Execute safe read-only SQL queries against PostgreSQL databases with multi-connection support and defense-in-depth security. *By @sanjay3290*"
+    },
+    {
+      "label": "Ensure your skill is based on",
+      "text": "Ensure your skill is based on a real use case"
+    },
+    {
+      "label": "Claude Code Terminal Title - Gives",
+      "text": "Claude Code Terminal Title - Gives each Claud-Code terminal window a dynamic title that describes the work being done so you don't lose track of what window is doing what."
+    },
+    {
+      "label": "review-implementing - Evaluate code impl…",
+      "text": "review-implementing - Evaluate code implementation plans and align with specs."
+    },
+    {
+      "label": "Render Automation - Automate Render: ser…",
+      "text": "Render Automation - Automate Render: services, deploys, and project management."
+    },
+    {
+      "label": "Add skills from the marketplace or",
+      "text": "Add skills from the marketplace or upload custom skills."
+    },
+    {
+      "label": "Verify skill metadata",
+      "text": "Verify skill metadata:"
+    }
+  ]
+}

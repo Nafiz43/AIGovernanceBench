@@ -153,6 +153,7 @@ def main():
     ap.add_argument("--bundle", help="persona|task key from rec-data.js")
     ap.add_argument("--all", action="store_true", help="every distinct recommended skill (full coverage)")
     ap.add_argument("--quiet", action="store_true", help="summary only, no per-node dump")
+    ap.add_argument("--data-all", action="store_true", help="EVERY skill in data.js (full directory)")
     args = ap.parse_args()
 
     skills = load_skills()
@@ -161,9 +162,11 @@ def main():
         names += bundle_skills(args.bundle)
     if args.all:
         names += all_recommended_skills()
+    if args.data_all:
+        names += list(skills.keys())
     names = list(dict.fromkeys(names))  # dedup, keep order
     if not names:
-        ap.error("give skill names, --bundle, or --all")
+        ap.error("give skill names, --bundle, --all, or --data-all")
 
     CACHE.mkdir(exist_ok=True)
     print(f"Extracting {len(names)} skill(s):\n")

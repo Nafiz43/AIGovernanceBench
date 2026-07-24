@@ -88,9 +88,15 @@ const CHECK_DEFS = [
   ["🔒", "Secret-free", "No hardcoded API keys, tokens, or private keys in the skill file."],
 ];
 const esc = s => { const d = document.createElement("div"); d.textContent = s; return d.innerHTML; };
+const TIER_MEDAL = { gold: "🥇", silver: "🥈", bronze: "🥉", unrated: "▫️" };
+function medal(emoji, cls, title, meaning) {
+  return `<span class="hb-badge ${cls}" tabindex="0"><span class="hb-face">${emoji}</span>` +
+    `<span class="hb-tip"><strong>${esc(title)}</strong>${meaning ? `<span>${esc(meaning)}</span>` : ""}</span></span>`;
+}
 
 document.getElementById("checkRows").innerHTML = CHECK_DEFS.map(([em, label, meaning]) =>
-  `<tr><td><span class="hb-chip">${em}</span> <strong>${label}</strong></td><td>${esc(meaning)}</td></tr>`).join("");
+  `<tr><td class="check-cell">${medal(em, "hb-check", label, "")} <strong>${label}</strong></td>` +
+  `<td>${esc(meaning)}</td></tr>`).join("");
 
 const H = window.SKILL_HEALTH || {};
 const rows = Object.entries(H).sort((a, b) =>
@@ -98,10 +104,12 @@ const rows = Object.entries(H).sort((a, b) =>
 document.getElementById("ratedCount").textContent =
   `${rows.length} skills rated — regenerate with pipeline/checks.py.`;
 document.getElementById("ratedRows").innerHTML = rows.map(([name, h]) => {
+  const tier = medal(TIER_MEDAL[h.tier] || "▫️", `hb-tier hb-tier-${h.tier}`,
+    `${h.tier[0].toUpperCase() + h.tier.slice(1)} tier`, `${h.passed}/${h.total} checks passed`);
   const chips = h.checks.filter(c => c.pass)
-    .map(c => `<span class="hb-chip" title="${esc(c.label)}">${c.emoji}</span>`).join(" ");
+    .map(c => medal(c.emoji, "hb-check", c.label, c.meaning || "")).join("");
   return `<tr><td>${esc(name)}</td>` +
-    `<td><span class="tier tier-${h.tier}">${h.tier}</span> <span class="badges-note">${h.passed}/${h.total}</span></td>` +
+    `<td class="rated-tier">${tier} <span class="badges-note">${h.passed}/${h.total}</span></td>` +
     `<td class="rated-chips">${chips}</td></tr>`;
 }).join("");
 </script>

@@ -1,0 +1,37 @@
+{
+  "name": "andrej-karpathy-skills",
+  "url": "https://github.com/multica-ai/andrej-karpathy-skills",
+  "repo": "multica-ai/andrej-karpathy-skills",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Touch only what you must. Clean",
+      "text": "Touch only what you must. Clean up only your own mess."
+    },
+    {
+      "label": "Fewer unnecessary changes in diffs —",
+      "text": "Fewer unnecessary changes in diffs — Only requested changes appear"
+    },
+    {
+      "label": "Check out my new project Multica",
+      "text": "Check out my new project Multica — an open-source platform for running and managing coding agents with reusable skills."
+    },
+    {
+      "label": "\"They really like to overcomplicate code",
+      "text": "\"They really like to overcomplicate code and APIs, bloat abstractions, don't clean up dead code... implement a bloated construction over 1000 lines when 100 would do.\""
+    },
+    {
+      "label": "\"They still sometimes change/remove comm…",
+      "text": "\"They still sometimes change/remove comments and code they don't sufficiently understand as side effects, even if orthogonal to the task.\""
+    },
+    {
+      "label": "Don't assume. Don't hide confusion. Surf…",
+      "text": "Don't assume. Don't hide confusion. Surface tradeoffs."
+    },
+    {
+      "label": "Present multiple interpretations — Don't…",
+      "text": "Present multiple interpretations — Don't pick silently when ambiguity exists"
+    }
+  ]
+}

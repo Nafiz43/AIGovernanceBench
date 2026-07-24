@@ -1,0 +1,37 @@
+{
+  "name": "Auto-claude-code-research-in-sleep",
+  "url": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+  "repo": "wanshuiyin/Auto-claude-code-research-in-sleep",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Mix and match: ref paper only",
+      "text": "Mix and match: ref paper only = \"what can be improved?\", base repo only = \"what can I build with this code?\", both = \"improve *this* paper using *this* code.\""
+    },
+    {
+      "label": "📱 Feishu/Lark notifications — three modes",
+      "text": "📱 Feishu/Lark notifications — three modes: off (default, recommended), push-only (webhook → mobile), interactive (approve/reject in Feishu). Zero impact when off"
+    },
+    {
+      "label": "📋 Parse — normalize reviews, validate",
+      "text": "📋 Parse — normalize reviews, validate venue rules (character limit, text-only, etc.)"
+    },
+    {
+      "label": "Push Only — group chat cards",
+      "text": "Push Only — group chat cards (experiment done, checkpoint, error, pipeline complete):"
+    },
+    {
+      "label": "Interactive — private chat with Claude",
+      "text": "Interactive — private chat with Claude Code (approve/reject, custom instructions):"
+    },
+    {
+      "label": "🙌 Thanks to every contributor! We",
+      "text": "🙌 Thanks to every contributor! We fold the tables below to keep the README readable — but every skill and project here is equally valued. PRs always welcome!"
+    },
+    {
+      "label": "🛡️ Validate top ideas with deep",
+      "text": "🛡️ Validate top ideas with deep novelty check + devil's advocate review"
+    }
+  ]
+}

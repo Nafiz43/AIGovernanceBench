@@ -1,0 +1,37 @@
+{
+  "name": "awesome-claude-code-and-skills",
+  "url": "https://github.com/GetBindu/awesome-claude-code-and-skills",
+  "repo": "GetBindu/awesome-claude-code-and-skills",
+  "path": "readme.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Ensures secrets never appear in sessions",
+      "text": "Ensures secrets never appear in sessions, terminals, logs, or git"
+    },
+    {
+      "label": "Turns \"never do X\" bans into",
+      "text": "Turns \"never do X\" bans into positive process gates"
+    },
+    {
+      "label": "Classifies each request and activates only",
+      "text": "Classifies each request and activates only the rules that apply"
+    },
+    {
+      "label": "/diagnose traces wrong claims back to",
+      "text": "/diagnose traces wrong claims back to the stale instruction that caused them — quoted-evidence citations + 0–100 confidence + threshold-80 filtering (read-only)"
+    },
+    {
+      "label": "hermetic tests across the suite, Python",
+      "text": "hermetic tests across the suite, Python standard library only at runtime"
+    },
+    {
+      "label": "Writes Rednote (Xiaohongshu / 小红书) posts",
+      "text": "Writes Rednote (Xiaohongshu / 小红书) posts in your own voice, never fabricating content"
+    },
+    {
+      "label": "Three-layer memory architecture inspired…",
+      "text": "Three-layer memory architecture inspired by mem0 v3 (ADD-only), langmem (3 types × 2 timings), and Microsoft GraphRAG (community-summary indexing)"
+    }
+  ]
+}

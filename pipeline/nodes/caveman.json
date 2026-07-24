@@ -1,0 +1,17 @@
+{
+  "name": "caveman",
+  "url": "https://github.com/JuliusBrussee/caveman",
+  "repo": "JuliusBrussee/caveman",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Real token counts from the Claude",
+      "text": "Real token counts from the Claude API. Average 65% output reduction across 10 prompts (range 22–87%), measured against default verbose replies. Output tokens only, committed and reproducible in benchmarks/ and evals/."
+    },
+    {
+      "label": "Skill tells agent: drop filler, keep",
+      "text": "Skill tells agent: drop filler, keep substance, use fragments — but never touch code, commands, or errors."
+    }
+  ]
+}

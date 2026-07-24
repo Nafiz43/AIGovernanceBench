@@ -1,0 +1,37 @@
+{
+  "name": "ECC",
+  "url": "https://github.com/affaan-m/ECC",
+  "repo": "affaan-m/ECC",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "This repo is the raw code",
+      "text": "This repo is the raw code only. The guides explain everything."
+    },
+    {
+      "label": "Multi-language rules architecture — Rule…",
+      "text": "Multi-language rules architecture — Rules restructured from flat files into common/ + typescript/ + python/ + golang/ directories. Install only the languages you need"
+    },
+    {
+      "label": "Use the manual installer only if",
+      "text": "Use the manual installer only if you want finer-grained control, want to avoid the plugin path entirely, or your Claude Code build has trouble resolving the self-hosted marketplace entry."
+    },
+    {
+      "label": "Do not stack install methods. The",
+      "text": "Do not stack install methods. The most common broken setup is: /plugin install first, then install.sh --profile full or npx ecc-install --profile full afterward."
+    },
+    {
+      "label": "hooks feel too global or you",
+      "text": "If hooks feel too global or you only want ECC's rules, agents, commands, and core workflow skills, skip the plugin and use the minimal manual profile:"
+    },
+    {
+      "label": "Add hooks later only if you",
+      "text": "Add hooks later only if you want runtime enforcement:"
+    },
+    {
+      "label": "Step 2: Install Rules Only If",
+      "text": "Step 2: Install Rules Only If You Need Them"
+    }
+  ]
+}

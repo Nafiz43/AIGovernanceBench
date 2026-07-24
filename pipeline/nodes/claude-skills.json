@@ -1,0 +1,17 @@
+{
+  "name": "claude-skills",
+  "url": "https://github.com/Jeffallan/claude-skills",
+  "repo": "Jeffallan/claude-skills",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Surface and validate Claude's hidden ass…",
+      "text": "Surface and validate Claude's hidden assumptions about your project with /common-ground. See the Common Ground Guide for full documentation."
+    },
+    {
+      "label": "Setup: Workflow commands require an Atla…",
+      "text": "Setup: Workflow commands require an Atlassian MCP server. See the Atlassian MCP Setup Guide."
+    }
+  ]
+}
