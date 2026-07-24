@@ -35,8 +35,12 @@ function openAnalyzer(key) {
   const counts = { conflict: 0, overlap: 0, depends: 0, reinforces: 0 };
   g.edges.forEach(e => counts[e.type]++);
   document.getElementById("anTitle").textContent = `${g.persona} · ${g.task}`;
+  const provenance = g.verified
+    ? `<span class="an-chip an-chip-verified">✓ Human-verified</span>`
+    : `<span class="an-chip an-chip-draft" title="Nodes are real directives; edges are auto-detected candidates, not verified. Conflicts only shown on verified bundles.">⚙ Auto-generated draft</span>`;
   document.getElementById("anSummary").innerHTML =
-    `${Object.keys(g.skills).length} skills · ${g.nodes.length} instructions` +
+    provenance +
+    ` ${Object.keys(g.skills).length} skills · ${g.nodes.length} instructions` +
     ` <span class="an-chip an-chip-conflict">⚠ ${counts.conflict} conflicts</span>` +
     ` <span class="an-chip an-chip-overlap">${counts.overlap} redundant</span>` +
     ` <span class="an-chip an-chip-depends">${counts.depends} dependencies</span>`;
