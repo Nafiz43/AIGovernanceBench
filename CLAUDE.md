@@ -31,16 +31,22 @@ directives; edges are derived from small per-node predicates.
 
 ```bash
 python3 pipeline/extract_nodes.py --all --quiet   # extract REAL directive nodes per skill -> pipeline/nodes/*.json
-python3 pipeline/rules.py         # derive edges + score vs the 13-edge gold set
-python3 pipeline/test_rules.py    # assert 13/13 recall, 0 spurious
-python3 pipeline/gen_all.py       # generate graph-data.js for ALL 142 pairs (gold preserved, rest auto-draft)
+python3 pipeline/curated.py       # write LIVE graph-data.js = the hand-verified bundles only
+python3 pipeline/gen_all.py       # write OFF-PROD graph-data.generated.js (all 142, drafts) — gitignored
+python3 pipeline/checks.py        # write skill-health.js (badge data for the directory + badges.html)
 ```
 
-`gen_graph.py` regenerates only the single gold bundle from `rules.py` predicates; `gen_all.py` regenerates ALL 142 (composes cached nodes per pair, auto-tags predicates by keyword, runs the rule engine). **`gen_all.py` preserves ONLY `verified:true` bundles** (the gold key) and regenerates the rest — don't let it re-preserve prior generated output.
+**LIVE = hand-verified only.** `graph-data.js` (committed, loaded by the site) contains just the **10 hand-authored bundles** from `pipeline/curated.py` — nodes pulled verbatim from the cache by index, edges hand-authored after reading the real directives, all `verified:true`. The Network Analyzer button appears only on those 10 rec cards.
+
+**Off-prod drafts.** `pipeline/gen_all.py` auto-generates all 142 (keyword-tagged predicates → rule engine) into `graph-data.generated.js`, which is **gitignored and NOT loaded by the site** — it preserves the work without shipping loose auto-edges. Auto-tagging can't type conflicts trustworthily (an early pass fabricated 118 false conflicts), so conflicts ship only on verified bundles. `gen_all.py` preserves ONLY `verified:true` bundles and regenerates the rest — never let it re-preserve its own prior output.
+
+## Skill health badges
+
+`pipeline/checks.py` runs 6 objective, offline checks (live-repo, SKILL.md, actionable, licensed, maintained, secret-free) over the skills shown in the verified bundles → `skill-health.js` (`SKILL_HEALTH` map, committed). Composite tier Gold/Silver/Bronze/Unrated. `app.js` renders a tier badge + chips under each directory card name; `badges.html` (linked in the nav) is the public rubric explaining every badge. "npm-audit for a bundle" (the analyzer) + "Scorecard/lint for one skill" (the badges) are the two pillars.
 
 **Node extraction (`extract_nodes.py`):** resolves any skill by name from `data.js` → fetches its repo `SKILL.md`/`README.md` via `gh api` → extracts **verbatim** directive lines (modal-verb + imperative-mood, minus setup/env noise) → caches `pipeline/nodes/<slug>.json`. `--bundle "P|T"` does one pair; `--all` does every distinct recommended skill. **Nodes are per-SKILL, not per-pair** — a bundle = union of its skills' cached nodes, so full coverage = extract each skill once (O(skills), not O(pairs)).
 
-**Coverage status:** ALL **142/142 pairs have a graph** (button on every rec card). 1 is `verified:true` (Radiologist, hand-authored predicates → 3 conflicts / real edges); 141 are `generated:true` auto-drafts. Node layer = real cached directives everywhere (54/63 skills yield ~282 nodes; 9 skipped — websites/link-lists/libraries with no agent directives). **Auto edges are honest but limited:** only `overlap` (same guard-class) and `reinforces` (same goal) fire, and they're loose; ~71 bundles are edgeless. **Auto-tagging CANNOT produce trustworthy conflicts** — lexical stance can't tell "never use SOLID shading" from a real prohibition (an early attempt fabricated 118 false conflicts). Conflicts require hand-authored predicates, so the UI shows them only on `verified` bundles and badges drafts as `⚙ Auto-generated draft`. **Extraction ceiling:** regex grabs some section headings/thin lines; clean `SKILL.md` extracts best.
+**Coverage status:** LIVE = **10 hand-verified bundles** (6 conflicts total, incl. the Radiologist PHI leak, a Physician ambient-notes PHI leak, and a dual-use offensive-vs-guardrail conflict for AppSec). The other 132 pairs exist only as off-prod drafts. Node cache = 54/63 skills (~282 nodes; 9 skipped — websites/link-lists/libraries with no agent directives). **Extraction ceiling:** regex grabs some section headings/thin lines and the cache mixes real directives with setup noise — hand-verification means *selecting* the genuine directives (`curated.py` picks cache nodes by index). Clean `SKILL.md` extracts best.
 
 - **How it works:** each node carries `(stance/egress, overlap-class, produces/consumes, goal)`. Four rules → edges: conflict = one node *opens* an egress object another *restricts* (linked objects bridge draft⊇PHI); overlap = same class, different skill; depends = consumer needs producer's artifact; reinforces = shared goal. Precedence conflict>overlap>depends>reinforces.
 - **Perf:** reproduces all 13 hand-curated edges, 0 spurious, ~0.04 ms (vs qwen3:14b ~43 min, which collapsed 16/19 edges to "reinforces"). Explainable — every edge emits its "because".

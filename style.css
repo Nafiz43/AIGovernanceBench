@@ -138,6 +138,33 @@ h1,h2,.brand-name{font-family:"Lora",Georgia,serif;}
 .an-chip-depends{background:#e7efff;color:#1d4ed8;}
 .an-chip-verified{background:#dcfce7;color:#166534;}
 .an-chip-draft{background:#ede9fe;color:#6d28d9;cursor:help;}
+
+/* Skill health badges (directory + badges page) */
+.health-badges{display:inline-flex;align-items:center;gap:3px;margin-top:5px;flex-wrap:wrap;text-decoration:none;}
+.health-badges .hb-chip{font-size:.8rem;line-height:1;}
+.tier{display:inline-block;padding:1px 8px;border-radius:999px;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-right:2px;}
+.tier-gold{background:#fef3c7;color:#92600a;border:1px solid #eab308;}
+.tier-silver{background:#eef2f7;color:#475569;border:1px solid #cbd5e1;}
+.tier-bronze{background:#fbe8dd;color:#9a4a1f;border:1px solid #ea9a6b;}
+.tier-unrated{background:#f3f4f6;color:#6b7280;border:1px solid #d1d5db;}
+.health-badges:hover .tier{filter:brightness(.96);}
+
+/* Badges explainer page */
+.badges-page{max-width:860px;margin:0 auto;padding:32px 20px 60px;}
+.badges-page h1{font-family:"Lora",serif;color:#002754;font-size:2rem;margin:0 0 12px;}
+.badges-lede{color:#374151;font-size:1.02rem;line-height:1.6;max-width:70ch;}
+.badges-section{margin-top:36px;}
+.badges-section h2{font-family:"Lora",serif;color:#002754;font-size:1.3rem;border-bottom:2px solid #DAAA01;padding-bottom:6px;margin-bottom:16px;}
+.tier-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;}
+.tier-card{border:1px solid #e5e7eb;border-radius:10px;padding:14px;background:#fff;}
+.tier-card p{margin:8px 0 0;color:#4b5563;font-size:.9rem;line-height:1.5;}
+.badge-table{width:100%;border-collapse:collapse;}
+.badge-table th,.badge-table td{text-align:left;padding:10px 12px;border-bottom:1px solid #eef0f3;vertical-align:top;font-size:.92rem;}
+.badge-table th{color:#002754;font-weight:700;border-bottom:2px solid #e5e7eb;}
+.badge-table .rated-chips{font-size:1rem;letter-spacing:2px;}
+.badges-note{color:#6b7280;font-size:.85rem;line-height:1.5;}
+.sitefoot{border-top:1px solid #e5e7eb;padding:20px;text-align:center;color:#6b7280;font-size:.85rem;}
+.sitefoot a{color:#1155CC;}
 .an-close{border:none;background:#eef1f5;color:var(--muted);width:34px;height:34px;border-radius:8px;font-size:1rem;cursor:pointer;flex:none;}
 .an-close:hover{background:#e0e4ea;color:var(--ink);}
 
