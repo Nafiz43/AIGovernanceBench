@@ -1,5 +1,4 @@
 .DS_Store
 
 # Network Analyzer build artifacts (regenerate via pipeline/)
-graph-data.generated.js
-graph-data.handcurated.js
+graph-data.*.js
