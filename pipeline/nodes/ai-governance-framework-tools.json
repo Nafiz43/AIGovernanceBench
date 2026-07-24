@@ -1,0 +1,17 @@
+{
+  "name": "ai-governance-framework-tools",
+  "url": "https://github.com/BinaryVerseAI/ai-governance-framework-tools",
+  "repo": "BinaryVerseAI/ai-governance-framework-tools",
+  "path": "README.md",
+  "type": "governance",
+  "nodes": [
+    {
+      "label": "These tools are provided for educational",
+      "text": "These tools are provided for educational and illustrative purposes only and do not constitute legal or formal audit advice. You must consult with qualified professionals to ensure your organization's compliance."
+    },
+    {
+      "label": "Read the full guide here: ISO",
+      "text": "Read the full guide here: ISO 42001 vs. NIST AI RMF: The Definitive Comparison"
+    }
+  ]
+}

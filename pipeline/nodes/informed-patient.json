@@ -1,0 +1,25 @@
+{
+  "name": "informed-patient",
+  "url": "https://github.com/DrCatHicks/informed-patient",
+  "repo": "DrCatHicks/informed-patient",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "While I have continually tested the",
+      "text": "While I have continually tested the sources this Skill produces and refined the Skill across many disparate searches, it is always possible for AI to be inaccurate."
+    },
+    {
+      "label": "you access Claude through an employer's",
+      "text": "If you access Claude through an employer's Teams or Enterprise plan, your employer may have administrative visibility into your conversations. You may want to consider only using a personal Claude account for health conversations."
+    },
+    {
+      "label": "Add the marketplace",
+      "text": "Add the marketplace:"
+    },
+    {
+      "label": "This Skill is meant to help",
+      "text": "This Skill is meant to help you organize your experience and evaluate evidence. It should not be used to tell you what you have or what to do about it."
+    }
+  ]
+}

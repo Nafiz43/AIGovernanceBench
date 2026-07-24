@@ -1,0 +1,37 @@
+{
+  "name": "academic-research-skills",
+  "url": "https://github.com/Imbad0202/academic-research-skills",
+  "repo": "Imbad0202/academic-research-skills",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Rejection log contract at shared/contrac…",
+      "text": "Rejection log contract at shared/contracts/passport/rejection_log.schema.json with closed enum of categorical reason values; always emitted (empty when no rejections)."
+    },
+    {
+      "label": "New scripts/check_passport_reset_contrac…",
+      "text": "New scripts/check_passport_reset_contract.py CI lint: every mention of the flag must co-locate a pointer to the authoritative protocol doc."
+    },
+    {
+      "label": "Short-stage guard: stages with fewer than",
+      "text": "Short-stage guard: stages with fewer than 5 user turns inject a static insufficient_evidence block instead of dispatching the full-model observer."
+    },
+    {
+      "label": "Schema 12 compliance_report appended to …",
+      "text": "Schema 12 compliance_report appended to Material Passport via compliance_history[] (append-only)."
+    },
+    {
+      "label": "Added benchmark_report.schema.json + rep…",
+      "text": "Added benchmark_report.schema.json + repro_lock optional block on Material Passport. Both ship with pattern docs, lints, and examples. First formal Python dev dep manifest (requirements-dev.txt)."
+    },
+    {
+      "label": "Clarified adaptive checkpoint semantics …",
+      "text": "Clarified adaptive checkpoint semantics so SLIM checkpoints still wait for explicit user confirmation."
+    },
+    {
+      "label": "Anti-sycophancy discipline: scores ≥ 7 r…",
+      "text": "Anti-sycophancy discipline: scores ≥ 7 require specific dialogue-turn citations; Zone 3 triggers re-audit; no motivational framing."
+    }
+  ]
+}

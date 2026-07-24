@@ -1,0 +1,17 @@
+{
+  "name": "Rebuff",
+  "url": "https://github.com/protectai/rebuff",
+  "repo": "protectai/rebuff",
+  "path": "README.md",
+  "type": "governance",
+  "nodes": [
+    {
+      "label": "Detect prompt injection on user input",
+      "text": "Detect prompt injection on user input"
+    },
+    {
+      "label": "Detect canary word leakage",
+      "text": "Detect canary word leakage"
+    }
+  ]
+}

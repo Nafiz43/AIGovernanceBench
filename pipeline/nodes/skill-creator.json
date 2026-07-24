@@ -1,0 +1,37 @@
+{
+  "name": "skill-creator",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/skill-creator",
+  "repo": "anthropics/skills",
+  "path": "skills/skill-creator/SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Of course, you should always be",
+      "text": "Of course, you should always be flexible and if the user is like \"I don't need to run a bunch of evaluations, just vibe with me\", you can do that instead."
+    },
+    {
+      "label": "Metadata (name + description) - Always",
+      "text": "Metadata (name + description) - Always in context (~100 words)"
+    },
+    {
+      "label": "Claude reads only the relevant reference",
+      "text": "Claude reads only the relevant reference file."
+    },
+    {
+      "label": "This section is one continuous sequence",
+      "text": "This section is one continuous sequence — don't stop partway through. Do NOT use /skill-test or any other testing skill."
+    },
+    {
+      "label": "This is the only opportunity to",
+      "text": "This is the only opportunity to capture this data — it comes through the task notification and isn't persisted elsewhere. Process each notification as it arrives rather than trying to batch them."
+    },
+    {
+      "label": "Wait for the user to review",
+      "text": "Wait for the user to review and tell you they're done"
+    },
+    {
+      "label": "Package and Present (only if present_files",
+      "text": "Package and Present (only if present_files tool is available)"
+    }
+  ]
+}

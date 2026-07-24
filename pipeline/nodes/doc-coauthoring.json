@@ -1,0 +1,37 @@
+{
+  "name": "doc-coauthoring",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring",
+  "repo": "anthropics/skills",
+  "path": "skills/doc-coauthoring/SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Explain that this approach helps ensure",
+      "text": "Explain that this approach helps ensure the doc works well when others read it (including when they paste it into Claude). Ask if they want to try this workflow or prefer to work freeform."
+    },
+    {
+      "label": "Wait for user confirmation before search…",
+      "text": "Wait for user confirmation before searching"
+    },
+    {
+      "label": "user signals they've done their initial",
+      "text": "When user signals they've done their initial dump (or after substantial context provided), ask clarifying questions to ensure understanding:"
+    },
+    {
+      "label": "Use str_replace to make edits (never",
+      "text": "Use str_replace to make edits (never reprint the whole doc)"
+    },
+    {
+      "label": "Always give user agency to adjust",
+      "text": "Always give user agency to adjust the process"
+    },
+    {
+      "label": "Never use artifacts for brainstorming li…",
+      "text": "Never use artifacts for brainstorming lists - that's just conversation"
+    },
+    {
+      "label": "Ask if they have a template",
+      "text": "Ask if they have a template document to share"
+    }
+  ]
+}

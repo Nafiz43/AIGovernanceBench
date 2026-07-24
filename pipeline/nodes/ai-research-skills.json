@@ -1,0 +1,17 @@
+{
+  "name": "AI-Research-SKILLs",
+  "url": "https://github.com/Orchestra-Research/AI-Research-SKILLs",
+  "repo": "Orchestra-Research/AI-Research-SKILLs",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "🔬 Citation verification workflow - never",
+      "text": "🔬 Citation verification workflow - never hallucinate references"
+    },
+    {
+      "label": "🔄 Routes to all 86 domain",
+      "text": "🔄 Routes to all 86 domain skills automatically — agents don't need to know which skill to use"
+    }
+  ]
+}

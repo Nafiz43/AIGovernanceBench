@@ -1,0 +1,13 @@
+{
+  "name": "brand-guidelines",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/brand-guidelines",
+  "repo": "anthropics/skills",
+  "path": "skills/brand-guidelines/SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Fonts should be pre-installed in your",
+      "text": "Fonts should be pre-installed in your environment for best results"
+    }
+  ]
+}

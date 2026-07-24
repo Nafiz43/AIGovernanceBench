@@ -1,0 +1,17 @@
+{
+  "name": "OpenClaw-Medical-Skills",
+  "url": "https://github.com/FreedomIntelligence/OpenClaw-Medical-Skills",
+  "repo": "FreedomIntelligence/OpenClaw-Medical-Skills",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Method 4 — Install Selected Skills",
+      "text": "Method 4 — Install Selected Skills Only"
+    },
+    {
+      "label": "Your agent should list the installed",
+      "text": "Your agent should list the installed skills with their capabilities."
+    }
+  ]
+}

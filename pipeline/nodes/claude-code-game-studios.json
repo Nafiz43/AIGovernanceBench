@@ -1,0 +1,37 @@
+{
+  "name": "Claude-Code-Game-Studios",
+  "url": "https://github.com/Donchitos/Claude-Code-Game-Studios",
+  "repo": "Donchitos/Claude-Code-Game-Studios",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "validate-commit.sh, validate-assets.sh, …",
+      "text": "validate-commit.sh, validate-assets.sh, and validate-skill-change.sh fire on every Bash/Write tool call and exit immediately (exit 0) when the command or file path is not relevant. This is normal hook behavior — not a performance concern."
+    },
+    {
+      "label": "You decide — the user always",
+      "text": "You decide — the user always makes the call"
+    },
+    {
+      "label": "Set review intensity — full (all",
+      "text": "Set review intensity — full (all director gates), lean (phase gates only), or solo (none). Set during /start or edit production/review-mode.txt. Override per-run with --review solo on any skill."
+    },
+    {
+      "label": "Run /start — the system asks",
+      "text": "Run /start — the system asks where you are (no idea, vague concept,"
+    },
+    {
+      "label": "Domain boundaries — agents don't modify",
+      "text": "Domain boundaries — agents don't modify files outside their domain without explicit delegation"
+    },
+    {
+      "label": "Ask — agents ask questions before",
+      "text": "Ask — agents ask questions before proposing solutions"
+    },
+    {
+      "label": "Add/remove agents — delete agent files",
+      "text": "Add/remove agents — delete agent files you don't need, add new ones for your domains"
+    }
+  ]
+}

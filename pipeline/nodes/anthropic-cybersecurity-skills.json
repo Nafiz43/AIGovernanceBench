@@ -1,0 +1,21 @@
+{
+  "name": "Anthropic-Cybersecurity-Skills",
+  "url": "https://github.com/mukul975/Anthropic-Cybersecurity-Skills",
+  "repo": "mukul975/Anthropic-Cybersecurity-Skills",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Each skill costs ~30 tokens to",
+      "text": "Each skill costs ~30 tokens to scan (frontmatter only)  and 500–2,000 tokens to fully load (complete workflow). This progressive disclosure architecture lets agents search all 817 skills in a single pass without blowing context windows."
+    },
+    {
+      "label": "Run live cybersecurity skill exercises a…",
+      "text": "Run live cybersecurity skill exercises against real targets"
+    },
+    {
+      "label": "Report issues — Found an inaccurate",
+      "text": "Report issues — Found an inaccurate procedure or broken script? Open an issue."
+    }
+  ]
+}

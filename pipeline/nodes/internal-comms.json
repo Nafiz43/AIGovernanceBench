@@ -1,0 +1,13 @@
+{
+  "name": "internal-comms",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/internal-comms",
+  "repo": "anthropics/skills",
+  "path": "skills/internal-comms/SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Load the appropriate guideline file from",
+      "text": "Load the appropriate guideline file from the examples/ directory:"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "name": "claude-api",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/claude-api",
+  "repo": "anthropics/skills",
+  "path": "skills/claude-api/SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Tool search: never defer everything. The",
+      "text": "Tool search: never defer everything. The search tool itself must not have defer_loading: true, and at least one tool in tools must be non-deferred, or the API returns 400 All tools have defer_loading set."
+    },
+    {
+      "label": "Never mix the two — don't",
+      "text": "Never mix the two — don't reach for requests/fetch in a Python or TypeScript project just because it feels lighter. Never fall back to OpenAI-compatible shims."
+    },
+    {
+      "label": "→ Read only {lang}/claude-api/README.md …",
+      "text": "→ Read only {lang}/claude-api/README.md — always read the README first for any task (installation, quick start, common patterns, error handling)"
+    },
+    {
+      "label": "the user asks you to add",
+      "text": "When the user asks you to add, modify, or implement a Claude feature, your code must call Claude through one of:"
+    },
+    {
+      "label": "Raw HTTP (curl, requests, fetch, httpx",
+      "text": "Raw HTTP (curl, requests, fetch, httpx, etc.) — only when the user explicitly asks for cURL/REST/raw HTTP, the project is a shell/cURL project, or the language has no official SDK."
+    },
+    {
+      "label": "Go and Ruby SDKs do not",
+      "text": "The Go and Ruby SDKs do not currently support Foundry. For Ruby, use the standard Anthropic::Client.new(base_url: \"\") as a fallback (Entra ID auth is not built in). For Claude Platform on AWS, see shared/claude-platform-on-aws.md."
+    },
+    {
+      "label": "Mandatory flow: Agent (once) → Session",
+      "text": "Mandatory flow: Agent (once) → Session (every run). model/system/tools live on the agent, never the session. See shared/managed-agents-overview.md for the full reading guide, beta headers, and pitfalls."
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "name": "claude-code-tips",
+  "url": "https://github.com/ykdojo/claude-code-tips",
+  "repo": "ykdojo/claude-code-tips",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "So if you're working on, let's",
+      "text": "So if you're working on, let's say, the main branch and feature-branch-1, then without git worktrees, you can only work on them one at a time because your project folder can only be set to one branch at a time."
+    },
+    {
+      "label": "Sometimes you want to copy and",
+      "text": "Sometimes you want to copy and paste Claude Code's output, but copying directly from the terminal isn't always clean. Here are a few ways to get content out more easily:"
+    },
+    {
+      "label": "Leftmost tab - A persistent tab",
+      "text": "Leftmost tab - A persistent tab running my voice transcription system (always stays here)"
+    },
+    {
+      "label": "you still want to be careful",
+      "text": "If you still want to be careful, you can always approve things manually without auto mode. And if you want to give it complete independence, you can run Claude Code in a container with --dangerously-skip-permissions."
+    },
+    {
+      "label": "nice thing about it is that",
+      "text": "The nice thing about it is that it's gated behind your Anthropic login: a new artifact is only visible to you, so you can check it privately or share it privately."
+    },
+    {
+      "label": "So sharing your knowledge isn't just",
+      "text": "So sharing your knowledge isn't just about establishing your brand or solidifying your learning. It's also about learning new things through that process. It's not always a one-way street."
+    },
+    {
+      "label": "Check your rate limits",
+      "text": "Check your rate limits:"
+    }
+  ]
+}

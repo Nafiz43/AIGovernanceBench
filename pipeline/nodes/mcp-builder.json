@@ -1,0 +1,37 @@
+{
+  "name": "mcp-builder",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/mcp-builder",
+  "repo": "anthropics/skills",
+  "path": "skills/mcp-builder/SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Read-only: Only non-destructive operatio…",
+      "text": "Read-only: Only non-destructive operations required"
+    },
+    {
+      "label": "Content Exploration: Use READ-ONLY opera…",
+      "text": "Content Exploration: Use READ-ONLY operations to explore available data"
+    },
+    {
+      "label": "Ensure each question is",
+      "text": "Ensure each question is:"
+    },
+    {
+      "label": "Create MCP (Model Context Protocol) serv…",
+      "text": "Create MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-designed tools. The quality of an MCP server is measured by how well it enables LLMs to accomplish real-world tasks."
+    },
+    {
+      "label": "Error messages should guide agents toward",
+      "text": "Error messages should guide agents toward solutions with specific suggestions and next steps."
+    },
+    {
+      "label": "Load framework documentation",
+      "text": "Load framework documentation:"
+    },
+    {
+      "label": "Review the service's API documentation to",
+      "text": "Review the service's API documentation to identify key endpoints, authentication requirements, and data models. Use web search and WebFetch as needed."
+    }
+  ]
+}

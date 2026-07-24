@@ -1,0 +1,29 @@
+{
+  "name": "medical-research-skills",
+  "url": "https://github.com/aipoch/medical-research-skills",
+  "repo": "aipoch/medical-research-skills",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "you don't have OpenClaw, please follow",
+      "text": "If you don't have OpenClaw, please follow the official OpenClaw setup guide."
+    },
+    {
+      "label": "Run the command to initialize setup",
+      "text": "Run the command to initialize setup"
+    },
+    {
+      "label": "Select 'OpenClaw' as your target agent",
+      "text": "Select 'OpenClaw' as your target agent"
+    },
+    {
+      "label": "Verify the connection in your dashboard",
+      "text": "Verify the connection in your dashboard"
+    },
+    {
+      "label": "Run with --dry-run first to preview",
+      "text": "Run with --dry-run first to preview what will be installed without making any changes."
+    }
+  ]
+}

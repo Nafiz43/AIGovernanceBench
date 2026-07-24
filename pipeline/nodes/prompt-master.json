@@ -1,0 +1,37 @@
+{
+  "name": "prompt-master",
+  "url": "https://github.com/nidhinjs/prompt-master",
+  "repo": "nidhinjs/prompt-master",
+  "path": "SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Always output two separate blocks: Posit…",
+      "text": "Always output two separate blocks: Positive Prompt and Negative Prompt. Never merge them."
+    },
+    {
+      "label": "Claude Opus 4.x over-engineers by default",
+      "text": "Claude Opus 4.x over-engineers by default — add \"Only make changes directly requested. Do not add features or refactor beyond what was asked.\""
+    },
+    {
+      "label": "Prone to hallucinated citations — always",
+      "text": "Prone to hallucinated citations — always add \"Cite only sources you are certain of. If uncertain, say [uncertain].\""
+    },
+    {
+      "label": "For grounded tasks add \"Base your",
+      "text": "For grounded tasks add \"Base your response only on the provided context. Do not extrapolate.\""
+    },
+    {
+      "label": "Claude Opus 4.x over-engineers — add",
+      "text": "Claude Opus 4.x over-engineers — add \"Only make changes directly requested. Do not add extra files, abstractions, or features.\""
+    },
+    {
+      "label": "Always scope to specific files and",
+      "text": "Always scope to specific files and directories — never give a global instruction without a path anchor"
+    },
+    {
+      "label": "Describe input types, return type, edge",
+      "text": "Describe input types, return type, edge cases, and what the function must NOT do"
+    }
+  ]
+}

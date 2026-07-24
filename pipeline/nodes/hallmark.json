@@ -1,0 +1,13 @@
+{
+  "name": "hallmark",
+  "url": "https://github.com/Nutlope/hallmark",
+  "repo": "Nutlope/hallmark",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "It stays a quiet branch; vanilla",
+      "text": "It stays a quiet branch; vanilla briefs never see it. The protocol lives in custom-theme.md."
+    }
+  ]
+}

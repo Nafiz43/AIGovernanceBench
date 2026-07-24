@@ -1,0 +1,13 @@
+{
+  "name": "awesome-ai-agent-governance",
+  "url": "https://github.com/systempromptio/awesome-ai-agent-governance",
+  "repo": "systempromptio/awesome-ai-agent-governance",
+  "path": "README.md",
+  "type": "governance",
+  "nodes": [
+    {
+      "label": "GitHub Actions Permissions Generator - P…",
+      "text": "GitHub Actions Permissions Generator - Produces a least-privilege permissions: block for a workflow instead of the default write-all token."
+    }
+  ]
+}

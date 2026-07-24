@@ -1,0 +1,13 @@
+{
+  "name": "frontend-design",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/frontend-design",
+  "repo": "anthropics/skills",
+  "path": "skills/frontend-design/SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Try to do a lot of",
+      "text": "Try to do a lot of this planning and iteration in your thinking, and only show ideas to the user when you have higher confidence it'll delight them."
+    }
+  ]
+}

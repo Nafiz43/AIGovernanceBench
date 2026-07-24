@@ -1,0 +1,37 @@
+{
+  "name": "xlsx",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/xlsx",
+  "repo": "anthropics/skills",
+  "path": "skills/xlsx/SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Zero formula errors. Never ship while",
+      "text": "Zero formula errors. Never ship while recalc.py reports errors_found. If you think an error predates you, prove it: load the *original* with data_only=True and look at that cell. An error you introduced looks exactly like one you inherited."
+    },
+    {
+      "label": "Use formulas, never hardcoded results. W…",
+      "text": "Use formulas, never hardcoded results. Write sheet['B10'] = '=SUM(B2:B9)', not the Python-computed total. The sheet must recalculate when its inputs change."
+    },
+    {
+      "label": "only that case exits non-zero —",
+      "text": "only that case exits non-zero — errors_found exits 0, so never treat a clean exit as a clean"
+    },
+    {
+      "label": "Merged cells: write the top-left anchor",
+      "text": "Merged cells: write the top-left anchor only. Every other cell in the range is a MergedCell whose .value is read-only."
+    },
+    {
+      "label": "workbook *you create* for someone to",
+      "text": "A workbook *you create* for someone to fill in needs a short legend naming which cells to edit, and one example row of realistic values showing the expected format. Never add such a row to a file you were asked to edit."
+    },
+    {
+      "label": "That file is rarely present here",
+      "text": "That file is rarely present here, so the cell's cached value is the only thing holding its"
+    },
+    {
+      "label": "sheet name containing a space must",
+      "text": "A sheet name containing a space must be quoted in a cross-sheet reference: ='Assumptions Inputs'!$B$5. Unquoted, it evaluates to #VALUE!."
+    }
+  ]
+}

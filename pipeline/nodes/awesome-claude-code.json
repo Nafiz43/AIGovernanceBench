@@ -1,0 +1,37 @@
+{
+  "name": "awesome-claude-code",
+  "url": "https://github.com/hesreallyhim/awesome-claude-code",
+  "repo": "hesreallyhim/awesome-claude-code",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "ccvitals by educlopez - The prettiest",
+      "text": "ccvitals by educlopez - The prettiest statusline for Claude Code — pure bash, never blocks your prompt. Usage quota, context window, git status &amp; more."
+    },
+    {
+      "label": "GouvernAI by Myr-Aya - Runtime guardrails",
+      "text": "GouvernAI by Myr-Aya - Runtime guardrails for Claude Code. Auto-approve what's safe, gate what's risky, block what's dangerous. Dual enforcement, full audit trail. MIT."
+    },
+    {
+      "label": "SkilLock by skills-lock - Pin AI",
+      "text": "SkilLock by skills-lock - Pin AI Skill behavior. Block unapproved drift in CI. See exactly what changed in every PR."
+    },
+    {
+      "label": "fable by grooverLab - High-fidelity tran…",
+      "text": "fable by grooverLab - High-fidelity transcript memory for Claude Code — index every session, recall byte-identical, search, prune, compose. Local-first, stdlib-only, MCP."
+    },
+    {
+      "label": "MAMA by jungjaehoon-lifegamez - Always-o…",
+      "text": "MAMA by jungjaehoon-lifegamez - Always-on companion for Claude that remembers your decisions and their evolution. Local-first memory       using SQLite + transformers.js embeddings."
+    },
+    {
+      "label": "AgentWatch by mishanefedov - Local-only …",
+      "text": "AgentWatch by mishanefedov - Local-only observability for AI agents on your machine. One timeline across coding and non-coding agents."
+    },
+    {
+      "label": "Upkeep by wei18 - Upkeep —",
+      "text": "Upkeep by wei18 - Upkeep — an AI audit crew for your repo. Catches docs/spec/asset drift with evidence; output-only. Claude Code plugin/skill + reusable CI workflow."
+    }
+  ]
+}

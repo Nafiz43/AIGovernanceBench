@@ -1,0 +1,17 @@
+{
+  "name": "pm-claude-skills",
+  "url": "https://github.com/mohitagw15856/pm-claude-skills",
+  "repo": "mohitagw15856/pm-claude-skills",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Security-audited — a dedicated CI workflow",
+      "text": "Security-audited — a dedicated CI workflow sweeps every skill and script; calculators are stdlib-only and deterministic with byte-exact output tests"
+    },
+    {
+      "label": "Honest by design — decoders end",
+      "text": "Honest by design — decoders end with a not-legal-advice line, calculators name what they don't model, simulators debrief out of character, and skills that shouldn't ghostwrite (student statements) coach instead"
+    }
+  ]
+}

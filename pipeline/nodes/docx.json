@@ -1,0 +1,37 @@
+{
+  "name": "docx",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/docx",
+  "repo": "anthropics/skills",
+  "path": "skills/docx/SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Tables need dual widths: set columnWidths",
+      "text": "Tables need dual widths: set columnWidths on the table AND width on every cell, both in WidthType.DXA (PERCENTAGE breaks in Google Docs). Column widths must sum to the table width."
+    },
+    {
+      "label": "Table shading: use ShadingType.CLEAR, ne…",
+      "text": "Table shading: use ShadingType.CLEAR, never SOLID (renders black)."
+    },
+    {
+      "label": "Lists: never insert • literally; use",
+      "text": "Lists: never insert • literally; use a numbering config with LevelFormat.BULLET."
+    },
+    {
+      "label": "PageBreak must be inside a Paragraph",
+      "text": "PageBreak must be inside a Paragraph."
+    },
+    {
+      "label": "Never use \\n — use separate",
+      "text": "Never use \\n — use separate Paragraph elements."
+    },
+    {
+      "label": "TOC: headings must use built-in HeadingL…",
+      "text": "TOC: headings must use built-in HeadingLevel.*; custom heading styles need outlineLevel set or they won't appear."
+    },
+    {
+      "label": "Legacy .doc files must be converted",
+      "text": "Legacy .doc files must be converted first: python scripts/office/soffice.py --headless --convert-to docx file.doc."
+    }
+  ]
+}

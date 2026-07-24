@@ -1,0 +1,21 @@
+{
+  "name": "claude-seo",
+  "url": "https://github.com/AgriciDaniel/claude-seo",
+  "repo": "AgriciDaniel/claude-seo",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Optional: Playwright Chromium — install.…",
+      "text": "Optional: Playwright Chromium — install.sh offers to install it (you can skip the prompt); needed only for SPA rendering and screenshots"
+    },
+    {
+      "label": "SEO agencies running 5+ client sites",
+      "text": "SEO agencies running 5+ client sites. Replace quarterly deep audits with weekly automated runs. Same team capacity, 4× audit cadence, every recommendation comes with a falsifiability check the client can verify."
+    },
+    {
+      "label": "Run a full audit and watch",
+      "text": "Run a full audit and watch parallel agents fan out across the site:"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "name": "scientific-agent-skills",
+  "url": "https://github.com/K-Dense-AI/scientific-agent-skills",
+  "repo": "K-Dense-AI/scientific-agent-skills",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "🖼️ Medical Imaging & Digital Pathology",
+      "text": "🖼️ Medical Imaging & Digital Pathology - Privacy-aware DICOM processing and research-only whole-slide image analysis, computational pathology, and radiology data workflows"
+    },
+    {
+      "label": "Report Generation: Produce evidence-trac…",
+      "text": "Report Generation: Produce evidence-traceable research reports with Scientific Writing and document tools; Clinical Reports outputs remain visibly marked drafts built only from verified synthetic, de-identified, or aggregate source facts"
+    },
+    {
+      "label": "Workflow Automation: Validate and simula…",
+      "text": "Workflow Automation: Validate and simulate multi-step laboratory workflows offline; physical execution stays behind equipment-specific operator safety gates"
+    },
+    {
+      "label": "Population and sequence intelligence: On…",
+      "text": "Population and sequence intelligence: OneKGPd (individual-level 1000 Genomes cohort queries) and Genomic Intelligence (hosted regulatory/gene-expression predictions; research only)"
+    },
+    {
+      "label": "Decision-support research: local, aggreg…",
+      "text": "Decision-support research: local, aggregate or synthetic Clinical Decision Support evaluation and governance artifacts only"
+    },
+    {
+      "label": "Whole slide imaging: histolab and resear…",
+      "text": "Whole slide imaging: histolab and research-only PathML 3.0.5"
+    },
+    {
+      "label": "Critical analysis: Scientific Critical T…",
+      "text": "Critical analysis: Scientific Critical Thinking and qualitative, low-stakes Scholar Evaluation of works—never ranking people or supporting consequential decisions"
+    }
+  ]
+}

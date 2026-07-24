@@ -1,0 +1,37 @@
+{
+  "name": "canvas-design",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/canvas-design",
+  "repo": "anthropics/skills",
+  "path": "skills/canvas-design/SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "MINIMAL TEXT: Always emphasize that text",
+      "text": "MINIMAL TEXT: Always emphasize that text is sparse, essential-only, integrated as visual element - never lengthy"
+    },
+    {
+      "label": "This is VERY IMPORTANT: The reference",
+      "text": "This is VERY IMPORTANT: The reference must be refined so it enhances the work's depth without announcing itself. Think like a jazz musician quoting another song - only those who know will catch it, but everyone appreciates the music."
+    },
+    {
+      "label": "These are instructions for creating design",
+      "text": "These are instructions for creating design philosophies - aesthetic movements that are then EXPRESSED VISUALLY. Output only .md files, .pdf files, and .png files."
+    },
+    {
+      "label": "philosophy must emphasize: Visual expres…",
+      "text": "The philosophy must emphasize: Visual expression. Spatial communication. Artistic interpretation. Minimal words."
+    },
+    {
+      "label": "philosophy must guide the next version",
+      "text": "The philosophy must guide the next version to express ideas VISUALLY, not through text. Information lives in design, not paragraphs."
+    },
+    {
+      "label": "EXPERT CRAFTSMANSHIP: Repeatedly emphasi…",
+      "text": "EXPERT CRAFTSMANSHIP: Repeatedly emphasize the final work must look meticulously crafted, labored over with care, the product of countless hours by someone at the top of their field"
+    },
+    {
+      "label": "For any type of content, even",
+      "text": "For any type of content, even if the user requests something for a movie/game/book, the approach should still be sophisticated. Never lose sight of the idea that this should be art, not something that's cartoony or amateur."
+    }
+  ]
+}

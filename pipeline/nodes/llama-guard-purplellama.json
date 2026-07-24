@@ -1,0 +1,17 @@
+{
+  "name": "Llama Guard / PurpleLlama",
+  "url": "https://github.com/meta-llama/PurpleLlama",
+  "repo": "meta-llama/PurpleLlama",
+  "path": "README.md",
+  "type": "governance",
+  "nodes": [
+    {
+      "label": "Prompt Guard is a powerful tool",
+      "text": "Prompt Guard is a powerful tool for protecting LLM powered applications from malicious prompts to ensure their security and integrity."
+    },
+    {
+      "label": "For a running list of frequently",
+      "text": "For a running list of frequently asked questions, for not only Purple Llama"
+    }
+  ]
+}

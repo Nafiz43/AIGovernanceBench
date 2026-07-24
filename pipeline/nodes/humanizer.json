@@ -1,0 +1,37 @@
+{
+  "name": "humanizer",
+  "url": "https://github.com/blader/humanizer",
+  "repo": "blader/humanizer",
+  "path": "SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Match the voice - Fit the",
+      "text": "Match the voice - Fit the intended tone (formal, casual, technical). Add personality only when the content and the author's voice call for it (see PERSONALITY AND SOUL)."
+    },
+    {
+      "label": "Match those habits instead of merely",
+      "text": "Match those habits instead of merely deleting AI patterns. Do not upgrade casual words or regularize deliberate quirks."
+    },
+    {
+      "label": "Avoiding AI patterns is only half",
+      "text": "Avoiding AI patterns is only half the job. Sterile, voiceless writing is just as obvious as slop. Good writing has a human behind it."
+    },
+    {
+      "label": "Words to watch: boasts a, vibrant",
+      "text": "Words to watch: boasts a, vibrant, rich (figurative), profound, enhancing its, showcasing, exemplifies, commitment to, natural beauty, nestled, in the heart of, groundbreaking (figurative), renowned, breathtaking, must-visit, stunning"
+    },
+    {
+      "label": "(If a real source exists, name",
+      "text": "(If a real source exists, name it. Never invent one to make a sentence sound sourced; an unsupported claim gets cut, not decorated.)"
+    },
+    {
+      "label": "protagonist faces many challenges. The m…",
+      "text": "The protagonist faces many challenges. The main character must overcome obstacles. The central figure eventually triumphs. The hero returns home."
+    },
+    {
+      "label": "You do not need a configuration",
+      "text": "You do not need a configuration file. The system preserves the results automatically."
+    }
+  ]
+}

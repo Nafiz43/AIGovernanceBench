@@ -1,0 +1,37 @@
+{
+  "name": "healthcare-agents",
+  "url": "https://github.com/ajhcs/healthcare-agents",
+  "repo": "ajhcs/healthcare-agents",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Runtime case enrichment is explicit-mode…",
+      "text": "Runtime case enrichment is explicit-mode only. Default workups use the prompt and public workflow metadata. Fixture or evidence metadata appears only when the user requests a data mode."
+    },
+    {
+      "label": "Prompt-derived facts such as payer, prod…",
+      "text": "Prompt-derived facts such as payer, product, CARC/RARC code, interface type, dashboard domain, or review scope must not be labeled as purely synthetic."
+    },
+    {
+      "label": "During a normal eval run, only",
+      "text": "During a normal eval run, only the requested agents/.md file should change, eval/results.tsv should only receive appended rows, and local artifacts should stay under ignored eval/run-logs/ paths."
+    },
+    {
+      "label": "prompts do not make an AI",
+      "text": "The prompts do not make an AI tool HIPAA-compliant and do not create a safe PHI-processing environment. Use approved privacy, security, de-identification, and vendor-review workflows."
+    },
+    {
+      "label": "Only inside an environment your organiza…",
+      "text": "Only inside an environment your organization has approved for PHI, with the right vendor agreements, access controls, retention settings, and de-identification practices. The prompts themselves do not solve that governance problem."
+    },
+    {
+      "label": "Same-question before/after comparisons m…",
+      "text": "Same-question before/after comparisons must preserve full Q001-Q025 artifacts before answers are generated. This keeps score deltas tied to the exact same exam rather than paraphrased weak areas."
+    },
+    {
+      "label": "Validate agent prompt structure",
+      "text": "Validate agent prompt structure:"
+    }
+  ]
+}

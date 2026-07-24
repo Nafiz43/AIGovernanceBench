@@ -1,0 +1,29 @@
+{
+  "name": "MITRE ATT&CK Navigator",
+  "url": "https://github.com/mitre-attack/attack-navigator",
+  "repo": "mitre-attack/attack-navigator",
+  "path": "README.md",
+  "type": "governance",
+  "nodes": [
+    {
+      "label": "Update the URL specified in the",
+      "text": "Update the URL specified in the data array to the path to the STIX bundle (for example, assets/enterprise-attack.json). Multiple paths may be added to the data array to display multiple STIX bundles in a single instance."
+    },
+    {
+      "label": "Local files to load should be",
+      "text": "Local files to load should be placed in the nav-app/src/assets/ directory."
+    },
+    {
+      "label": "Set the enabled property in default_layers",
+      "text": "Set the enabled property in default_layers in src/assets/config.json to true"
+    },
+    {
+      "label": "Add the paths to your desired",
+      "text": "Add the paths to your desired default layers to the urls array in default_layers. For example,"
+    },
+    {
+      "label": "Load/reload the Navigator",
+      "text": "Load/reload the Navigator"
+    }
+  ]
+}

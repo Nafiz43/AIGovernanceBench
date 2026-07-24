@@ -1,0 +1,29 @@
+{
+  "name": "marketingskills",
+  "url": "https://github.com/coreyhaines31/marketingskills",
+  "repo": "coreyhaines31/marketingskills",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Run into a problem or have",
+      "text": "Run into a problem or have a question? Open an issue — we're happy to help."
+    },
+    {
+      "label": "Use npx skills to install skills",
+      "text": "Use npx skills to install skills directly:"
+    },
+    {
+      "label": "Add as a submodule for easy",
+      "text": "Add as a submodule for easy updates:"
+    },
+    {
+      "label": "Use SkillKit to install skills across",
+      "text": "Use SkillKit to install skills across multiple AI agents (Claude Code, Cursor, Copilot, etc.):"
+    },
+    {
+      "label": "Skills will still check .claude/ and",
+      "text": "Skills will still check .claude/ and the legacy product-marketing-context.md filename as fallbacks, so nothing breaks if you don't migrate."
+    }
+  ]
+}

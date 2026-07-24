@@ -1,0 +1,37 @@
+{
+  "name": "graphify",
+  "url": "https://github.com/Graphify-Labs/graphify",
+  "repo": "Graphify-Labs/graphify",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Want this always-on, updating in the",
+      "text": "Want this always-on, updating in the background across your code, docs, and meetings rather than only on demand? That is what we are building at graphify.com. You can join the waitlist there."
+    },
+    {
+      "label": "Optional extras (install only what you",
+      "text": "Optional extras (install only what you need)"
+    },
+    {
+      "label": "Make your assistant always use the",
+      "text": "Make your assistant always use the graph"
+    },
+    {
+      "label": "Codex writes to AGENTS.md and also",
+      "text": "Codex writes to AGENTS.md and also installs a PreToolUse hook in .codex/hooks.json that fires before every Bash tool call, same always-on mechanism as Claude Code."
+    },
+    {
+      "label": "Confidence tags — every inferred relatio…",
+      "text": "Confidence tags — every inferred relationship is marked EXTRACTED, INFERRED, or AMBIGUOUS. You always know what was found vs guessed."
+    },
+    {
+      "label": "default 127.0.0.1 bind is loopback-only.…",
+      "text": "The default 127.0.0.1 bind is loopback-only. Set --host 0.0.0.0 and --api-key together when exposing on a shared host. Run it in a container:"
+    },
+    {
+      "label": "These are only needed for headless",
+      "text": "These are only needed for headless / CI extraction (graphify extract). When running via the /graphify skill inside your IDE, the model API is provided by your IDE session — no extra keys needed."
+    }
+  ]
+}

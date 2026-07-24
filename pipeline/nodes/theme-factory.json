@@ -1,0 +1,37 @@
+{
+  "name": "theme-factory",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/theme-factory",
+  "repo": "anthropics/skills",
+  "path": "skills/theme-factory/SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Show the theme showcase: Display the",
+      "text": "Show the theme showcase: Display the theme-showcase.pdf file to allow users to see all available themes visually. Do not make any modifications to it; simply show the file for viewing."
+    },
+    {
+      "label": "Wait for selection: Get explicit confirm…",
+      "text": "Wait for selection: Get explicit confirmation about the chosen theme"
+    },
+    {
+      "label": "Ensure proper contrast and readability",
+      "text": "Ensure proper contrast and readability"
+    },
+    {
+      "label": "Ask for their choice: Ask which",
+      "text": "Ask for their choice: Ask which theme to apply to the deck"
+    },
+    {
+      "label": "Apply the theme: Once a theme",
+      "text": "Apply the theme: Once a theme has been chosen, apply the selected theme's colors and fonts to the deck/artifact"
+    },
+    {
+      "label": "Read the corresponding theme file from",
+      "text": "Read the corresponding theme file from the themes/ directory"
+    },
+    {
+      "label": "Apply the specified colors and fonts",
+      "text": "Apply the specified colors and fonts consistently throughout the deck"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "name": "claude-code-infrastructure-showcase",
+  "url": "https://github.com/diet103/claude-code-infrastructure-showcase",
+  "repo": "diet103/claude-code-infrastructure-showcase",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "jq - only needed if you",
+      "text": "jq - only needed if you enable the optional Stop hooks"
+    },
+    {
+      "label": "strict - Minimize false positives. Only",
+      "text": "strict - Minimize false positives. Only suggest when clear intent."
+    },
+    {
+      "label": "Progressive disclosure: Claude loads mai…",
+      "text": "Progressive disclosure: Claude loads main skill first, loads resources only when needed."
+    },
+    {
+      "label": "Skills load only when needed",
+      "text": "Skills load only when needed"
+    },
+    {
+      "label": "Need everything off fast? Remove the",
+      "text": "Need everything off fast? Remove the \"hooks\" block from .claude/settings.json - all hooks stop running immediately."
+    },
+    {
+      "label": "skill-rules.json - the config that tells",
+      "text": "skill-rules.json - the config that tells hooks which prompts/files should trigger which skills"
+    },
+    {
+      "label": "Detect your tech stack (React, Express",
+      "text": "Detect your tech stack (React, Express, Prisma, etc.)"
+    }
+  ]
+}

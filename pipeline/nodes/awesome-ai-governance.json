@@ -1,0 +1,13 @@
+{
+  "name": "awesome-ai-governance",
+  "url": "https://github.com/Myr-Aya/awesome-ai-governance",
+  "repo": "Myr-Aya/awesome-ai-governance",
+  "path": "README.md",
+  "type": "governance",
+  "nodes": [
+    {
+      "label": "Software Bill of Materials for AI",
+      "text": "Software Bill of Materials for AI: Minimum Elements - CISA and G7 joint guidance defining what an AI-specific SBOM must contain for supply-chain transparency."
+    }
+  ]
+}

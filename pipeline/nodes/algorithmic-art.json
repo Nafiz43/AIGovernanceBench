@@ -1,0 +1,37 @@
+{
+  "name": "algorithmic-art",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/algorithmic-art",
+  "repo": "anthropics/skills",
+  "path": "skills/algorithmic-art/SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "philosophy must emphasize: Algorithmic e…",
+      "text": "The philosophy must emphasize: Algorithmic expression. Emergent behavior. Computational beauty. Seeded variation."
+    },
+    {
+      "label": "philosophy must guide the next version",
+      "text": "The philosophy must guide the next version to express ideas ALGORITHMICALLY, not through static images. Beauty lives in the process, not the final frame."
+    },
+    {
+      "label": "PROCESS OVER PRODUCT: Always emphasize t…",
+      "text": "PROCESS OVER PRODUCT: Always emphasize that beauty emerges from the algorithm's execution - each run is unique"
+    },
+    {
+      "label": "EXPERT CRAFTSMANSHIP: Repeatedly emphasi…",
+      "text": "EXPERT CRAFTSMANSHIP: Repeatedly emphasize the final algorithm must feel meticulously crafted, refined through countless iterations, the product of deep expertise by someone at the absolute top of their field in computational aesthetics"
+    },
+    {
+      "label": "With the philosophy AND conceptual frame…",
+      "text": "With the philosophy AND conceptual framework established, express it through code. Pause to gather thoughts before proceeding. Use only the algorithmic philosophy created and the instructions below."
+    },
+    {
+      "label": "Replace only the VARIABLE sections marked",
+      "text": "Replace only the VARIABLE sections marked in the file's comments (algorithm, parameters, UI controls for parameters)"
+    },
+    {
+      "label": "✅ Replace only the p5.js algorithm",
+      "text": "✅ Replace only the p5.js algorithm and parameter controls"
+    }
+  ]
+}

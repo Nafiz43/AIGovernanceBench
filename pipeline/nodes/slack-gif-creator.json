@@ -1,0 +1,37 @@
+{
+  "name": "slack-gif-creator",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/slack-gif-creator",
+  "repo": "anthropics/skills",
+  "path": "skills/slack-gif-creator/SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Use thicker lines - Always set",
+      "text": "Use thicker lines - Always set width=2 or higher for outlines and lines. Thin lines (width=1) look choppy and amateurish."
+    },
+    {
+      "label": "Only when asked to make the",
+      "text": "Only when asked to make the file size smaller, implement a few of the following methods:"
+    },
+    {
+      "label": "Use it directly (e.g., \"animate this\"",
+      "text": "Use it directly (e.g., \"animate this\", \"split this into frames\")"
+    },
+    {
+      "label": "Use it as inspiration (e.g., \"make",
+      "text": "Use it as inspiration (e.g., \"make something like this\")"
+    },
+    {
+      "label": "Load and work with images using",
+      "text": "Load and work with images using PIL:"
+    },
+    {
+      "label": "Don't use: Emoji fonts (unreliable across",
+      "text": "Don't use: Emoji fonts (unreliable across platforms) or assume pre-packaged graphics exist in this skill."
+    },
+    {
+      "label": "Graphics should look polished and creative",
+      "text": "Graphics should look polished and creative, not basic. Here's how:"
+    }
+  ]
+}

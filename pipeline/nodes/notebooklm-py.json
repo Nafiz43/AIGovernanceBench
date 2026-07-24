@@ -1,0 +1,37 @@
+{
+  "name": "notebooklm-py",
+  "url": "https://github.com/teng-lin/notebooklm-py",
+  "repo": "teng-lin/notebooklm-py",
+  "path": "SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Why wait for sources? Sources must",
+      "text": "Why wait for sources? Sources must be indexed before chat or generation. Takes ~30 seconds to several minutes per source (see the processing-times table below)."
+    },
+    {
+      "label": "you are already reading this file",
+      "text": "If you are already reading this file inside an agent skill directory, the skill is already installed. You only need the Python package and authentication below."
+    },
+    {
+      "label": "Before using any command, you MUST",
+      "text": "Before using any command, you MUST authenticate:"
+    },
+    {
+      "label": "Always use explicit notebook ID (recomme…",
+      "text": "Always use explicit notebook ID (recommended): Pass -n  / --notebook  on notebook-scoped commands instead of relying on use"
+    },
+    {
+      "label": "Before starting workflows, verify auth is",
+      "text": "Before starting workflows, verify auth is in place. Use --test --json (not bare --json) — bare --json only proves the cookie file parses; --test makes a network call and proves the cookies still authenticate against Google."
+    },
+    {
+      "label": "notebooklm status reports *context state…",
+      "text": "notebooklm status reports *context state* (selected notebook); do not use it to verify auth."
+    },
+    {
+      "label": "notebooklm auth inspect - list Google",
+      "text": "notebooklm auth inspect - list Google accounts visible to a browser (read-only)"
+    }
+  ]
+}

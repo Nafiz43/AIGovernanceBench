@@ -1,0 +1,37 @@
+{
+  "name": "awesome-medical-imaging-agents",
+  "url": "https://github.com/Nanboy-Ronan/awesome-medical-imaging-agents",
+  "repo": "Nanboy-Ronan/awesome-medical-imaging-agents",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "ESL-Bench: An Event-Driven Synthetic Lon…",
+      "text": "ESL-Bench: An Event-Driven Synthetic Longitudinal Benchmark for Health Agents - Published in arXiv (2026). Synthetic longitudinal benchmark for health agents that must reason over evolving device, exam, and life-event timelines."
+    },
+    {
+      "label": "Beyond Manual Annotation: A Human-AI Col…",
+      "text": "Beyond Manual Annotation: A Human-AI Collaborative Framework for Medical Image Segmentation Using Only \"Better or Worse\" Expert Feedback — arXiv (2025) · *Segmentation Agents*"
+    },
+    {
+      "label": "Report Generation Agents (12)",
+      "text": "Report Generation Agents (12)"
+    },
+    {
+      "label": "PASS: Probabilistic Agentic Supernet Sam…",
+      "text": "PASS: Probabilistic Agentic Supernet Sampling for Interpretable and Adaptive Chest X-Ray Reasoning - Published in arXiv (2025). Builds interpretable reasoning paths with probabilistic agent selection."
+    },
+    {
+      "label": "Quantifying and Mitigating Premature Clo…",
+      "text": "Quantifying and Mitigating Premature Closure in Frontier LLMs - Published in arXiv (2026). Evaluates medical LLM false-action behavior when safer responses should clarify, abstain, escalate, or refuse."
+    },
+    {
+      "label": "MedVeriSeg: Teaching LISA-Like Medical S…",
+      "text": "MedVeriSeg: Teaching LISA-Like Medical Segmentation Models to Verify Query Validity Without Extra Training — arXiv (2026) · *Segmentation Agents*"
+    },
+    {
+      "label": "Which Tool Response Should I Trust?",
+      "text": "Which Tool Response Should I Trust? Tool-Expertise-Aware Chest X-ray Agent with Multimodal Agentic Learning — arXiv (2026) · *Radiology Agents*"
+    }
+  ]
+}

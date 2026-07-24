@@ -30,10 +30,15 @@ Detects how the instructions *inside* a bundle of recommended skills depend on, 
 directives; edges are derived from small per-node predicates.
 
 ```bash
+python3 pipeline/extract_nodes.py --all --quiet   # extract REAL directive nodes per skill -> pipeline/nodes/*.json
 python3 pipeline/rules.py         # derive edges + score vs the 13-edge gold set
 python3 pipeline/test_rules.py    # assert 13/13 recall, 0 spurious
 python3 pipeline/gen_graph.py     # rewrite graph-data.js edges from the engine
 ```
+
+**Node extraction (`extract_nodes.py`):** resolves any skill by name from `data.js` → fetches its repo `SKILL.md`/`README.md` via `gh api` → extracts **verbatim** directive lines (modal-verb + imperative-mood, minus setup/env noise) → caches `pipeline/nodes/<slug>.json`. `--bundle "P|T"` does one pair; `--all` does every distinct recommended skill. **Nodes are per-SKILL, not per-pair** — a bundle = union of its skills' cached nodes, so full coverage = extract each skill once (O(skills), not O(pairs)).
+
+**Coverage status:** node layer = **142/142 pairs renderable** (54/63 skills yield ~282 real nodes; 9 skipped — websites/link-lists/libraries with no agent directives, the honest boundary). Edge layer = **1/142** (Radiologist) — edges need per-skill predicates in `rules.py`; that authoring is the remaining work to make more bundles live. **Extraction ceiling:** regex still grabs some section headings and misses nuance; clean `SKILL.md` skills extract best, libraries/lists thinnest.
 
 - **How it works:** each node carries `(stance/egress, overlap-class, produces/consumes, goal)`. Four rules → edges: conflict = one node *opens* an egress object another *restricts* (linked objects bridge draft⊇PHI); overlap = same class, different skill; depends = consumer needs producer's artifact; reinforces = shared goal. Precedence conflict>overlap>depends>reinforces.
 - **Perf:** reproduces all 13 hand-curated edges, 0 spurious, ~0.04 ms (vs qwen3:14b ~43 min, which collapsed 16/19 edges to "reinforces"). Explainable — every edge emits its "because".

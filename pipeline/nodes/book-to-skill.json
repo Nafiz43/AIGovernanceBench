@@ -1,0 +1,37 @@
+{
+  "name": "book-to-skill",
+  "url": "https://github.com/virgiliojr94/book-to-skill",
+  "repo": "virgiliojr94/book-to-skill",
+  "path": "SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Wait for the user to confirm",
+      "text": "Wait for the user to confirm before proceeding. If they say \"analyze only\", switch to Mode 2."
+    },
+    {
+      "label": "the scanner exits non-zero, stop and",
+      "text": "If the scanner exits non-zero, stop and ask a human to review its file/line findings. Do not silently rewrite the generated files, and do not load or publish the skill until the findings are resolved or explicitly accepted."
+    },
+    {
+      "label": "Never copy raw book text —",
+      "text": "Never copy raw book text — always synthesize, summarize, extract signal"
+    },
+    {
+      "label": "Action: Run Steps 0–3, then produce",
+      "text": "Action: Run Steps 0–3, then produce a structured extraction report (frameworks, principles, techniques found). Stop — do NOT generate skill files."
+    },
+    {
+      "label": "Trigger: User has existing analysis notes",
+      "text": "Trigger: User has existing analysis notes or previously ran analyze-only"
+    },
+    {
+      "label": "For generated book skills, pick a",
+      "text": "For generated book skills, pick a destination that the user's host agent can actually discover (see Step 5). When more than one valid root exists, ask the user once and remember the answer for the session — do not silently default."
+    },
+    {
+      "label": "Step 1 — Validate input",
+      "text": "Step 1 — Validate input"
+    }
+  ]
+}

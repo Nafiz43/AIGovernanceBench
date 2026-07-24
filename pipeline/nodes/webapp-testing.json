@@ -1,0 +1,37 @@
+{
+  "name": "webapp-testing",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/webapp-testing",
+  "repo": "anthropics/skills",
+  "path": "skills/webapp-testing/SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "To create an automation script, include",
+      "text": "To create an automation script, include only Playwright logic (servers are managed automatically):"
+    },
+    {
+      "label": "✅ Do wait for page.wait_for_load_state('…",
+      "text": "✅ Do wait for page.wait_for_load_state('networkidle') before inspection"
+    },
+    {
+      "label": "Always close the browser when done",
+      "text": "Always close the browser when done"
+    },
+    {
+      "label": "❌ Don't inspect the DOM before",
+      "text": "❌ Don't inspect the DOM before waiting for networkidle on dynamic apps"
+    },
+    {
+      "label": "Use sync_playwright() for synchronous sc…",
+      "text": "Use sync_playwright() for synchronous scripts"
+    },
+    {
+      "label": "Use descriptive selectors: text=, role=,…",
+      "text": "Use descriptive selectors: text=, role=, CSS selectors, or IDs"
+    },
+    {
+      "label": "Add appropriate waits: page.wait_for_sel…",
+      "text": "Add appropriate waits: page.wait_for_selector() or page.wait_for_timeout()"
+    }
+  ]
+}

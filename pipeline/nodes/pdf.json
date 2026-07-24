@@ -1,0 +1,25 @@
+{
+  "name": "pdf",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/pdf",
+  "repo": "anthropics/skills",
+  "path": "skills/pdf/SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Never use Unicode subscript/superscript …",
+      "text": "Never use Unicode subscript/superscript characters (₀₁₂₃₄₅₆₇₈₉, ⁰¹²³⁴⁵⁶⁷⁸⁹) in ReportLab PDFs. The built-in fonts do not include these glyphs, causing them to render as solid black boxes."
+    },
+    {
+      "label": "Extract Text with Layout",
+      "text": "Extract Text with Layout"
+    },
+    {
+      "label": "Create PDF with Multiple Pages",
+      "text": "Create PDF with Multiple Pages"
+    },
+    {
+      "label": "Extract Text from Scanned PDFs",
+      "text": "Extract Text from Scanned PDFs"
+    }
+  ]
+}

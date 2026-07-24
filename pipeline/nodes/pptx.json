@@ -1,0 +1,37 @@
+{
+  "name": "pptx",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/pptx",
+  "repo": "anthropics/skills",
+  "path": "skills/pptx/SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Text boxes have built-in internal padding",
+      "text": "Text boxes have built-in internal padding — set margin: 0 whenever text must align with a shape, line, or icon at the same x."
+    },
+    {
+      "label": "Let bullets inherit from the layout",
+      "text": "Let bullets inherit from the layout; only add ,  (numbered), or  to override — never a literal • in the text."
+    },
+    {
+      "label": "contain parts the XSD rejects, so",
+      "text": "contain parts the XSD rejects, so a bare run can report failures you never caused — and"
+    },
+    {
+      "label": "pptxgenjs mutates option objects in place",
+      "text": "pptxgenjs mutates option objects in place (converts values to EMU on first use). Never share one shadow/options object across two add* calls — build a fresh object each time."
+    },
+    {
+      "label": "Shadow offset must be ≥ 0",
+      "text": "Shadow offset must be ≥ 0 — a negative offset corrupts the file. To cast a shadow upward, use angle: 270 with a positive offset."
+    },
+    {
+      "label": "Lists: bullet: true on each item",
+      "text": "Lists: bullet: true on each item, never a literal • (renders double bullets). Set breakLine: true on every array item except the last. Space bulleted paragraphs with paraSpaceAfter, not lineSpacing (huge gaps)."
+    },
+    {
+      "label": "One new pptxgen() per output file",
+      "text": "One new pptxgen() per output file — never reuse an instance."
+    }
+  ]
+}

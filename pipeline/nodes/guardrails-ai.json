@@ -1,0 +1,29 @@
+{
+  "name": "Guardrails AI",
+  "url": "https://github.com/guardrails-ai/guardrails",
+  "repo": "guardrails-ai/guardrails",
+  "path": "README.md",
+  "type": "governance",
+  "nodes": [
+    {
+      "label": "Create Input and Output Guards for",
+      "text": "Create Input and Output Guards for LLM Validation"
+    },
+    {
+      "label": "Create a Guard from the installed",
+      "text": "Create a Guard from the installed guardrail."
+    },
+    {
+      "label": "Run multiple guardrails within a Guard",
+      "text": "Run multiple guardrails within a Guard."
+    },
+    {
+      "label": "Use Guardrails to generate structured data",
+      "text": "Use Guardrails to generate structured data from LLMs"
+    },
+    {
+      "label": "Prompt optimization: For LLMs that don't",
+      "text": "Prompt optimization: For LLMs that don't support function calling, we add the schema of the expected output to the prompt so that the LLM can generate structured data."
+    }
+  ]
+}

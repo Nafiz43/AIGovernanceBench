@@ -1,0 +1,25 @@
+{
+  "name": "web-artifacts-builder",
+  "url": "https://github.com/anthropics/skills/tree/main/skills/web-artifacts-builder",
+  "repo": "anthropics/skills",
+  "path": "skills/web-artifacts-builder/SKILL.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Requirements: Your project must have an",
+      "text": "Requirements: Your project must have an index.html in the root directory."
+    },
+    {
+      "label": "This is a completely optional step",
+      "text": "This is a completely optional step. Only perform if necessary or requested."
+    },
+    {
+      "label": "VERY IMPORTANT: To avoid what is",
+      "text": "VERY IMPORTANT: To avoid what is often referred to as \"AI slop\", avoid using excessive centered layouts, purple gradients, uniform rounded corners, and Inter font."
+    },
+    {
+      "label": "Run the initialization script to create",
+      "text": "Run the initialization script to create a new React project:"
+    }
+  ]
+}

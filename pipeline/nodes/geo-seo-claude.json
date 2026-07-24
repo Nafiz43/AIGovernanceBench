@@ -1,0 +1,25 @@
+{
+  "name": "geo-seo-claude",
+  "url": "https://github.com/zubair-trabzada/geo-seo-claude",
+  "repo": "zubair-trabzada/geo-seo-claude",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "Right-click the folder and select \"Open",
+      "text": "Right-click the folder and select \"Open Git Bash here\", or open Git Bash and navigate to the directory. Do not use PowerShell or Command Prompt."
+    },
+    {
+      "label": "Checks robots.txt for 14+ AI crawlers",
+      "text": "Checks robots.txt for 14+ AI crawlers (GPTBot, ClaudeBot, PerplexityBot, etc.) and provides specific allow/block recommendations."
+    },
+    {
+      "label": "Only 11% of domains are cited",
+      "text": "Only 11% of domains are cited by both ChatGPT and Google AI Overviews for the same query. Provides tailored recommendations per platform."
+    },
+    {
+      "label": "Report — Outputs prioritized action plan",
+      "text": "Report — Outputs prioritized action plan with quick wins"
+    }
+  ]
+}

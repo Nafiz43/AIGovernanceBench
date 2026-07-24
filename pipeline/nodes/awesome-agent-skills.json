@@ -1,0 +1,37 @@
+{
+  "name": "awesome-agent-skills",
+  "url": "https://github.com/VoltAgent/awesome-agent-skills",
+  "repo": "VoltAgent/awesome-agent-skills",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "WordPress/wp-block-development - Gutenbe…",
+      "text": "WordPress/wp-block-development - Gutenberg blocks: block.json, attributes, rendering, deprecations"
+    },
+    {
+      "label": "WordPress/wp-block-themes - Block themes…",
+      "text": "WordPress/wp-block-themes - Block themes: theme.json, templates, patterns, style variations"
+    },
+    {
+      "label": "garrytan/qa-only - QA Reporter: same met…",
+      "text": "garrytan/qa-only - QA Reporter: same methodology as /qa but report only, no code changes"
+    },
+    {
+      "label": "NVIDIA/TensorRT-LLM/ad-model-onboard - >…",
+      "text": "NVIDIA/TensorRT-LLM/ad-model-onboard - > Translates a HuggingFace model into a prefill-only AutoDeploy custom model using reference custom ops, validates with hierarchical equivalence tests."
+    },
+    {
+      "label": "deanpeters/discovery-process - Full disc…",
+      "text": "deanpeters/discovery-process - Full discovery cycle: frame problem → research → synthesize → validate (3-4 weeks)"
+    },
+    {
+      "label": "deanpeters/skill-authoring-workflow - Me…",
+      "text": "deanpeters/skill-authoring-workflow - Meta workflow for authoring skills: choose path → validate → update docs → package"
+    },
+    {
+      "label": "MiniMax-AI/minimax-xlsx - Create, read, …",
+      "text": "MiniMax-AI/minimax-xlsx - Create, read, analyze, and validate Excel/spreadsheet files with zero format loss"
+    }
+  ]
+}

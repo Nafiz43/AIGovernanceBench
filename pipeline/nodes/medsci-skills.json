@@ -1,0 +1,37 @@
+{
+  "name": "medsci-skills",
+  "url": "https://github.com/Aperivue/medsci-skills",
+  "repo": "Aperivue/medsci-skills",
+  "path": "README.md",
+  "type": "skill",
+  "nodes": [
+    {
+      "label": "and claims must be verified against",
+      "text": "and claims must be verified against your data; the toolkit never fabricates numbers"
+    },
+    {
+      "label": "Windows users do not need WSL",
+      "text": "Windows users do not need WSL for the basic classroom workflow. Use WSL only for advanced reproducible Linux toolchains."
+    },
+    {
+      "label": "and then never again. /contribute only",
+      "text": "and then never again. /contribute only ever runs when you run it."
+    },
+    {
+      "label": "reproducible, leakage-safe PyTorch train…",
+      "text": "reproducible, leakage-safe PyTorch training repo, and validate, document, and"
+    },
+    {
+      "label": "Submission pre-flight gate — preflight_g…",
+      "text": "Submission pre-flight gate — preflight_gate.py bundles the existing detectors + /verify-refs into one halt-on-failure command (qc/preflight_gate_report.json, non-zero exit on any blocker) — the single last step before freeze."
+    },
+    {
+      "label": "MedSci Skills updates often. You do",
+      "text": "MedSci Skills updates often. You do not need GitHub, git, or the command line to stay current."
+    },
+    {
+      "label": "verifies it, and re-installs — transacti…",
+      "text": "verifies it, and re-installs — transactionally, so an interrupted update never corrupts your install."
+    }
+  ]
+}
