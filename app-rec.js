@@ -81,8 +81,20 @@ function renderRec() {
   recResults.innerHTML = hits.map(card).join("");
 }
 
+recResults.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-analyze]");
+  if (btn && typeof openAnalyzer === "function") openAnalyzer(btn.dataset.analyze);
+});
+
 function card(r) {
   const items = r.s.slice().sort((a, b) => IMPORTANCE_ORDER[a[1]] - IMPORTANCE_ORDER[b[1]]);
+  const hasGraph = typeof GRAPHS !== "undefined" && GRAPHS[r.p + "|" + r.t];
+  const analyzeBtn = hasGraph
+    ? `<button class="rec-analyze" data-analyze="${esc(r.p + "|" + r.t)}"
+         title="See how these skills' instructions depend on and conflict with each other">
+         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="7" r="2.5"/><circle cx="8" cy="18" r="2.5"/><line x1="8" y1="8" x2="16" y2="8.5"/><line x1="7" y1="8.5" x2="8" y2="15.5"/><line x1="10" y1="17" x2="16" y2="9"/></svg>
+         Network Analyzer</button>`
+    : "";
   return `
   <article class="rec-card">
     <header class="rec-card-head">
@@ -93,6 +105,7 @@ function card(r) {
       </div>
       <span class="rec-count">${items.length} to import</span>
     </header>
+    ${analyzeBtn ? `<div class="rec-analyze-bar">${analyzeBtn}</div>` : ""}
     <p class="rec-skills-label">AI skills &amp; governance files to import</p>
     <ul class="rec-skills">
       ${items.map(skillRow).join("")}
