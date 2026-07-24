@@ -95,6 +95,11 @@ h1,h2,.brand-name{font-family:"Lora",Georgia,serif;}
 .skill-why{margin:0;font-size:.82rem;color:var(--muted);line-height:1.45;}
 .skill-why span{font-weight:700;color:var(--navy);}
 
+#recSearch{
+  width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:8px;
+  font-size:.95rem;font-family:inherit;background:#fbfcfd;color:var(--ink);
+}
+#recSearch:focus{outline:none;border-color:var(--blue);background:#fff;}
 #recPersona,#recTask{
   padding:11px 14px;border:1px solid var(--line);border-radius:8px;font-size:.95rem;
   font-family:inherit;background:#fbfcfd;color:var(--ink);min-width:180px;
