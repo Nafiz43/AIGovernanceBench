@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dependency Management — AIGovernanceBench</title>
+<meta name="description" content="How AIGovernanceBench detects conflicts, redundancies, and dependencies between the instructions inside a bundle of Agent Skills.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23002754%22/><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22none%22 stroke=%22%23DAAA01%22 stroke-width=%226%22/><text x=%2250%22 y=%2260%22 font-size=%2232%22 fill=%22white%22 text-anchor=%22middle%22 font-family=%22Georgia,serif%22 font-weight=%22bold%22>AGB</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="45" fill="#002754"/>
+        <circle cx="50" cy="50" r="45" fill="none" stroke="#DAAA01" stroke-width="6"/>
+        <text x="50" y="60" font-size="30" fill="white" text-anchor="middle" font-family="Lora, serif" font-weight="700">AGB</text>
+      </svg>
+      <div class="brand-text">
+        <span class="brand-name">AIGovernanceBench</span>
+        <span class="brand-tag">Tracking what governs AI agents</span>
+      </div>
+    </div>
+    <nav class="mainnav">
+      <a class="nav-tab" href="index.html">Skill Recommender</a>
+      <a class="nav-tab" href="index.html#directory">All Skill List</a>
+      <a class="nav-tab" href="badges.html">Skill Badges</a>
+      <a class="nav-tab active" href="dependency.html">Dependency Management</a>
+    </nav>
+  </div>
+</header>
+
+<main class="badges-page">
+  <h1>Dependency Management</h1>
+  <p class="badges-lede">When you install several software packages, your package manager warns you about
+  version conflicts before they break your build. <strong>Agent Skills have no such safeguard.</strong> Load
+  several into one agent session and their instructions can silently contradict each other — one skill
+  telling the agent to send a draft to a second model to sanity-check it, another forbidding any patient
+  data from ever leaving the machine. The <strong>Network Analyzer</strong> is the missing safeguard: it
+  reads the actual instructions inside a bundle of skills and surfaces how they depend on, overlap with,
+  and conflict with one another <em>before</em> you wire them together.</p>
+
+  <section class="badges-section">
+    <h2>The four relationships</h2>
+    <p class="badges-note" style="margin-bottom:14px;">Every edge in the dependency map is one of four types. Together they answer:
+    <em>is this bundle safe to compose?</em></p>
+    <div class="tier-cards">
+      <div class="tier-card">
+        <span class="dep-line" style="background:#d81f1f"></span> <strong>Conflict</strong>
+        <p>One instruction <em>permits</em> an action another <em>forbids</em> on the same sensitive object.
+        The hero case — these are the silent contradictions that cause real harm (e.g. a PHI leak). Must be resolved before bundling.</p>
+      </div>
+      <div class="tier-card">
+        <span class="dep-line" style="background:#e6a100"></span> <strong>Redundant overlap</strong>
+        <p>Two instructions from different skills do the same job (e.g. two guardrail frameworks both
+        filtering output). Harmless but wasteful — you can usually drop one.</p>
+      </div>
+      <div class="tier-card">
+        <span class="dep-line" style="background:#2563eb"></span> <strong>Depends on</strong>
+        <p>One instruction consumes an artifact another produces (a checklist, a redaction map, a structured
+        draft). If you keep the consumer, you need the producer too.</p>
+      </div>
+      <div class="tier-card">
+        <span class="dep-line" style="background:#12a150"></span> <strong>Reinforces</strong>
+        <p>Two instructions push toward the same goal from different skills — mutually supportive. A signal that
+        the bundle is coherent, not a problem to fix.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="badges-section">
+    <h2>How the process works</h2>
+    <p class="badges-note" style="margin-bottom:16px;">Everything runs offline, against each skill's real
+    repository. No skill text is paraphrased — every node you see in the graph is a verbatim instruction
+    pulled from a live GitHub repo.</p>
+    <ol class="dep-steps">
+      <li>
+        <strong>Scrape the real repo.</strong> For each recommended skill, the pipeline fetches its actual
+        <code>SKILL.md</code> (or <code>README.md</code>) from GitHub via the <code>gh</code> API. Skills with
+        no machine-readable directives — websites, link-lists, plain libraries — are skipped, never invented.
+      </li>
+      <li>
+        <strong>Extract the instructions.</strong> It pulls out verbatim directive lines — the modal-verb rules
+        (<em>"never…", "must…", "only…"</em>) and imperative steps (<em>"redact…", "quote…", "share the draft…"</em>) —
+        while dropping setup and environment noise. Each surviving line becomes one <strong>node</strong>.
+      </li>
+      <li>
+        <strong>Tag each node with predicates.</strong> Every node is annotated with four small properties:
+        its <em>stance / egress</em> (does it open or restrict an action, on what object?), its
+        <em>overlap-class</em> (what job it does), what it <em>produces or consumes</em>, and its <em>goal</em>.
+        This is O(n) work per node, not O(n²) work per pair of instructions.
+      </li>
+      <li>
+        <strong>Derive the edges with a deterministic rule engine.</strong> The four relationships fall out of
+        the predicates automatically (see the rules below). No large language model is in the live path — the
+        result is instant, reproducible, and fully explainable: every edge can state exactly <em>why</em> it exists.
+      </li>
+      <li>
+        <strong>Render the dependency map.</strong> Nodes are laid out by a force-directed simulation and colored
+        by skill; edges are colored by relationship. Click any node — or any conflict in the side panel — to trace
+        exactly what it collides with.
+      </li>
+    </ol>
+  </section>
+
+  <section class="badges-section">
+    <h2>How a dependency is calculated</h2>
+    <p class="badges-note" style="margin-bottom:14px;">The four rules, applied in precedence order
+    <strong>conflict &gt; overlap &gt; depends &gt; reinforces</strong> (a pair of instructions gets at most one edge, the strongest that applies):</p>
+    <table class="badge-table">
+      <thead><tr><th>Relationship</th><th>Fires when…</th></tr></thead>
+      <tbody>
+        <tr><td><span class="dep-line" style="background:#d81f1f"></span> <strong>Conflict</strong></td>
+          <td>One node <em>opens</em> an egress action on an object that another node <em>restricts</em> — on the
+          same object, or on a <em>linked</em> object where one contains the other (a "draft" contains "PHI", an
+          "image" contains "PHI"). That containment bridge is what catches leaks you'd never see reading either
+          skill alone.</td></tr>
+        <tr><td><span class="dep-line" style="background:#e6a100"></span> <strong>Redundant overlap</strong></td>
+          <td>Two nodes share the same overlap-class but come from different skills.</td></tr>
+        <tr><td><span class="dep-line" style="background:#2563eb"></span> <strong>Depends on</strong></td>
+          <td>One node consumes an artifact another node produces. Directed — the arrow points from consumer to producer.</td></tr>
+        <tr><td><span class="dep-line" style="background:#12a150"></span> <strong>Reinforces</strong></td>
+          <td>Two nodes from different skills share the same goal tag.</td></tr>
+      </tbody>
+    </table>
+    <p class="badges-note" style="margin-top:14px;">Because the rules read explicit predicates rather than guessing
+    from raw text, the engine reproduces every hand-curated edge on our reference bundle with zero false positives,
+    in well under a millisecond — and each edge carries its own "because" explanation.</p>
+  </section>
+
+  <section class="badges-section">
+    <h2>Worked example — a radiologist drafting reports</h2>
+    <p class="badges-lede" style="font-size:.98rem;">The skills our directory recommends for AI-assisted report
+    drafting pull in two different guardrail frameworks doing the same job — a harmless <strong>redundant overlap</strong>.
+    More importantly, a document co-authoring skill whose <em>"share the draft with a fresh model to sanity-check it"</em>
+    step directly <strong style="color:#b91c1c;">conflicts</strong> with a de-identification skill's
+    <em>"no patient data ever leaves the machine"</em> rule. The draft <em>contains</em> patient data, so sending it out
+    is a PHI leak — one you would never catch by reading either skill on its own. It only appears when you examine how
+    the instructions interact. That is exactly what the map makes visible.</p>
+  </section>
+
+  <section class="badges-section">
+    <h2>What's live vs. draft</h2>
+    <p class="badges-note">Structural relationships (overlap, depends, reinforces) are safe to auto-derive.
+    <strong>Conflicts are not</strong> — automatically typing a contradiction from keywords alone produces false
+    alarms, so conflicts are shown only on <strong>human-verified bundles</strong>, each labelled
+    <span class="an-chip an-chip-verified" style="display:inline-block;">✓ Human-verified</span> in the analyzer.
+    The remaining pairs are generated as off-server drafts so the work is preserved without shipping unverified
+    conflict claims. Verify a skill's own health separately on the <a href="badges.html">Skill Badges</a> page.</p>
+  </section>
+</main>
+
+<footer class="sitefoot">
+  <p>The dependency engine lives in <code>pipeline/rules.py</code> and <code>pipeline/curated.py</code>.
+  <a href="https://github.com/Nafiz43/AIGovernanceBench" target="_blank" rel="noopener">Source on GitHub</a>.</p>
+</footer>
+
+</body>
+</html>

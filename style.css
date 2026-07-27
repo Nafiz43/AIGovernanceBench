@@ -118,6 +118,7 @@ h1,h2,.brand-name{font-family:"Lora",Georgia,serif;}
 
 /* ============ Network Analyzer overlay ============ */
 #analyzerOverlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;}
+#analyzerOverlay[hidden]{display:none;}  /* ID selector beat the UA [hidden] rule, so close never hid it */
 .an-backdrop{position:absolute;inset:0;background:rgba(4,16,34,.6);backdrop-filter:blur(3px);}
 .an-panel{
   position:relative;width:min(1120px,94vw);height:min(88vh,820px);
@@ -188,6 +189,13 @@ h1,h2,.brand-name{font-family:"Lora",Georgia,serif;}
 .badges-note{color:#6b7280;font-size:.85rem;line-height:1.5;}
 .sitefoot{border-top:1px solid #e5e7eb;padding:20px;text-align:center;color:#6b7280;font-size:.85rem;}
 .sitefoot a{color:#1155CC;}
+
+/* Dependency Management page */
+.dep-line{width:22px;height:4px;border-radius:2px;display:inline-block;vertical-align:middle;margin-right:4px;}
+.dep-steps{margin:0;padding-left:22px;color:#374151;line-height:1.65;}
+.dep-steps li{margin-bottom:14px;font-size:.96rem;}
+.dep-steps strong{color:#002754;}
+.dep-steps code{background:#f3f4f6;padding:1px 5px;border-radius:4px;font-size:.86em;}
 .an-close{border:none;background:#eef1f5;color:var(--muted);width:34px;height:34px;border-radius:8px;font-size:1rem;cursor:pointer;flex:none;}
 .an-close:hover{background:#e0e4ea;color:var(--ink);}
 
