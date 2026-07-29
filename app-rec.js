@@ -82,9 +82,56 @@ function renderRec() {
 }
 
 recResults.addEventListener("click", (e) => {
-  const btn = e.target.closest("[data-analyze]");
-  if (btn && typeof openAnalyzer === "function") openAnalyzer(btn.dataset.analyze);
+  const analyzeBtn = e.target.closest("[data-analyze]");
+  if (analyzeBtn && typeof openAnalyzer === "function") { openAnalyzer(analyzeBtn.dataset.analyze); return; }
+
+  if (e.target.closest("[data-import]")) {
+    const panel = e.target.closest(".rec-card").querySelector(".rec-import-panel");
+    if (panel) panel.hidden = !panel.hidden;
+    return;
+  }
+
+  const copyBtn = e.target.closest(".rec-import-copy");
+  if (copyBtn) {
+    const pre = copyBtn.parentElement.querySelector("pre");
+    const flash = () => { copyBtn.textContent = "Copied ✓"; setTimeout(() => { copyBtn.textContent = "Copy"; }, 1600); };
+    const selectPre = () => { // fallback when the async clipboard API is unavailable (or blocked)
+      const range = document.createRange();
+      range.selectNodeContents(pre);
+      const sel = window.getSelection();
+      sel.removeAllRanges(); sel.addRange(range);
+    };
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(pre.textContent).then(flash, () => { selectPre(); flash(); });
+    } else {
+      selectPre(); flash();
+    }
+  }
 });
+
+// Build a copy-paste prompt that installs a bundle's real skills into an agent's skills folder.
+// Installable = a directory entry that is a skill AND lives on github.com. Governance docs and other
+// non-git entries are listed as reference only — never dressed up as a clonable skill (golden rule).
+function importSet(r) {
+  const install = [], reference = [];
+  r.s.forEach(([name]) => {
+    const e = DIR.get(name);
+    if (!e) return;
+    (e.type === "skill" && e.url.startsWith("https://github.com/") ? install : reference).push(e);
+  });
+  if (!install.length) return null;
+  let prompt =
+`Install this set of Claude Agent Skills for "${r.p} — ${r.t}".
+
+For each repo below, add it to my skills folder (~/.claude/skills/ for personal use, or .claude/skills/ in the current project). If a URL points to a subfolder of a monorepo, copy just that skill's folder — the one holding SKILL.md. If a repo is a collection, add the folders relevant to this task. When done, list what you installed and confirm the skills load.
+
+` + install.map(e => `- ${e.name}: ${e.url}`).join("\n");
+  if (reference.length) {
+    prompt += `\n\nReference only — open and adopt manually, do not install as skills:\n` +
+      reference.map(e => `- ${e.name}: ${e.url}`).join("\n");
+  }
+  return { prompt, count: install.length };
+}
 
 function card(r) {
   const items = r.s.slice().sort((a, b) => IMPORTANCE_ORDER[a[1]] - IMPORTANCE_ORDER[b[1]]);
@@ -95,6 +142,15 @@ function card(r) {
          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="7" r="2.5"/><circle cx="8" cy="18" r="2.5"/><line x1="8" y1="8" x2="16" y2="8.5"/><line x1="7" y1="8.5" x2="8" y2="15.5"/><line x1="10" y1="17" x2="16" y2="9"/></svg>
          Network Analyzer</button>`
     : "";
+  const imp = importSet(r);
+  const importBtn = imp
+    ? `<button class="rec-import" data-import type="button"
+         title="Copy a prompt that installs this exact set into your agent's skills folder">
+         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><polyline points="8 11 12 15 16 11"/><path d="M5 21h14"/></svg>
+         Import ${imp.count} ${imp.count === 1 ? "skill" : "skills"}</button>`
+    : "";
+  const bar = (analyzeBtn || importBtn)
+    ? `<div class="rec-analyze-bar">${analyzeBtn}${importBtn}</div>` : "";
   return `
   <article class="rec-card">
     <header class="rec-card-head">
@@ -105,12 +161,36 @@ function card(r) {
       </div>
       <span class="rec-count">${items.length} to import</span>
     </header>
-    ${analyzeBtn ? `<div class="rec-analyze-bar">${analyzeBtn}</div>` : ""}
+    ${bar}
+    ${imp ? `<div class="rec-import-panel" hidden>
+      <p class="rec-import-hint">Paste into your <strong>Claude Code</strong> or <strong>Codex</strong> CLI — it installs this set into your skills folder, ready to use.</p>
+      <div class="rec-import-code">
+        <button class="rec-import-copy" type="button">Copy</button>
+        <pre>${esc(imp.prompt)}</pre>
+      </div>
+    </div>` : ""}
     <p class="rec-skills-label">AI skills &amp; governance files to import</p>
     <ul class="rec-skills">
       ${items.map(skillRow).join("")}
     </ul>
   </article>`;
+}
+
+// Grounding row: quote the skill's OWN verbatim self-description (fetched from its
+// live repo into GROUNDING by pipeline/ground_recs.py) so a capability claim is
+// checkable against source — never our paraphrase. Non-verifiable entries say so.
+function groundRow(name) {
+  const g = typeof GROUNDING !== "undefined" ? GROUNDING[name] : null;
+  if (g && g.ok && g.quote) {
+    const prov = esc(g.source) + (g.sha ? " · blob " + esc(g.sha) : "") + " · fetched " + esc(g.fetched);
+    return `
+    <details class="skill-ground">
+      <summary><span class="grounded-tick">✓ Grounded</span> — the skill's own words <span class="skill-ground-meta">(${esc(g.source)})</span></summary>
+      <blockquote class="skill-ground-quote">${esc(g.quote)}</blockquote>
+      <p class="skill-ground-src">Verbatim from ${prov}. Grounds what the skill <em>claims to do</em>; the fit for this task is our editorial call.</p>
+    </details>`;
+  }
+  return `<p class="skill-ground-unverified">Not machine-verified — cited by its source link above (external doc / link-list, no quotable skill repo).</p>`;
 }
 
 function skillRow([name, importance, why]) {
@@ -130,6 +210,7 @@ function skillRow([name, importance, why]) {
     </div>
     <p class="skill-desc">${esc(e.purpose)}</p>
     <p class="skill-why"><span>Why:</span> ${esc(why)}</p>
+    ${groundRow(name)}
   </li>`;
 }
 

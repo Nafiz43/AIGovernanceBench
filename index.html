@@ -41,6 +41,17 @@
     <h1>Which AI skills should your <span>agent</span> have?</h1>
     <p>Pick who you are and what you're trying to do. We'll recommend which AI Skills and governance files to add to your AI agent for that role and task — with why each one helps.</p>
     <p class="hero-note">Every recommendation is a <strong>real entry from the All Skill List</strong> — an Agent Skill or governance file with a live GitHub repo you can import into your agent. Click any name to open its repo. Nothing here is a made-up skill.</p>
+    <details class="hero-ground">
+      <summary>How grounded is each pick?</summary>
+      <p>We separate what's <em>verifiable</em> from what's our <em>judgment</em>, and label both:</p>
+      <ul>
+        <li><strong>Exists</strong> ✓ — the repo is real and reachable (blob SHA + date pinned).</li>
+        <li><strong>Does what we say</strong> ✓ — every skill row carries a <em>“✓ Grounded”</em> quote of the skill's <strong>own</strong> <code>SKILL.md</code>/repo description, fetched verbatim from its live repo. Check our claim against the source.</li>
+        <li><strong>Right pick for this task</strong> — our editorial call, shown as the <em>“Why”</em>. Not machine-proven; the grounded quote next to it lets you audit it.</li>
+        <li><strong>Actually effective</strong> — not claimed. That needs usage data / the study in <code>RESEARCH_PLAN.md</code>.</li>
+      </ul>
+      <p class="hero-ground-src">Descriptions are refreshed by <code>pipeline/ground_recs.py</code> straight from each repo — see <code>GROUNDING.md</code>.</p>
+    </details>
     <div class="stats">
       <div class="stat"><strong id="recStatPairs">0</strong><span>persona · task pairs</span></div>
       <div class="stat"><strong id="recStatPersonas">0</strong><span>personas</span></div>
@@ -120,6 +131,7 @@
 
 <script src="data.js"></script>
 <script src="rec-data.js"></script>
+<script src="grounding.js"></script>
 <script src="graph-data.js"></script>
 <script src="skill-health.js"></script>
 <script src="app.js"></script>

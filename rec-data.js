@@ -984,6 +984,63 @@ const RECS = [
     ["algorithmic-art", "Medium", "Generative art and procedural visuals."],
     ["NeMo Guardrails", "Medium", "Keep generative NPC dialogue safe and on-rails."],
     ["web-artifacts-builder", "Low", "Prototype interactive game UI quickly."]
+  ]},
+
+  // ---------- Computer Science ----------
+  { p: "CS Student", d: "Computer Science", t: "Learning to code with an AI pair programmer", s: [
+    ["CLAUDE.md", "High", "Scope the agent to your practice repo so it works within your conventions, not around them."],
+    ["claude-code-tips", "High", "40+ practical tips for actually getting more out of the coding agent as you learn."],
+    ["planning-with-files", "Medium", "File-based planning turns a bigger assignment into crash-proof, resumable steps."],
+    ["prompt-master", "Medium", "Learning to ask precisely is half the skill — write reusable, well-formed prompts."],
+    ["awesome-claude-code", "Low", "A curated jumping-off point of skills, agents, and tooling to explore."]
+  ]},
+  { p: "CS Researcher", d: "Computer Science", t: "Reproducing and benchmarking ML paper results", s: [
+    ["scientific-agent-skills", "High", "The largest science agent-skills library for baselines, ablations, and eval harnesses."],
+    ["academic-research-skills", "High", "Runs the read → reproduce → write-up loop for a rigorous benchmark."],
+    ["planning-with-files", "Medium", "Durable planning keeps long reproduction runs organized and resumable."],
+    ["CLAUDE.md", "Medium", "Govern the coding agent so the reproduction repo stays clean and auditable."],
+    ["notebooklm-py", "Low", "Grounded synthesis over the paper and its references while you reproduce."]
+  ]},
+  { p: "Computer Vision Engineer", d: "Computer Science", t: "Training and evaluating vision models", s: [
+    ["scientific-agent-skills", "High", "Science/ML agent skills for the data, training, and evaluation loop."],
+    ["CLAUDE.md", "High", "Govern the coding agent across the vision training repo."],
+    ["Responsible AI Toolbox", "Medium", "Assess reliability and subgroup performance before the model ships."],
+    ["planning-with-files", "Medium", "Crash-proof planning across long training and evaluation runs."],
+    ["AI-Research-SKILLs", "Low", "Portable research/engineering skills for the modeling code."]
+  ]},
+  { p: "NLP Engineer", d: "Computer Science", t: "Building an LLM application pipeline", s: [
+    ["claude-api", "High", "The reference for tool use, structured output, caching, and streaming your pipeline needs."],
+    ["mcp-builder", "High", "Expose retrieval and tools to the pipeline via MCP servers."],
+    ["Guardrails AI", "Medium", "Validate and correct model outputs against structured rules before they ship."],
+    ["Rebuff", "Medium", "Detect prompt injection in anything the pipeline ingests."],
+    ["scientific-agent-skills", "Low", "ML agent skills for evaluation and error analysis."]
+  ]},
+  { p: "Backend Engineer", d: "Computer Science", t: "Designing and documenting APIs with AI agents", s: [
+    ["mcp-builder", "High", "Turn your APIs into agent-callable MCP servers — the modern integration surface."],
+    ["CLAUDE.md", "High", "Govern the coding agent's conventions and boundaries on the service repo."],
+    ["AGENTS.md", "Medium", "Cross-tool instruction standard so any agent respects your API boundaries."],
+    ["webapp-testing", "Medium", "Verify endpoints and flows with Playwright-driven checks."],
+    ["claude-api", "Low", "Reference for wiring model calls into backend services."]
+  ]},
+  { p: "Database Engineer", d: "Computer Science", t: "Schema design and natural-language querying with AI", s: [
+    ["graphify", "High", "Turns SQL schemas, configs, and docs into a queryable graph the agent can reason over."],
+    ["mcp-builder", "High", "Expose the database safely to the agent through an MCP server."],
+    ["CLAUDE.md", "Medium", "Bound what the agent may run and change against the database repo."],
+    ["Guardrails AI", "Medium", "Validate generated queries against structured rules before they execute."],
+    ["xlsx", "Low", "Export and inspect query results as clean spreadsheets."]
+  ]},
+  { p: "Open Source Maintainer", d: "Computer Science", t: "AI-assisted issue triage and PR review", s: [
+    ["CLAUDE.md", "High", "Encode your project's conventions so the agent reviews to your standards."],
+    ["AGENTS.md", "High", "A cross-tool, contributor-facing instruction file every agent honors."],
+    ["Rebuff", "Medium", "Guard a triage agent against instructions injected into issues and PR text."],
+    ["planning-with-files", "Medium", "Durable planning for larger multi-PR refactors."],
+    ["awesome-claude-code", "Low", "Curated skills, agents, and tooling to pull into the workflow."]
+  ]},
+  { p: "CS Educator", d: "Computer Science", t: "Creating and grading programming assignments with AI", s: [
+    ["prompt-master", "High", "Rubric-driven prompts for consistent, criterion-referenced code feedback."],
+    ["CLAUDE.md", "High", "Scope the grading agent to the assignment repo and its rules."],
+    ["skill-creator", "Medium", "Package your rubric into a reusable, versioned grading skill."],
+    ["Responsible AI Toolbox", "Low", "Check feedback for systematic bias across student submissions."]
   ]}
 ];
 
