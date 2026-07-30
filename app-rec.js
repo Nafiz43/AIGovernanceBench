@@ -176,21 +176,46 @@ function card(r) {
   </article>`;
 }
 
+// Compact count: 1234 -> "1.2k", 32122 -> "32k".
+function fmtCount(n) {
+  n = Number(n);
+  if (!isFinite(n)) return null;
+  if (n >= 1000) return (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\.0$/, "") + "k";
+  return String(n);
+}
+
+// Real GitHub traction signals for a grounded entry — stars/forks always, release
+// downloads only when the repo actually ships them (GitHub has no repo-level download
+// count). repoWide flags stats that belong to a whole collection, not this one skill.
+function statStrip(g) {
+  if (!g || g.stars == null) return "";
+  const parts = [`<span class="skill-star">★</span> ${fmtCount(g.stars)}`];
+  if (g.forks != null) parts.push(`${fmtCount(g.forks)} forks`);
+  if (g.downloads) parts.push(`${fmtCount(g.downloads)} downloads`);
+  const tip = (g.repoWide ? "Whole-collection totals (this skill lives in a larger repo). " : "") +
+    "GitHub stars · forks" + (g.downloads ? " · release downloads" : "") +
+    (g.fetched ? `, as of ${g.fetched}` : "");
+  const wide = g.repoWide ? ` <span class="skill-stats-wide">repo-wide</span>` : "";
+  return `<a class="skill-stats" href="${g.url}" target="_blank" rel="noopener" title="${esc(tip)}">${parts.join(" · ")}${wide}</a>`;
+}
+
 // Grounding row: quote the skill's OWN verbatim self-description (fetched from its
 // live repo into GROUNDING by pipeline/ground_recs.py) so a capability claim is
 // checkable against source — never our paraphrase. Non-verifiable entries say so.
+// Real GitHub stars/forks ride along as a traction signal wherever a repo exists.
 function groundRow(name) {
   const g = typeof GROUNDING !== "undefined" ? GROUNDING[name] : null;
+  const stats = statStrip(g);
   if (g && g.ok && g.quote) {
     const prov = esc(g.source) + (g.sha ? " · blob " + esc(g.sha) : "") + " · fetched " + esc(g.fetched);
     return `
     <details class="skill-ground">
-      <summary><span class="grounded-tick">✓ Grounded</span> — the skill's own words <span class="skill-ground-meta">(${esc(g.source)})</span></summary>
+      <summary><span class="grounded-tick">✓ Grounded</span> — the skill's own words <span class="skill-ground-meta">(${esc(g.source)})</span>${stats ? ` <span class="skill-stats-dot">·</span> ${stats}` : ""}</summary>
       <blockquote class="skill-ground-quote">${esc(g.quote)}</blockquote>
       <p class="skill-ground-src">Verbatim from ${prov}. Grounds what the skill <em>claims to do</em>; the fit for this task is our editorial call.</p>
     </details>`;
   }
-  return `<p class="skill-ground-unverified">Not machine-verified — cited by its source link above (external doc / link-list, no quotable skill repo).</p>`;
+  return `<p class="skill-ground-unverified">${stats ? stats + ` <span class="skill-stats-dot">·</span> ` : ""}Not machine-verified — cited by its source link above (external doc / link-list, no quotable skill repo).</p>`;
 }
 
 function skillRow([name, importance, why]) {

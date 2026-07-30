@@ -109,6 +109,14 @@ h1,h2,.brand-name{font-family:"Lora",Georgia,serif;}
 .skill-ground-src{margin:0;font-size:.72rem;color:var(--muted);line-height:1.4;}
 .skill-ground-unverified{margin:7px 0 0;font-size:.74rem;color:var(--muted);font-style:italic;}
 
+/* Real GitHub traction signals (stars/forks/downloads) */
+.skill-stats{font-size:.75rem;color:#6b7688;text-decoration:none;white-space:nowrap;font-weight:600;}
+.skill-stats:hover{color:var(--blue);}
+.skill-star{color:var(--gold);}
+.skill-stats-dot{color:var(--line);}
+.skill-stats-wide{margin-left:4px;font-size:.62rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:.4px;color:#9aa4b2;border:1px solid var(--line);border-radius:8px;padding:0 5px;}
+
 /* Hero "how grounded" explainer */
 .hero-ground{margin:12px 0 0;max-width:62ch;}
 .hero-ground summary{font-size:.82rem;font-weight:600;color:var(--gold);cursor:pointer;}

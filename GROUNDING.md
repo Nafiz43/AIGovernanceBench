@@ -45,6 +45,14 @@ written `ok:false` with a reason and shown in the UI as *"Not machine-verified"*
 snippet is never invented. Governance docs / link-lists (no installable repo) are
 `installable:false` and cited by their URL only.
 
+**Traction signals.** For every entry that resolves to a GitHub repo (skill *or*
+governance), the same pass records real `stars` and `forks` (`gh api repos/{repo}`) and
+`downloads` (summed release-asset download counts — omitted when 0, since GitHub has no
+repo-level download metric for source-only repos). Monorepo-subpath skills
+(`anthropics/skills/tree/main/skills/<name>`) carry the whole collection's counts, so they
+are flagged `repoWide` and labelled **repo-wide** in the UI — never presented as the one
+skill's own. Numbers are a snapshot as of `fetched`; re-run to refresh.
+
 Current pass: **48/48 installable skills grounded, 0 failures**; 15 reference-only
 entries correctly marked unverified.
 

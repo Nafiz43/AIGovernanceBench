@@ -38,12 +38,30 @@ def gh_json(repo, path):
         return None, None
 
 
-def repo_description(repo):
-    """The repo's own GitHub 'description' field — verbatim self-declared metadata."""
-    r = subprocess.run(["gh", "api", f"repos/{repo}", "--jq", ".description // empty"],
-                       capture_output=True, text=True)
-    d = r.stdout.strip()
-    return d or None
+def repo_meta(repo):
+    """One call for the repo's own metadata: {description, stars, forks}, or None."""
+    r = subprocess.run(
+        ["gh", "api", f"repos/{repo}", "--jq",
+         '{description: (.description // ""), stars: .stargazers_count, forks: .forks_count}'],
+        capture_output=True, text=True)
+    if r.returncode != 0:
+        return None
+    try:
+        return json.loads(r.stdout)
+    except Exception:
+        return None
+
+
+def release_downloads(repo):
+    """Total download count across all release assets. 0 if the repo ships none —
+    GitHub has no repo-level download metric, so most source-only skill repos are 0."""
+    r = subprocess.run(
+        ["gh", "api", f"repos/{repo}/releases", "--paginate", "--jq",
+         "[.[].assets[].download_count] | add // 0"],
+        capture_output=True, text=True)
+    if r.returncode != 0:
+        return 0
+    return sum(int(x) for x in r.stdout.split() if x.strip().lstrip("-").isdigit())
 
 
 def frontmatter_description(md):
@@ -73,41 +91,52 @@ def first_readme_line(md):
 
 
 def ground_one(name, entry):
-    base = {"name": name, "url": entry["url"], "type": entry.get("type"),
-            "installable": entry.get("type") == "skill" and entry["url"].startswith("https://github.com/")}
-    if not base["installable"]:
-        # governance docs / websites are cited by their URL already — no repo to quote.
-        return {**base, "ok": False, "reason": "reference-only (no installable skill repo)"}
+    url = entry["url"]
+    today = datetime.date.today().isoformat()
+    base = {"name": name, "url": url, "type": entry.get("type"),
+            "installable": entry.get("type") == "skill" and url.startswith("https://github.com/")}
 
-    repo, paths = resolve(entry["url"])
+    # Traction signals — real GitHub stars/forks (and release downloads, if any) for ANY
+    # entry that resolves to a github repo, skill or governance alike. Monorepo-subpath
+    # skills carry the whole collection's stats -> repoWide, so we never imply they're the
+    # one skill's. Non-github docs/websites resolve to no repo and simply get no stats.
+    repo, paths = resolve(url)
+    meta = None
+    if repo:
+        base["repo"] = repo
+        meta = repo_meta(repo)
+        if meta:
+            base["stars"], base["forks"] = meta.get("stars"), meta.get("forks")
+            dl = release_downloads(repo)
+            if dl:
+                base["downloads"] = dl
+            if "/tree/" in url:
+                base["repoWide"] = True
+
+    if not base["installable"]:
+        return {**base, "ok": False, "reason": "reference-only (no installable skill repo)"}
     if not repo:
         return {**base, "ok": False, "reason": "no repo (link-list / website)"}
-    base["repo"] = repo
 
+    repo_desc = (meta or {}).get("description") or None
     for path in paths:
         md, sha = gh_json(repo, path)
         if not md or len(md) < 40:
             continue
-        is_skillmd = path.lower().endswith(("skill.md",))
+        is_skillmd = path.lower().endswith("skill.md")
         quote = frontmatter_description(md) if is_skillmd else None
-        source = "SKILL.md description"
+        source, sha_used = "SKILL.md description", sha
+        if not quote and repo_desc:
+            quote, source, sha_used = repo_desc, "GitHub repo description", None
         if not quote:
-            rd = repo_description(repo)
-            if rd:
-                quote, source, sha = rd, "GitHub repo description", sha
-        if not quote:
-            quote = first_readme_line(md)
-            source = f"{path} (first line)"
+            quote, source = first_readme_line(md), f"{path} (first line)"
         if quote:
-            return {**base, "ok": True, "path": path, "sha": sha,
-                    "source": source, "quote": quote,
-                    "fetched": datetime.date.today().isoformat()}
-    # repo exists but nothing quotable — try the bare repo description as a last resort
-    rd = repo_description(repo)
-    if rd:
+            from_repo_desc = source.startswith("GitHub repo")
+            return {**base, "ok": True, "path": None if from_repo_desc else path,
+                    "sha": sha_used, "source": source, "quote": quote, "fetched": today}
+    if repo_desc:
         return {**base, "ok": True, "path": None, "sha": None,
-                "source": "GitHub repo description", "quote": rd,
-                "fetched": datetime.date.today().isoformat()}
+                "source": "GitHub repo description", "quote": repo_desc, "fetched": today}
     return {**base, "ok": False, "reason": "no quotable self-description found"}
 
 
@@ -141,7 +170,10 @@ def main():
               "// shown as 'unverified' in the UI, never fabricated. Regenerate, don't hand-edit.\n")
     OUT.write_text(header + "const GROUNDING = " +
                    json.dumps(grounding, indent=2, ensure_ascii=False) + ";\n")
+    with_stars = sum(1 for g in grounding.values() if g.get("stars") is not None)
+    with_dl = sum(1 for g in grounding.values() if g.get("downloads"))
     print(f"\n{'='*64}\nGROUNDED: {ok} verified, {fail} unverified -> {OUT.name}")
+    print(f"STATS: {with_stars} entries with GitHub stars/forks, {with_dl} with real release downloads")
     installable_fail = [g for g in grounding.values() if g["installable"] and not g["ok"]]
     if installable_fail:
         print("  installable-but-unverified (needs a look):")
