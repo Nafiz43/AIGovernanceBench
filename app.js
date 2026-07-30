@@ -77,6 +77,35 @@ function escapeHtml(str) {
   return d.innerHTML;
 }
 
+// ---- Shared GitHub traction chip (used by this directory AND the recommender) ----
+// Defined here because app.js loads first; app-rec.js reuses these globals. One
+// definition only — a duplicate top-level function would clobber across the shared scope.
+function fmtCount(n) {
+  n = Number(n);
+  if (!isFinite(n)) return null;
+  if (n >= 1e6) return (n / 1e6).toFixed(n >= 1e7 ? 0 : 1).replace(/\.0$/, "") + "M";
+  if (n >= 1000) return (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\.0$/, "") + "k";
+  return String(n);
+}
+
+function statStrip(g) {
+  if (!g || g.stars == null) return "";
+  const parts = [`<span class="skill-star">★</span> ${fmtCount(g.stars)}`];
+  if (g.forks != null) parts.push(`${fmtCount(g.forks)} forks`);
+  if (g.downloads) parts.push(`${fmtCount(g.downloads)} downloads`);
+  const tip = (g.repoWide ? "Whole-collection totals (this skill lives in a larger repo). " : "") +
+    "GitHub stars · forks" + (g.downloads ? " · release downloads" : "") +
+    (g.fetched ? `, as of ${g.fetched}` : "");
+  const wide = g.repoWide ? ` <span class="skill-stats-wide">repo-wide</span>` : "";
+  return `<a class="skill-stats" href="${g.url}" target="_blank" rel="noopener" title="${escapeHtml(tip)}">${parts.join(" · ")}${wide}</a>`;
+}
+
+function ghStats(name) {
+  const g = typeof GROUNDING !== "undefined" ? GROUNDING[name] : null;
+  const strip = statStrip(g);
+  return strip ? `<div class="dir-stats">${strip}</div>` : "";
+}
+
 const TIER_MEDAL = { gold: "🥇", silver: "🥈", bronze: "🥉", unrated: "▫️" };
 
 function badgeMedallion(emoji, cls, title, meaning) {
@@ -113,6 +142,7 @@ function render() {
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         </a>
         ${healthBadges(s.name)}
+        ${ghStats(s.name)}
       </td>
       <td class="col-type"><span class="type-pill type-${s.type}">${s.type === "skill" ? "Skill" : "Governance"}</span></td>
       <td class="col-cat"><span class="cat-pill">${escapeHtml(s.category)}</span></td>

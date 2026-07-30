@@ -9,8 +9,8 @@ const GROUNDING = {
     "type": "governance",
     "installable": false,
     "repo": "agentsmd/agents.md",
-    "stars": 23299,
-    "forks": 1741,
+    "stars": 23309,
+    "forks": 1742,
     "ok": false,
     "reason": "reference-only (no installable skill repo)"
   },
@@ -20,14 +20,14 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "Orchestra-Research/AI-Research-SKILLs",
-    "stars": 11230,
+    "stars": 11239,
     "forks": 820,
     "ok": true,
     "path": null,
     "sha": null,
     "source": "GitHub repo description",
     "quote": "Comprehensive open-source library of AI research and engineering skills for any AI model. Package the skills and your claude code/codex/gemini agent will be an AI research agent with full horsepower. Maintained by Orchestra Research.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "Anthropic-Cybersecurity-Skills": {
     "name": "Anthropic-Cybersecurity-Skills",
@@ -35,14 +35,30 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "mukul975/Anthropic-Cybersecurity-Skills",
-    "stars": 26902,
-    "forks": 3261,
+    "stars": 26919,
+    "forks": 3264,
     "ok": true,
     "path": null,
     "sha": null,
     "source": "GitHub repo description",
     "quote": "817 structured cybersecurity skills for AI agents · Mapped to 6 frameworks: MITRE ATT&CK, NIST CSF 2.0, MITRE ATLAS, D3FEND, NIST AI RMF & MITRE F3 (Fight Fraud) · agentskills.io standard · Works with Claude Code, GitHub Copilot, Codex CLI, Cursor, Gemini CLI & 20+ platforms · 29 security domains · Apache 2.0",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
+  },
+  "Auto-claude-code-research-in-sleep": {
+    "name": "Auto-claude-code-research-in-sleep",
+    "url": "https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep",
+    "type": "skill",
+    "installable": true,
+    "repo": "wanshuiyin/Auto-claude-code-research-in-sleep",
+    "stars": 14022,
+    "forks": 1250,
+    "downloads": 10935,
+    "ok": true,
+    "path": null,
+    "sha": null,
+    "source": "GitHub repo description",
+    "quote": "ARIS ⚔️ (Auto-Research-In-Sleep) — Lightweight Markdown-only skills for autonomous ML research: cross-model review loops, idea discovery, and experiment automation. No framework, no lock-in — works with Claude Code, Codex, OpenClaw, or any LLM agent.",
+    "fetched": "2026-07-30"
   },
   "Awesome-AI-Agents-for-Healthcare": {
     "name": "Awesome-AI-Agents-for-Healthcare",
@@ -57,7 +73,7 @@ const GROUNDING = {
     "sha": null,
     "source": "GitHub repo description",
     "quote": "Latest Advances on Agentic AI & AI Agents for Healthcare",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "CLAUDE.md": {
     "name": "CLAUDE.md",
@@ -73,14 +89,38 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "Donchitos/Claude-Code-Game-Studios",
-    "stars": 23485,
+    "stars": 23489,
     "forks": 3369,
     "ok": true,
     "path": null,
     "sha": null,
     "source": "GitHub repo description",
     "quote": "Turn Claude Code into a full game dev studio — 49 AI agents, 72 workflow skills, and a complete coordination system mirroring real studio hierarchy.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
+  },
+  "Cursor Rules": {
+    "name": "Cursor Rules",
+    "url": "https://docs.cursor.com/context/rules",
+    "type": "governance",
+    "installable": false,
+    "ok": false,
+    "reason": "reference-only (no installable skill repo)"
+  },
+  "ECC": {
+    "name": "ECC",
+    "url": "https://github.com/affaan-m/ECC",
+    "type": "skill",
+    "installable": true,
+    "repo": "affaan-m/ECC",
+    "stars": 235799,
+    "forks": 35893,
+    "downloads": 40498,
+    "ok": true,
+    "path": null,
+    "sha": null,
+    "source": "GitHub repo description",
+    "quote": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.",
+    "fetched": "2026-07-30"
   },
   "EU AI Act": {
     "name": "EU AI Act",
@@ -107,7 +147,7 @@ const GROUNDING = {
     "type": "governance",
     "installable": false,
     "repo": "guardrails-ai/guardrails",
-    "stars": 7225,
+    "stars": 7226,
     "forks": 663,
     "ok": false,
     "reason": "reference-only (no installable skill repo)"
@@ -118,14 +158,14 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "op7418/Humanizer-zh",
-    "stars": 14168,
-    "forks": 981,
+    "stars": 14201,
+    "forks": 982,
     "ok": true,
     "path": "SKILL.md",
     "sha": "3b39d9a",
     "source": "SKILL.md description",
     "quote": "去除文本中的 AI 生成痕迹。适用于编辑或审阅文本，使其听起来更自然、更像人类书写。 基于维基百科的\"AI 写作特征\"综合指南。检测并修复以下模式：夸大的象征意义、 宣传性语言、以 -ing 结尾的肤浅分析、模糊的归因、破折号过度使用、三段式法则、 AI 词汇、否定式排比、过多的连接性短语。",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "Llama Guard / PurpleLlama": {
     "name": "Llama Guard / PurpleLlama",
@@ -164,7 +204,7 @@ const GROUNDING = {
     "type": "governance",
     "installable": false,
     "repo": "NVIDIA-NeMo/Guardrails",
-    "stars": 6829,
+    "stars": 6831,
     "forks": 796,
     "ok": false,
     "reason": "reference-only (no installable skill repo)"
@@ -187,14 +227,14 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "FreedomIntelligence/OpenClaw-Medical-Skills",
-    "stars": 2898,
+    "stars": 2899,
     "forks": 406,
     "ok": true,
     "path": null,
     "sha": null,
     "source": "GitHub repo description",
     "quote": "The largest open-source medical AI skills library for OpenClaw🦞.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "Rebuff": {
     "name": "Rebuff",
@@ -224,15 +264,23 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "yusufkaraaslan/Skill_Seekers",
-    "stars": 14617,
-    "forks": 1485,
+    "stars": 14628,
+    "forks": 1486,
     "downloads": 121,
     "ok": true,
     "path": null,
     "sha": null,
     "source": "GitHub repo description",
     "quote": "Convert documentation websites, GitHub repositories, and PDFs into Claude AI skills with automatic conflict detection",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
+  },
+  "Windsurf Rules": {
+    "name": "Windsurf Rules",
+    "url": "https://docs.windsurf.com/windsurf/cascade/memories",
+    "type": "governance",
+    "installable": false,
+    "ok": false,
+    "reason": "reference-only (no installable skill repo)"
   },
   "academic-research-skills": {
     "name": "academic-research-skills",
@@ -240,14 +288,14 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "Imbad0202/academic-research-skills",
-    "stars": 40087,
-    "forks": 3207,
+    "stars": 40133,
+    "forks": 3210,
     "ok": true,
     "path": null,
     "sha": null,
     "source": "GitHub repo description",
     "quote": "Academic Research Skills for Claude Code: research → write → review → revise → finalize",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "ai-governance-framework-tools": {
     "name": "ai-governance-framework-tools",
@@ -266,15 +314,30 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "anthropics/skills",
-    "stars": 165064,
-    "forks": 19613,
+    "stars": 165122,
+    "forks": 19621,
     "repoWide": true,
     "ok": true,
     "path": "skills/algorithmic-art/SKILL.md",
     "sha": "634f6fa",
     "source": "SKILL.md description",
     "quote": "Creating algorithmic art using p5.js with seeded randomness and interactive parameter exploration. Use this when users request creating art using code, generative art, algorithmic art, flow fields, or particle systems. Create original algorithmic art rather than copying existing artists' work to avoid copyright violations.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
+  },
+  "andrej-karpathy-skills": {
+    "name": "andrej-karpathy-skills",
+    "url": "https://github.com/multica-ai/andrej-karpathy-skills",
+    "type": "skill",
+    "installable": true,
+    "repo": "multica-ai/andrej-karpathy-skills",
+    "stars": 197745,
+    "forks": 20340,
+    "ok": true,
+    "path": null,
+    "sha": null,
+    "source": "GitHub repo description",
+    "quote": "A single CLAUDE.md file to improve Claude Code behavior, derived from Andrej Karpathy's observations on LLM coding pitfalls.",
+    "fetched": "2026-07-30"
   },
   "awesome-agent-skills": {
     "name": "awesome-agent-skills",
@@ -282,14 +345,14 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "VoltAgent/awesome-agent-skills",
-    "stars": 29203,
-    "forks": 3140,
+    "stars": 29229,
+    "forks": 3144,
     "ok": true,
     "path": null,
     "sha": null,
     "source": "GitHub repo description",
     "quote": "A curated collection of 1000+ agent skills from official dev teams and the community, compatible with Claude Code, Codex, Gemini CLI, Cursor, and more.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "awesome-ai-agent-governance": {
     "name": "awesome-ai-agent-governance",
@@ -319,14 +382,44 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "hesreallyhim/awesome-claude-code",
-    "stars": 51274,
-    "forks": 4461,
+    "stars": 51292,
+    "forks": 4462,
     "ok": true,
     "path": null,
     "sha": null,
     "source": "GitHub repo description",
     "quote": "A hand-picked collection of the finest of resources for the most awesome of agents, Claude Code, the undisputed champion of coding companions, from the unstoppable team at Anthropic PBC. A delectable showcase of top tier skills, ambidextrous agents, scintillating status lines, top notch developer tooling, and also we have plugins",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
+  },
+  "awesome-claude-code-and-skills": {
+    "name": "awesome-claude-code-and-skills",
+    "url": "https://github.com/GetBindu/awesome-claude-code-and-skills",
+    "type": "skill",
+    "installable": true,
+    "repo": "GetBindu/awesome-claude-code-and-skills",
+    "stars": 172,
+    "forks": 119,
+    "ok": true,
+    "path": null,
+    "sha": null,
+    "source": "GitHub repo description",
+    "quote": "A collection of Claude Skills",
+    "fetched": "2026-07-30"
+  },
+  "awesome-claude-skills": {
+    "name": "awesome-claude-skills",
+    "url": "https://github.com/ComposioHQ/awesome-claude-skills",
+    "type": "skill",
+    "installable": true,
+    "repo": "ComposioHQ/awesome-claude-skills",
+    "stars": 71302,
+    "forks": 8006,
+    "ok": true,
+    "path": null,
+    "sha": null,
+    "source": "GitHub repo description",
+    "quote": "A curated list of awesome Claude Skills, resources, and tools for customizing Claude AI workflows",
+    "fetched": "2026-07-30"
   },
   "awesome-medical-imaging-agents": {
     "name": "awesome-medical-imaging-agents",
@@ -341,7 +434,7 @@ const GROUNDING = {
     "sha": null,
     "source": "GitHub repo description",
     "quote": "Awesome list for medical imaging agents: radiology agents, pathology agents, segmentation agents, medical VLM agents, self-evolving agents, benchmarks, datasets, tools, and papers.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "book-to-skill": {
     "name": "book-to-skill",
@@ -349,14 +442,14 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "virgiliojr94/book-to-skill",
-    "stars": 12790,
-    "forks": 1419,
+    "stars": 13159,
+    "forks": 1447,
     "ok": true,
     "path": "SKILL.md",
     "sha": "e224b8f",
     "source": "SKILL.md description",
     "quote": "Converts books and documents (PDF, EPUB, DOCX, HTML, Markdown, plain text, RTF, MOBI/AZW with Calibre) into structured agent skills, extracting frameworks, mental models, principles, techniques, and anti-patterns. Use when the user wants to study a document through GitHub Copilot CLI, Amp, or Claude Code, apply an author's frameworks while working, or build a reusable knowledge base from a file.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "brand-guidelines": {
     "name": "brand-guidelines",
@@ -364,15 +457,15 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "anthropics/skills",
-    "stars": 165064,
-    "forks": 19613,
+    "stars": 165122,
+    "forks": 19621,
     "repoWide": true,
     "ok": true,
     "path": "skills/brand-guidelines/SKILL.md",
     "sha": "47c72c6",
     "source": "SKILL.md description",
     "quote": "Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand colors or style guidelines, visual formatting, or company design standards apply.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "canvas-design": {
     "name": "canvas-design",
@@ -380,15 +473,30 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "anthropics/skills",
-    "stars": 165064,
-    "forks": 19613,
+    "stars": 165122,
+    "forks": 19621,
     "repoWide": true,
     "ok": true,
     "path": "skills/canvas-design/SKILL.md",
     "sha": "9f63fee",
     "source": "SKILL.md description",
     "quote": "Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a poster, piece of art, design, or other static piece. Create original visual designs, never copying existing artists' work to avoid copyright violations.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
+  },
+  "caveman": {
+    "name": "caveman",
+    "url": "https://github.com/JuliusBrussee/caveman",
+    "type": "skill",
+    "installable": true,
+    "repo": "JuliusBrussee/caveman",
+    "stars": 94441,
+    "forks": 5404,
+    "ok": true,
+    "path": null,
+    "sha": null,
+    "source": "GitHub repo description",
+    "quote": "🪨 why use many token when few token do trick — Claude Code skill that cuts 65% of tokens by talking like caveman",
+    "fetched": "2026-07-30"
   },
   "claude-api": {
     "name": "claude-api",
@@ -396,15 +504,15 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "anthropics/skills",
-    "stars": 165064,
-    "forks": 19613,
+    "stars": 165122,
+    "forks": 19621,
     "repoWide": true,
     "ok": true,
     "path": "skills/claude-api/SKILL.md",
     "sha": "6ddbf0b",
     "source": "SKILL.md description",
     "quote": "Reference for the Claude API / Anthropic SDK — model ids, pricing, params, streaming, tool use, MCP, agents, caching, token counting, model migration. TRIGGER — read BEFORE opening the target file; don't skip because it \"looks like a one-liner\" — whenever: the prompt names Claude/Anthropic in any form (Claude, Anthropic, Fable, Opus, Sonnet, Haiku, `anthropic`, `@anthropic-ai`, `claude-*`, `us.anthropic.*`, `[1m]`); the user asks about an LLM (pricing/model choice/limits/caching) — never answer from memory; OR the task is LLM-shaped with provider unstated (agent/MCP/tool-definition/multi-agent/RAG/LLM-judge/computer-use; generate/summarize/extract/classify/rewrite/converse over NL; debugging refusals/cutoffs/streaming/tool-calls/tokens). SKIP only when another provider is being worked on (overrides all triggers): OpenAI/GPT/Gemini/Llama/Mistral/Cohere/Ollama named in the query; OR `grep -rE 'openai|langchain_openai|google.generativeai|genai|mistralai|cohere|ollama'` over the project hits (run this grep FIRST if no provider named — don't Read the file).",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "claude-code-infrastructure-showcase": {
     "name": "claude-code-infrastructure-showcase",
@@ -419,7 +527,7 @@ const GROUNDING = {
     "sha": null,
     "source": "GitHub repo description",
     "quote": "Examples of my Claude Code infrastructure with skill auto-activation, hooks, and agents",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "claude-code-tips": {
     "name": "claude-code-tips",
@@ -427,14 +535,14 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "ykdojo/claude-code-tips",
-    "stars": 9479,
+    "stars": 9481,
     "forks": 748,
     "ok": true,
     "path": null,
     "sha": null,
     "source": "GitHub repo description",
     "quote": "40+ tips for getting the most out of Claude Code, from basics to advanced - includes a custom status line script and Claude Code running itself in a container. Also includes the dx plugin: skills for everyday dev workflows.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "claude-seo": {
     "name": "claude-seo",
@@ -442,15 +550,38 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "AgriciDaniel/claude-seo",
-    "stars": 12767,
-    "forks": 1868,
-    "downloads": 1644,
+    "stars": 12789,
+    "forks": 1871,
+    "downloads": 1648,
     "ok": true,
     "path": null,
     "sha": null,
     "source": "GitHub repo description",
     "quote": "Universal SEO skill for Claude Code. 25 sub-skills + 18 sub-agents covering technical SEO, E-E-A-T, schema, GEO/AEO, backlinks, local SEO, maps intelligence, semantic clustering, e-commerce SEO, international SEO, Google APIs, and PDF/Excel reporting. Optional DataForSEO, Firecrawl, and Banana extensions.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
+  },
+  "claude-skills": {
+    "name": "claude-skills",
+    "url": "https://github.com/Jeffallan/claude-skills",
+    "type": "skill",
+    "installable": true,
+    "repo": "Jeffallan/claude-skills",
+    "stars": 10797,
+    "forks": 988,
+    "ok": true,
+    "path": null,
+    "sha": null,
+    "source": "GitHub repo description",
+    "quote": "66 Specialized Skills for Full-Stack Developers. Transform Claude Code into your expert pair programmer.",
+    "fetched": "2026-07-30"
+  },
+  "copilot-instructions.md": {
+    "name": "copilot-instructions.md",
+    "url": "https://docs.github.com/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot",
+    "type": "governance",
+    "installable": false,
+    "ok": false,
+    "reason": "reference-only (no installable skill repo)"
   },
   "doc-coauthoring": {
     "name": "doc-coauthoring",
@@ -458,15 +589,15 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "anthropics/skills",
-    "stars": 165064,
-    "forks": 19612,
+    "stars": 165122,
+    "forks": 19621,
     "repoWide": true,
     "ok": true,
     "path": "skills/doc-coauthoring/SKILL.md",
     "sha": "a5a6983",
     "source": "SKILL.md description",
     "quote": "Guide users through a structured workflow for co-authoring documentation. Use when user wants to write documentation, proposals, technical specs, decision docs, or similar structured content. This workflow helps users efficiently transfer context, refine content through iteration, and verify the doc works for readers. Trigger when user mentions writing docs, creating proposals, drafting specs, or similar documentation tasks.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "docx": {
     "name": "docx",
@@ -474,15 +605,15 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "anthropics/skills",
-    "stars": 165064,
-    "forks": 19612,
+    "stars": 165122,
+    "forks": 19621,
     "repoWide": true,
     "ok": true,
     "path": "skills/docx/SKILL.md",
     "sha": "fb954a4",
     "source": "SKILL.md description",
     "quote": "Use this skill whenever the user wants to create, read, edit, or manipulate Word documents (.docx files) or Word templates (.dotx files). Triggers include: any mention of 'Word doc', 'word document', '.docx', '.dotx', or requests to produce professional documents with formatting like tables of contents, headings, page numbers, or letterheads. Also use when extracting or reorganizing content from .docx or .dotx files, inserting or replacing images in documents, performing find-and-replace in Word files, working with tracked changes or comments, or converting content into a polished Word document. If the user asks for a 'report', 'memo', 'letter', 'template', or similar deliverable as a Word or .docx file, use this skill. Do NOT use for PDFs, spreadsheets, Google Docs, or general coding tasks unrelated to document generation.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "frontend-design": {
     "name": "frontend-design",
@@ -490,15 +621,15 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "anthropics/skills",
-    "stars": 165064,
-    "forks": 19612,
+    "stars": 165122,
+    "forks": 19621,
     "repoWide": true,
     "ok": true,
     "path": "skills/frontend-design/SKILL.md",
     "sha": "decdff4",
     "source": "SKILL.md description",
     "quote": "Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one. Helps with aesthetic direction, typography, and making choices that don't read as templated defaults.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "geo-seo-claude": {
     "name": "geo-seo-claude",
@@ -506,14 +637,14 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "zubair-trabzada/geo-seo-claude",
-    "stars": 9158,
+    "stars": 9162,
     "forks": 1457,
     "ok": true,
     "path": null,
     "sha": null,
     "source": "GitHub repo description",
     "quote": "GEO-first SEO skill for Claude Code. Comprehensive AI search optimization for any website — citability scoring, AI crawler analysis, brand authority, schema markup, platform-specific optimization, and PDF reports.  If you want learn how to sell this to real businesses, check out the skool community",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "graphify": {
     "name": "graphify",
@@ -521,15 +652,15 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "Graphify-Labs/graphify",
-    "stars": 98482,
-    "forks": 9556,
-    "downloads": 4122,
+    "stars": 98663,
+    "forks": 9568,
+    "downloads": 4130,
     "ok": true,
     "path": null,
     "sha": null,
     "source": "GitHub repo description",
     "quote": "Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every edge explained, no vector store.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "hallmark": {
     "name": "hallmark",
@@ -537,14 +668,14 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "Nutlope/hallmark",
-    "stars": 19713,
-    "forks": 973,
+    "stars": 19803,
+    "forks": 980,
     "ok": true,
     "path": null,
     "sha": null,
     "source": "GitHub repo description",
     "quote": "Anti-AI-slop design skill for Claude Code, Cursor, and Codex.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "healthcare-agents": {
     "name": "healthcare-agents",
@@ -552,7 +683,7 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "ajhcs/healthcare-agents",
-    "stars": 50,
+    "stars": 51,
     "forks": 11,
     "downloads": 2,
     "ok": true,
@@ -560,7 +691,7 @@ const GROUNDING = {
     "sha": null,
     "source": "GitHub repo description",
     "quote": "Portable prompt and SKILL.md pack with 51 specialist AI agents for US healthcare administration workflows.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "huashu-design": {
     "name": "huashu-design",
@@ -568,15 +699,15 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "alchaincyf/huashu-design",
-    "stars": 22204,
+    "stars": 22218,
     "forks": 2624,
-    "downloads": 3960014,
+    "downloads": 3964602,
     "ok": true,
     "path": "SKILL.md",
     "sha": "0c2edbe",
     "source": "SKILL.md description",
     "quote": "花叔Design——用HTML做高保真原型、幻灯片、动画、可视化与专家评审。任何新设计100%先出三个方向初稿给用户选（指定风格/品牌也不豁免），选定后才执行。触发词：做原型、PPT、幻灯片、动画、设计风格、评审、做个HTML页面、UI mockup、导出MP4/GIF、做个好看的。生产级Web App/需后端的系统不适用。",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "humanizer": {
     "name": "humanizer",
@@ -584,14 +715,14 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "blader/humanizer",
-    "stars": 32031,
-    "forks": 2920,
+    "stars": 32083,
+    "forks": 2925,
     "ok": true,
     "path": "SKILL.md",
     "sha": "0a40275",
     "source": "SKILL.md description",
     "quote": "Remove signs of AI-generated writing from text. Use when editing or reviewing text to make it sound more natural and human-written. Based on Wikipedia's comprehensive \"Signs of AI writing\" guide. Detects and fixes patterns including: inflated symbolism, promotional language, superficial -ing analyses, vague attributions, em dash overuse, rule of three, AI vocabulary words, passive voice, negative parallelisms, and filler phrases.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "informed-patient": {
     "name": "informed-patient",
@@ -607,7 +738,7 @@ const GROUNDING = {
     "sha": null,
     "source": "GitHub repo description",
     "quote": "A Claude Skill to create an evidence review to inform specific health questions",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "internal-comms": {
     "name": "internal-comms",
@@ -615,15 +746,30 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "anthropics/skills",
-    "stars": 165064,
-    "forks": 19612,
+    "stars": 165122,
+    "forks": 19621,
     "repoWide": true,
     "ok": true,
     "path": "skills/internal-comms/SKILL.md",
     "sha": "56ea935",
     "source": "SKILL.md description",
     "quote": "A set of resources to help me write all kinds of internal communications, using the formats that my company likes to use. Claude should use this skill whenever asked to write some sort of internal communications (status reports, leadership updates, 3P updates, company newsletters, FAQs, incident reports, project updates, etc.).",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
+  },
+  "khazix-skills": {
+    "name": "khazix-skills",
+    "url": "https://github.com/KKKKhazix/khazix-skills",
+    "type": "skill",
+    "installable": true,
+    "repo": "KKKKhazix/khazix-skills",
+    "stars": 18754,
+    "forks": 2083,
+    "ok": true,
+    "path": null,
+    "sha": null,
+    "source": "GitHub repo description",
+    "quote": "数字生命卡兹克开源的 AI Skills 合集 | Agent Skills: leader（帮你定义目标）, neat-freak 洁癖, hv-analysis, khazix-writer & more — Claude Code, Codex & 40+ agents",
+    "fetched": "2026-07-30"
   },
   "marketingskills": {
     "name": "marketingskills",
@@ -631,14 +777,14 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "coreyhaines31/marketingskills",
-    "stars": 42326,
-    "forks": 6669,
+    "stars": 42355,
+    "forks": 6673,
     "ok": true,
     "path": null,
     "sha": null,
     "source": "GitHub repo description",
     "quote": "Marketing skills for Claude Code and AI agents. CRO, copywriting, SEO, analytics, and growth engineering.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "mcp-builder": {
     "name": "mcp-builder",
@@ -646,15 +792,15 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "anthropics/skills",
-    "stars": 165064,
-    "forks": 19612,
+    "stars": 165122,
+    "forks": 19621,
     "repoWide": true,
     "ok": true,
     "path": "skills/mcp-builder/SKILL.md",
     "sha": "8a1a77a",
     "source": "SKILL.md description",
     "quote": "Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-designed tools. Use when building MCP servers to integrate external APIs or services, whether in Python (FastMCP) or Node/TypeScript (MCP SDK).",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "medical-research-skills": {
     "name": "medical-research-skills",
@@ -662,15 +808,15 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "aipoch/medical-research-skills",
-    "stars": 1573,
+    "stars": 1580,
     "forks": 153,
-    "downloads": 5568,
+    "downloads": 6188,
     "ok": true,
     "path": null,
     "sha": null,
     "source": "GitHub repo description",
     "quote": "Hundreds of agent skills for medical research, including protocol design, data analysis, evidence insights, and academic writing.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "medsci-skills": {
     "name": "medsci-skills",
@@ -678,7 +824,7 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "Aperivue/medsci-skills",
-    "stars": 225,
+    "stars": 226,
     "forks": 55,
     "downloads": 524,
     "ok": true,
@@ -686,7 +832,7 @@ const GROUNDING = {
     "sha": null,
     "source": "GitHub repo description",
     "quote": "Agent Skills for medical research — literature search, reporting-guideline & citation checks, statistics, publication figures, submission. Works with Claude Code, Codex, Cursor & GitHub Copilot. Built by a physician-researcher, tested on real publications. MIT.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "notebooklm-py": {
     "name": "notebooklm-py",
@@ -694,7 +840,7 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "teng-lin/notebooklm-py",
-    "stars": 18332,
+    "stars": 18337,
     "forks": 2462,
     "downloads": 146,
     "ok": true,
@@ -702,7 +848,7 @@ const GROUNDING = {
     "sha": "b9acbbe",
     "source": "SKILL.md description",
     "quote": "Complete API for Google NotebookLM - full programmatic access including features not in the web UI. Create notebooks, add sources, generate all artifact types, download in multiple formats. Activates on explicit /notebooklm or intent like \"create a podcast about X",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "pdf": {
     "name": "pdf",
@@ -710,15 +856,15 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "anthropics/skills",
-    "stars": 165064,
-    "forks": 19612,
+    "stars": 165122,
+    "forks": 19621,
     "repoWide": true,
     "ok": true,
     "path": "skills/pdf/SKILL.md",
     "sha": "d3e046a",
     "source": "SKILL.md description",
     "quote": "Use this skill whenever the user wants to do anything with PDF files. This includes reading or extracting text/tables from PDFs, combining or merging multiple PDFs into one, splitting PDFs apart, rotating pages, adding watermarks, creating new PDFs, filling PDF forms, encrypting/decrypting PDFs, extracting images, and OCR on scanned PDFs to make them searchable. If the user mentions a .pdf file or asks to produce one, use this skill.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "planning-with-files": {
     "name": "planning-with-files",
@@ -726,14 +872,14 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "OthmanAdi/planning-with-files",
-    "stars": 25838,
-    "forks": 2164,
+    "stars": 25847,
+    "forks": 2166,
     "ok": true,
     "path": null,
     "sha": null,
     "source": "GitHub repo description",
     "quote": "Persistent file-based planning for AI coding agents and long-running tasks. Crash-proof markdown plans, session recovery after /clear and compaction, per-turn re-injection against context rot, deterministic completion gate. Manus-style. Claude Code, Codex, Cursor, Kiro, OpenCode and 60+ agents via the Agent Skills standard.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "pm-claude-skills": {
     "name": "pm-claude-skills",
@@ -741,7 +887,7 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "mohitagw15856/pm-claude-skills",
-    "stars": 1241,
+    "stars": 1242,
     "forks": 223,
     "downloads": 21,
     "ok": true,
@@ -749,7 +895,7 @@ const GROUNDING = {
     "sha": null,
     "source": "GitHub repo description",
     "quote": "822 professional Agent Skills for Claude, ChatGPT, Gemini, Cursor & Codex — decode a lease, write a PRD, run the AGM, prep the D&D session, practice the salary negotiation. Plain-markdown, MIT, in Anthropic's official plugin directory. Try free in-browser or 'npx pm-claude-skills add'.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "pptx": {
     "name": "pptx",
@@ -757,15 +903,15 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "anthropics/skills",
-    "stars": 165064,
-    "forks": 19612,
+    "stars": 165122,
+    "forks": 19621,
     "repoWide": true,
     "ok": true,
     "path": "skills/pptx/SKILL.md",
     "sha": "41cd230",
     "source": "SKILL.md description",
     "quote": "Use this skill any time a .pptx or .potx file is involved in any way — as input, output, or both. This includes: creating slide decks, pitch decks, or presentations; reading, parsing, or extracting text from any .pptx or .potx file (even if the extracted content will be used elsewhere, like in an email or summary); editing, modifying, or updating existing presentations; combining or splitting slide files; working with templates (.potx), layouts, speaker notes, or comments. Trigger whenever the user mentions \\\"deck,\\\" \\\"slides,\\\" \\\"presentation,\\\" or references a .pptx or .potx filename, regardless of what they plan to do with the content afterward. If a .pptx or .potx file needs to be opened, created, or touched, use this skill.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "prompt-master": {
     "name": "prompt-master",
@@ -773,14 +919,14 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "nidhinjs/prompt-master",
-    "stars": 10806,
-    "forks": 1283,
+    "stars": 10808,
+    "forks": 1285,
     "ok": true,
     "path": "SKILL.md",
     "sha": "85225a6",
     "source": "SKILL.md description",
     "quote": "Generates optimized prompts for AI tools. Activates only when the user explicitly asks to write, fix, improve, or adapt a prompt for a specific AI tool (LLM, Cursor, Midjourney, image AI, video AI, coding agents, etc.). Does not activate for general conversation, coding tasks, document writing, or other non-prompt-engineering work.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "scientific-agent-skills": {
     "name": "scientific-agent-skills",
@@ -788,14 +934,14 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "K-Dense-AI/scientific-agent-skills",
-    "stars": 32122,
-    "forks": 3186,
+    "stars": 32137,
+    "forks": 3189,
     "ok": true,
     "path": null,
     "sha": null,
     "source": "GitHub repo description",
     "quote": "Turn any AI agent into an AI Scientist. The #1 Agent Skills library for science, used by 170,000+ scientists worldwide. 158 ready-to-use skills plus 100+ scientific databases covering biology, chemistry, medicine, and drug discovery. Compatible with Cursor, Claude Code, Codex, Pi, Antigravity, and the open Agent Skills standard.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "skill-creator": {
     "name": "skill-creator",
@@ -803,15 +949,15 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "anthropics/skills",
-    "stars": 165064,
-    "forks": 19612,
+    "stars": 165122,
+    "forks": 19621,
     "repoWide": true,
     "ok": true,
     "path": "skills/skill-creator/SKILL.md",
     "sha": "65b3a40",
     "source": "SKILL.md description",
     "quote": "Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "slack-gif-creator": {
     "name": "slack-gif-creator",
@@ -819,15 +965,15 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "anthropics/skills",
-    "stars": 165064,
-    "forks": 19612,
+    "stars": 165122,
+    "forks": 19621,
     "repoWide": true,
     "ok": true,
     "path": "skills/slack-gif-creator/SKILL.md",
     "sha": "16660d8",
     "source": "SKILL.md description",
     "quote": "Knowledge and utilities for creating animated GIFs optimized for Slack. Provides constraints, validation tools, and animation concepts. Use when users request animated GIFs for Slack like \"make me a GIF of X doing Y for Slack.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "theme-factory": {
     "name": "theme-factory",
@@ -835,15 +981,15 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "anthropics/skills",
-    "stars": 165064,
-    "forks": 19612,
+    "stars": 165122,
+    "forks": 19621,
     "repoWide": true,
     "ok": true,
     "path": "skills/theme-factory/SKILL.md",
     "sha": "90dfcea",
     "source": "SKILL.md description",
     "quote": "Toolkit for styling artifacts with a theme. These artifacts can be slides, docs, reportings, HTML landing pages, etc. There are 10 pre-set themes with colors/fonts that you can apply to any artifact that has been creating, or can generate a new theme on-the-fly.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "universal-biomedical-skills": {
     "name": "universal-biomedical-skills",
@@ -858,7 +1004,7 @@ const GROUNDING = {
     "sha": "ba878dc",
     "source": "README.md (first line)",
     "quote": "_A research-grade Biomedical OS for reproducible, agentic life-science and clinical AI workflows._",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "web-artifacts-builder": {
     "name": "web-artifacts-builder",
@@ -866,15 +1012,15 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "anthropics/skills",
-    "stars": 165064,
-    "forks": 19612,
+    "stars": 165122,
+    "forks": 19621,
     "repoWide": true,
     "ok": true,
     "path": "skills/web-artifacts-builder/SKILL.md",
     "sha": "8b39b19",
     "source": "SKILL.md description",
     "quote": "Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind CSS, shadcn/ui). Use for complex artifacts requiring state management, routing, or shadcn/ui components - not for simple single-file HTML/JSX artifacts.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "webapp-testing": {
     "name": "webapp-testing",
@@ -882,15 +1028,15 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "anthropics/skills",
-    "stars": 165064,
-    "forks": 19612,
+    "stars": 165122,
+    "forks": 19621,
     "repoWide": true,
     "ok": true,
     "path": "skills/webapp-testing/SKILL.md",
     "sha": "4726215",
     "source": "SKILL.md description",
     "quote": "Toolkit for interacting with and testing local web applications using Playwright. Supports verifying frontend functionality, debugging UI behavior, capturing browser screenshots, and viewing browser logs.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   },
   "xlsx": {
     "name": "xlsx",
@@ -898,14 +1044,14 @@ const GROUNDING = {
     "type": "skill",
     "installable": true,
     "repo": "anthropics/skills",
-    "stars": 165064,
-    "forks": 19612,
+    "stars": 165122,
+    "forks": 19621,
     "repoWide": true,
     "ok": true,
     "path": "skills/xlsx/SKILL.md",
     "sha": "9da5480",
     "source": "SKILL.md description",
     "quote": "Use this skill any time a spreadsheet file is the primary input or output. This means any task where the user wants to: open, read, edit, or fix an existing .xlsx, .xlsm, .xltx, .csv, or .tsv file (e.g., adding columns, computing formulas, formatting, charting, cleaning messy data); create a new spreadsheet from scratch or from other data sources; or convert between tabular file formats. Trigger especially when the user references a spreadsheet file by name or path — even casually (like \\\"the xlsx in my downloads\\\") — and wants something done to it or produced from it. Also trigger for cleaning or restructuring messy tabular data files (malformed rows, misplaced headers, junk data) into proper spreadsheets. The deliverable must be a spreadsheet file. Do NOT trigger when the primary deliverable is a Word document, HTML report, standalone Python script, database pipeline, or Google Sheets API integration, even if tabular data is involved.",
-    "fetched": "2026-07-29"
+    "fetched": "2026-07-30"
   }
 };

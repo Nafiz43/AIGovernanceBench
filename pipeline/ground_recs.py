@@ -143,10 +143,14 @@ def ground_one(name, entry):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=0, help="only ground the first N (smoke test)")
+    ap.add_argument("--recommended-only", action="store_true",
+                    help="ground only skills used in rec-data.js (default: every data.js entry)")
     args = ap.parse_args()
 
     skills = load_skills()
-    names = all_recommended_skills()
+    # Default to the whole directory so the All-Skill-List page has stats for every row too;
+    # the recommender just reads the subset it needs from the same file.
+    names = all_recommended_skills() if args.recommended_only else list(skills.keys())
     if args.limit:
         names = names[:args.limit]
 

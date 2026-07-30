@@ -198,19 +198,32 @@ h1,h2,.brand-name{font-family:"Lora",Georgia,serif;}
 .an-chip-draft{background:#ede9fe;color:#6d28d9;cursor:help;}
 
 /* Skill health badges — circular medallions (ICSE/FSE style) */
+/* Cartoon sticker badges — chunky outline, solid 2.5D drop edge, springy hover */
 .health-badges{display:inline-flex;align-items:center;gap:7px;margin-top:9px;flex-wrap:wrap;text-decoration:none;}
-.hb-badge{position:relative;width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;
-  justify-content:center;background:#fff;border:2px solid #d5dbe3;box-shadow:0 1px 3px rgba(0,39,84,.12);
-  cursor:help;outline:none;transition:transform .12s ease,border-color .12s ease,box-shadow .12s ease;}
-.hb-badge .hb-face{font-size:16px;line-height:1;}
-.hb-tier{width:38px;height:38px;border-width:3px;}
-.hb-tier .hb-face{font-size:20px;}
-.hb-tier-gold{border-color:#eab308;background:#fef8e6;}
-.hb-tier-silver{border-color:#9aa7b5;background:#f2f5f8;}
-.hb-tier-bronze{border-color:#c97a45;background:#fbeee4;}
-.hb-tier-unrated{border-color:#d1d5db;background:#f3f4f6;}
-.hb-check{border-color:#dbe1e8;background:#fbfcfd;}
-.hb-badge:hover,.hb-badge:focus{border-color:#1155CC;transform:translateY(-2px);box-shadow:0 4px 10px rgba(17,85,204,.25);z-index:6;}
+.hb-badge{position:relative;width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;
+  justify-content:center;background:#fff;border:2.5px solid #cbd4df;
+  box-shadow:0 3px 0 rgba(0,39,84,.10),0 3px 7px rgba(0,39,84,.10);cursor:help;outline:none;
+  transition:transform .16s cubic-bezier(.34,1.56,.64,1),box-shadow .16s ease,border-color .16s ease;}
+.hb-badge .hb-face{font-size:17px;line-height:1;filter:saturate(1.2);}
+.hb-tier{width:44px;height:44px;border-width:3px;}
+.hb-tier .hb-face{font-size:23px;}
+.hb-tier-gold{border-color:#f0b429;background:radial-gradient(circle at 50% 36%,#fff7d9,#ffdd6e 72%);
+  box-shadow:0 3px 0 #d69a1e,0 5px 13px rgba(240,180,41,.5);}
+.hb-tier-silver{border-color:#9aa7b5;background:radial-gradient(circle at 50% 36%,#fff,#dde5ee 72%);
+  box-shadow:0 3px 0 #aab5c1,0 5px 13px rgba(154,167,181,.42);}
+.hb-tier-bronze{border-color:#cc7a3f;background:radial-gradient(circle at 50% 36%,#ffe7d2,#e6a877 72%);
+  box-shadow:0 3px 0 #b06835,0 5px 13px rgba(204,122,63,.42);}
+.hb-tier-unrated{border-color:#d1d5db;background:#f3f4f6;box-shadow:0 3px 0 #dfe3e8,0 3px 7px rgba(0,39,84,.08);}
+/* passed-check chips: cheerful palette cycling across positions (tier is 1st, checks 2–7) */
+.hb-check{border-color:#a9dcb8;background:radial-gradient(circle at 50% 34%,#fff,#e6f7ec 76%);box-shadow:0 3px 0 #c7e9d1,0 3px 7px rgba(18,161,80,.14);}
+.hb-check:nth-of-type(3){border-color:#a7ccf5;background:radial-gradient(circle at 50% 34%,#fff,#e4f1ff 76%);box-shadow:0 3px 0 #c6dffb,0 3px 7px rgba(17,85,204,.14);}
+.hb-check:nth-of-type(4){border-color:#cdb0f2;background:radial-gradient(circle at 50% 34%,#fff,#f1e9ff 76%);box-shadow:0 3px 0 #dcccf5,0 3px 7px rgba(124,58,237,.14);}
+.hb-check:nth-of-type(5){border-color:#f5c48f;background:radial-gradient(circle at 50% 34%,#fff,#fff0e0 76%);box-shadow:0 3px 0 #f3dabd,0 3px 7px rgba(234,120,20,.14);}
+.hb-check:nth-of-type(6){border-color:#f0d072;background:radial-gradient(circle at 50% 34%,#fff,#fff7d9 76%);box-shadow:0 3px 0 #efe3ab,0 3px 7px rgba(210,160,0,.14);}
+.hb-check:nth-of-type(7){border-color:#f5a3b6;background:radial-gradient(circle at 50% 34%,#fff,#ffe6eb 76%);box-shadow:0 3px 0 #f7d0d9,0 3px 7px rgba(220,40,80,.14);}
+.hb-badge:hover,.hb-badge:focus{transform:translateY(-4px) scale(1.14);border-color:#1155CC;
+  box-shadow:0 7px 0 rgba(17,85,204,.16),0 10px 16px rgba(17,85,204,.28);z-index:6;}
+.dir-stats{margin-top:8px;}
 .hb-tip{position:absolute;top:calc(100% + 9px);left:50%;transform:translateX(-50%) scale(.96);
   min-width:170px;max-width:250px;background:#0f213b;color:#fff;padding:9px 11px;border-radius:8px;
   font-size:.78rem;line-height:1.45;text-align:left;display:flex;flex-direction:column;gap:3px;
