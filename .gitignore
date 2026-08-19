@@ -4,3 +4,6 @@
 graph-data.*.js
 
 __pycache__/
+
+# HuggingFace dataset clones (nested git repos, ~15MB, re-clonable)
+datasets/
