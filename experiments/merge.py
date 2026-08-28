@@ -5,7 +5,8 @@ seen, out = set(), []
 for path in sys.argv[1:-1]:
     for line in open(path):
         r = json.loads(line)
-        k = (r["name"], r["condition"], r["sample"], r.get("arm", "none"))
+        k = (r["name"], r["condition"], r["sample"], r.get("arm", "none"),
+             r.get("bundle", ""))
         if k in seen:
             continue
         seen.add(k)

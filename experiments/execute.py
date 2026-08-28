@@ -27,15 +27,28 @@ print(json.dumps({{"passed": _passed, "total": len(_cases)}}))
 '''
 
 
-def extract_code(response: str) -> str:
-    """Strip thinking, take the last fenced block, else the raw response."""
+def extract_code(response: str, entry_point: str = None) -> str:
+    """Strip thinking, take the last fenced block that defines entry_point.
+
+    Taking simply the LAST block is wrong whenever the model appends a usage
+    example after the implementation ("```python\\n>>> f(1)\\n```"), which it
+    does often once the system prompt stops demanding a single block. That
+    graded the demo instead of the function and scored a correct answer zero.
+    """
     body = re.sub(r"<think>.*?</think>", "", response, flags=re.S)
     blocks = re.findall(r"```(?:python)?\n(.*?)```", body, flags=re.S)
-    return (blocks[-1] if blocks else body).strip()
+    if not blocks:
+        return body.strip()
+    if entry_point:
+        defining = [b for b in blocks
+                    if re.search(rf"^\s*def\s+{re.escape(entry_point)}\b", b, re.M)]
+        if defining:
+            return defining[-1].strip()
+    return blocks[-1].strip()
 
 
 def grade(response: str, entry_point: str, test_cases: list) -> dict:
-    code = extract_code(response)
+    code = extract_code(response, entry_point)
     src = HARNESS.format(code=code, cases=json.dumps(test_cases), entry=entry_point)
     with tempfile.NamedTemporaryFile("w", suffix=".py", delete=False) as f:
         f.write(src)
@@ -71,6 +84,9 @@ def has_close_elements(numbers: List[float], threshold: float) -> bool:
     assert grade("total garbage", "has_close_elements", cases)["passed_all"] is False
     assert grade("```python\nimport time\ndef has_close_elements(n,t):\n    time.sleep(60)\n```",
                  "has_close_elements", cases)["passed_all"] is False
+    # implementation followed by a usage example: grade the implementation
+    demo = good + "\n\nExample:\n```python\n>>> has_close_elements([1.0], 0.5)\nFalse\n```"
+    assert grade(demo, "has_close_elements", cases)["passed_all"] is True
     print("execute.py self-check OK")
 
 

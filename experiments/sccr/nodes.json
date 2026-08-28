@@ -1,0 +1,554 @@
+{
+"Radiologist|AI-assisted report drafting and worklist triage::dc-reader-test": {
+"id": "dc-reader-test",
+"skill": "dc",
+"label": "Reader-test in a fresh context",
+"text": "Stage 3 \u201cReader Testing\u201d: paste the draft into a fresh Claude with no prior context to catch blind spots before others read it.",
+"skill_label": "doc-coauthoring",
+"skill_href": ""
+},
+"Radiologist|AI-assisted report drafting and worklist triage::dc-image-alt": {
+"id": "dc-image-alt",
+"skill": "dc",
+"label": "Paste images in for alt-text",
+"text": "If embedded images lack alt-text, ask the user to paste each image into chat so the agent can generate descriptive alt-text.",
+"skill_label": "doc-coauthoring",
+"skill_href": ""
+},
+"Radiologist|AI-assisted report drafting and worklist triage::dc-confirm": {
+"id": "dc-confirm",
+"skill": "dc",
+"label": "Confirm before searching tools",
+"text": "When the user points to channels or connected tools, wait for explicit user confirmation before searching integrations.",
+"skill_label": "doc-coauthoring",
+"skill_href": ""
+},
+"Radiologist|AI-assisted report drafting and worklist triage::dc-generate": {
+"id": "dc-generate",
+"skill": "dc",
+"label": "Brainstorm & draft sections",
+"text": "Act as an active guide: brainstorm 5\u201320 options per section, then draft and iteratively refine the document.",
+"skill_label": "doc-coauthoring",
+"skill_href": ""
+},
+"Radiologist|AI-assisted report drafting and worklist triage::di-local-only": {
+"id": "di-local-only",
+"skill": "di",
+"label": "No AI/network on PHI",
+"text": "De-identification runs as a standalone local script with no network and no AI calls \u2014 the agent never sees raw PHI.",
+"skill_label": "medsci-skills \u00b7 deidentify",
+"skill_href": "https://github.com/Aperivue/medsci-skills/blob/main/docs/skills/deidentify.md"
+},
+"Radiologist|AI-assisted report drafting and worklist triage::di-no-mapping": {
+"id": "di-no-mapping",
+"skill": "di",
+"label": "Never read re-id mapping",
+"text": "Never read or display the re-identification mapping file; it holds the original PHI values.",
+"skill_label": "medsci-skills \u00b7 deidentify",
+"skill_href": "https://github.com/Aperivue/medsci-skills/blob/main/docs/skills/deidentify.md"
+},
+"Radiologist|AI-assisted report drafting and worklist triage::di-audit-only": {
+"id": "di-audit-only",
+"skill": "di",
+"label": "Read only report + audit log",
+"text": "Only the scan report (no raw values), the hash-only SHA-256 audit log, and the de-identified output may be read.",
+"skill_label": "medsci-skills \u00b7 deidentify",
+"skill_href": "https://github.com/Aperivue/medsci-skills/blob/main/docs/skills/deidentify.md"
+},
+"Radiologist|AI-assisted report drafting and worklist triage::cr-quote": {
+"id": "cr-quote",
+"skill": "cr",
+"label": "Quote items, never invent",
+"text": "Report/checklist items are quoted from the guideline and never invented; missing items are not marked present.",
+"skill_label": "medsci-skills \u00b7 check-reporting",
+"skill_href": "https://github.com/Aperivue/medsci-skills/blob/main/docs/skills/check-reporting.md"
+},
+"Radiologist|AI-assisted report drafting and worklist triage::cr-fail-fast": {
+"id": "cr-fail-fast",
+"skill": "cr",
+"label": "Fail fast if checklist absent",
+"text": "If the required reporting checklist is missing, fail fast rather than generating a guessed one.",
+"skill_label": "medsci-skills \u00b7 check-reporting",
+"skill_href": "https://github.com/Aperivue/medsci-skills/blob/main/docs/skills/check-reporting.md"
+},
+"Radiologist|AI-assisted report drafting and worklist triage::ng-output-rail": {
+"id": "ng-output-rail",
+"skill": "ng",
+"label": "Block unverified findings",
+"text": "Output / self-check rails block the agent from emitting unverified or unsupported findings (fact-check & hallucination rails).",
+"skill_label": "NeMo Guardrails",
+"skill_href": ""
+},
+"Radiologist|AI-assisted report drafting and worklist triage::ng-dialog-rail": {
+"id": "ng-dialog-rail",
+"skill": "ng",
+"label": "Constrain topics & actions",
+"text": "Input and dialog rails restrict what the agent will discuss or act on.",
+"skill_label": "NeMo Guardrails",
+"skill_href": ""
+},
+"Radiologist|AI-assisted report drafting and worklist triage::ga-validate": {
+"id": "ga-validate",
+"skill": "ga",
+"label": "Validate output vs spec",
+"text": "Validate every output against the RAIL spec before it reaches the user; on failure reask, fix, filter, or refrain.",
+"skill_label": "Guardrails AI",
+"skill_href": ""
+},
+"Radiologist|AI-assisted report drafting and worklist triage::ga-schema": {
+"id": "ga-schema",
+"skill": "ga",
+"label": "Enforce report structure",
+"text": "Structured-schema validation rejects any output that doesn't match the required report structure.",
+"skill_label": "Guardrails AI",
+"skill_href": ""
+},
+"Radiologist|AI-assisted report drafting and worklist triage::eu-oversight": {
+"id": "eu-oversight",
+"skill": "eu",
+"label": "Art 14 \u00b7 human oversight",
+"text": "High-risk systems must allow effective human oversight \u2014 a person can review and override the output.",
+"skill_label": "EU AI Act",
+"skill_href": ""
+},
+"Radiologist|AI-assisted report drafting and worklist triage::eu-data-gov": {
+"id": "eu-data-gov",
+"skill": "eu",
+"label": "Art 10 \u00b7 data governance",
+"text": "Input data must be governed \u2014 relevant, representative, and for health data lawfully de-identified.",
+"skill_label": "EU AI Act",
+"skill_href": ""
+},
+"Radiologist|AI-assisted report drafting and worklist triage::eu-logging": {
+"id": "eu-logging",
+"skill": "eu",
+"label": "Art 12 \u00b7 traceability",
+"text": "Automatic logging must make the system's operation traceable across its lifecycle.",
+"skill_label": "EU AI Act",
+"skill_href": ""
+},
+"Physician (Primary Care)|Adopting ambient clinical documentation::dc-read": {
+"id": "dc-read",
+"skill": "dc",
+"label": "Reader-test in a fresh AI",
+"text": "Explain that this approach helps ensure the doc works well when others read it (including when they paste it into Claude). Ask if they want to try this workflow or prefer to work freeform.",
+"skill_label": "doc-coauthoring",
+"skill_href": ""
+},
+"Physician (Primary Care)|Adopting ambient clinical documentation::dc-edit": {
+"id": "dc-edit",
+"skill": "dc",
+"label": "Edit in place, never reprint",
+"text": "Use str_replace to make edits (never reprint the whole doc)",
+"skill_label": "doc-coauthoring",
+"skill_href": ""
+},
+"Physician (Primary Care)|Adopting ambient clinical documentation::hc-env": {
+"id": "hc-env",
+"skill": "hc",
+"label": "Only in an approved PHI environment",
+"text": "Only inside an environment your organization has approved for PHI, with the right vendor agreements, access controls, retention settings, and de-identification practices. The prompts themselves do not solve that governance problem.",
+"skill_label": "healthcare-agents",
+"skill_href": ""
+},
+"Physician (Primary Care)|Adopting ambient clinical documentation::hc-hipaa": {
+"id": "hc-hipaa",
+"skill": "hc",
+"label": "Prompts \u2260 HIPAA-compliant",
+"text": "The prompts do not make an AI tool HIPAA-compliant and do not create a safe PHI-processing environment. Use approved privacy, security, de-identification, and vendor-review workflows.",
+"skill_label": "healthcare-agents",
+"skill_href": ""
+},
+"Physician (Primary Care)|Adopting ambient clinical documentation::ng-in": {
+"id": "ng-in",
+"skill": "ng",
+"label": "Input rail can reject input",
+"text": "Input rails: applied to the input from the user; an input rail can reject the input, stopping any additional processing, or alter the input (e.g., to mask potentially sensitive data, to rephrase).",
+"skill_label": "NeMo Guardrails",
+"skill_href": ""
+},
+"Physician (Primary Care)|Adopting ambient clinical documentation::ng-out": {
+"id": "ng-out",
+"skill": "ng",
+"label": "Output rail can reject output",
+"text": "Output rails: applied to the output generated by the LLM; an output rail can reject the output, preventing it from being returned to the user, or alter it (e.g., removing sensitive data).",
+"skill_label": "NeMo Guardrails",
+"skill_href": ""
+},
+"Medical Resident|AI-assisted literature review for journal club::ms-fab": {
+"id": "ms-fab",
+"skill": "ms",
+"label": "Never fabricate numbers",
+"text": "and claims must be verified against your data; the toolkit never fabricates numbers",
+"skill_label": "medsci-skills",
+"skill_href": ""
+},
+"Medical Resident|AI-assisted literature review for journal club::sa-trace": {
+"id": "sa-trace",
+"skill": "sa",
+"label": "Evidence-traceable reports",
+"text": "Report Generation: Produce evidence-traceable research reports with Scientific Writing and document tools; Clinical Reports outputs remain visibly marked drafts built only from verified synthetic, de-identified, or aggregate source facts",
+"skill_label": "scientific-agent-skills",
+"skill_href": ""
+},
+"Medical Resident|AI-assisted literature review for journal club::sa-crit": {
+"id": "sa-crit",
+"skill": "sa",
+"label": "Low-stakes critical evaluation",
+"text": "Critical analysis: Scientific Critical Thinking and qualitative, low-stakes Scholar Evaluation of works\u2014never ranking people or supporting consequential decisions",
+"skill_label": "scientific-agent-skills",
+"skill_href": ""
+},
+"Medical Resident|AI-assisted literature review for journal club::nb-index": {
+"id": "nb-index",
+"skill": "nb",
+"label": "Index sources before generation",
+"text": "Why wait for sources? Sources must be indexed before chat or generation. Takes ~30 seconds to several minutes per source (see the processing-times table below).",
+"skill_label": "notebooklm-py",
+"skill_href": ""
+},
+"Medical Resident|AI-assisted literature review for journal club::nb-auth": {
+"id": "nb-auth",
+"skill": "nb",
+"label": "Authenticate before any command",
+"text": "Before using any command, you MUST authenticate:",
+"skill_label": "notebooklm-py",
+"skill_href": ""
+},
+"Academic Researcher|Writing a competitive grant proposal::ar-cite": {
+"id": "ar-cite",
+"skill": "ar",
+"label": "Citations required for strong claims",
+"text": "Anti-sycophancy discipline: scores \u2265 7 require specific dialogue-turn citations; Zone 3 triggers re-audit; no motivational framing.",
+"skill_label": "academic-research-skills",
+"skill_href": ""
+},
+"Academic Researcher|Writing a competitive grant proposal::ar-conf": {
+"id": "ar-conf",
+"skill": "ar",
+"label": "Wait for explicit user confirmation",
+"text": "Clarified adaptive checkpoint semantics so SLIM checkpoints still wait for explicit user confirmation.",
+"skill_label": "academic-research-skills",
+"skill_href": ""
+},
+"Academic Researcher|Writing a competitive grant proposal::dc-read": {
+"id": "dc-read",
+"skill": "dc",
+"label": "Reader-test in a fresh AI",
+"text": "Explain that this approach helps ensure the doc works well when others read it (including when they paste it into Claude). Ask if they want to try this workflow or prefer to work freeform.",
+"skill_label": "doc-coauthoring",
+"skill_href": ""
+},
+"Academic Researcher|Writing a competitive grant proposal::dc-conf": {
+"id": "dc-conf",
+"skill": "dc",
+"label": "Wait for confirmation before searching",
+"text": "Wait for user confirmation before searching",
+"skill_label": "doc-coauthoring",
+"skill_href": ""
+},
+"Academic Researcher|Writing a competitive grant proposal::hu-voice": {
+"id": "hu-voice",
+"skill": "hu",
+"label": "Match the intended voice",
+"text": "Match the voice - Fit the intended tone (formal, casual, technical). Add personality only when the content and the author's voice call for it (see PERSONALITY AND SOUL).",
+"skill_label": "humanizer",
+"skill_href": ""
+},
+"Academic Researcher|Writing a competitive grant proposal::hu-src": {
+"id": "hu-src",
+"skill": "hu",
+"label": "Never invent a source",
+"text": "(If a real source exists, name it. Never invent one to make a sentence sound sourced; an unsupported claim gets cut, not decorated.)",
+"skill_label": "humanizer",
+"skill_href": ""
+},
+"Academic Researcher|Writing a competitive grant proposal::pf-pdf": {
+"id": "pf-pdf",
+"skill": "pf",
+"label": "Assemble a multi-page PDF",
+"text": "Create PDF with Multiple Pages",
+"skill_label": "pdf",
+"skill_href": ""
+},
+"Corporate Lawyer|Contract review and drafting with AI::pf-ocr": {
+"id": "pf-ocr",
+"skill": "pf",
+"label": "OCR scanned contracts",
+"text": "Extract Text from Scanned PDFs",
+"skill_label": "pdf",
+"skill_href": ""
+},
+"Corporate Lawyer|Contract review and drafting with AI::pf-layout": {
+"id": "pf-layout",
+"skill": "pf",
+"label": "Extract text with layout",
+"text": "Extract Text with Layout",
+"skill_label": "pdf",
+"skill_href": ""
+},
+"Corporate Lawyer|Contract review and drafting with AI::rb-inj": {
+"id": "rb-inj",
+"skill": "rb",
+"label": "Detect prompt injection",
+"text": "Detect prompt injection on user input",
+"skill_label": "Rebuff",
+"skill_href": ""
+},
+"Corporate Lawyer|Contract review and drafting with AI::rb-canary": {
+"id": "rb-canary",
+"skill": "rb",
+"label": "Detect canary-word leakage",
+"text": "Detect canary word leakage",
+"skill_label": "Rebuff",
+"skill_href": ""
+},
+"Corporate Lawyer|Contract review and drafting with AI::dc-edit": {
+"id": "dc-edit",
+"skill": "dc",
+"label": "Edit in place, never reprint",
+"text": "Use str_replace to make edits (never reprint the whole doc)",
+"skill_label": "doc-coauthoring",
+"skill_href": ""
+},
+"Software Engineer|Developing an AI coding assistant::ca-sdk": {
+"id": "ca-sdk",
+"skill": "ca",
+"label": "Call Claude via the SDK",
+"text": "When the user asks you to add, modify, or implement a Claude feature, your code must call Claude through one of:",
+"skill_label": "claude-api",
+"skill_href": ""
+},
+"Software Engineer|Developing an AI coding assistant::ca-flow": {
+"id": "ca-flow",
+"skill": "ca",
+"label": "Agent once, Session per run",
+"text": "Mandatory flow: Agent (once) \u2192 Session (every run). model/system/tools live on the agent, never the session. See shared/managed-agents-overview.md for the full reading guide, beta headers, and pitfalls.",
+"skill_label": "claude-api",
+"skill_href": ""
+},
+"Software Engineer|Developing an AI coding assistant::mb-ro": {
+"id": "mb-ro",
+"skill": "mb",
+"label": "Read-only, non-destructive ops",
+"text": "Read-only: Only non-destructive operations required",
+"skill_label": "mcp-builder",
+"skill_href": ""
+},
+"Software Engineer|Developing an AI coding assistant::mb-srv": {
+"id": "mb-srv",
+"skill": "mb",
+"label": "Build MCP servers",
+"text": "Create MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-designed tools. The quality of an MCP server is measured by how well it enables LLMs to accomplish real-world tasks.",
+"skill_label": "mcp-builder",
+"skill_href": ""
+},
+"Software Engineer|Developing an AI coding assistant::pm-cite": {
+"id": "pm-cite",
+"skill": "pm",
+"label": "Force cite-only prompts",
+"text": "Prone to hallucinated citations \u2014 always add \"Cite only sources you are certain of. If uncertain, say [uncertain].\"",
+"skill_label": "prompt-master",
+"skill_href": ""
+},
+"Software Engineer|Developing an AI coding assistant::pm-ground": {
+"id": "pm-ground",
+"skill": "pm",
+"label": "Ground: don't extrapolate",
+"text": "For grounded tasks add \"Base your response only on the provided context. Do not extrapolate.\"",
+"skill_label": "prompt-master",
+"skill_href": ""
+},
+"Software Engineer|Developing an AI coding assistant::pm-scope": {
+"id": "pm-scope",
+"skill": "pm",
+"label": "Scope prompts to file paths",
+"text": "Always scope to specific files and directories \u2014 never give a global instruction without a path anchor",
+"skill_label": "prompt-master",
+"skill_href": ""
+},
+"Software Engineer|Developing an AI coding assistant::wt-idle": {
+"id": "wt-idle",
+"skill": "wt",
+"label": "Wait for networkidle",
+"text": "\u2705 Do wait for page.wait_for_load_state('networkidle') before inspection",
+"skill_label": "webapp-testing",
+"skill_href": ""
+},
+"Software Engineer|Developing an AI coding assistant::wt-close": {
+"id": "wt-close",
+"skill": "wt",
+"label": "Always close the browser",
+"text": "Always close the browser when done",
+"skill_label": "webapp-testing",
+"skill_href": ""
+},
+"Data Scientist|Building an LLM-powered analytics assistant::ca-sdk": {
+"id": "ca-sdk",
+"skill": "ca",
+"label": "Call Claude via the SDK",
+"text": "When the user asks you to add, modify, or implement a Claude feature, your code must call Claude through one of:",
+"skill_label": "claude-api",
+"skill_href": ""
+},
+"Data Scientist|Building an LLM-powered analytics assistant::ga-val": {
+"id": "ga-val",
+"skill": "ga",
+"label": "Input/output validation guards",
+"text": "Create Input and Output Guards for LLM Validation",
+"skill_label": "Guardrails AI",
+"skill_href": ""
+},
+"Data Scientist|Building an LLM-powered analytics assistant::ga-struct": {
+"id": "ga-struct",
+"skill": "ga",
+"label": "Enforce structured output",
+"text": "Use Guardrails to generate structured data from LLMs",
+"skill_label": "Guardrails AI",
+"skill_href": ""
+},
+"Data Scientist|Building an LLM-powered analytics assistant::xl-form": {
+"id": "xl-form",
+"skill": "xl",
+"label": "Formulas, never hardcoded",
+"text": "Use formulas, never hardcoded results. Write sheet['B10'] = '=SUM(B2:B9)', not the Python-computed total. The sheet must recalculate when its inputs change.",
+"skill_label": "xlsx",
+"skill_href": ""
+},
+"Data Scientist|Building an LLM-powered analytics assistant::xl-zero": {
+"id": "xl-zero",
+"skill": "xl",
+"label": "Zero formula errors",
+"text": "Zero formula errors. Never ship while recalc.py reports errors_found. If you think an error predates you, prove it: load the *original* with data_only=True and look at that cell. An error you introduced looks exactly like one you inherited.",
+"skill_label": "xlsx",
+"skill_href": ""
+},
+"Data Scientist|Building an LLM-powered analytics assistant::gf-conf": {
+"id": "gf-conf",
+"skill": "gf",
+"label": "Tag inference confidence",
+"text": "Confidence tags \u2014 every inferred relationship is marked EXTRACTED, INFERRED, or AMBIGUOUS. You always know what was found vs guessed.",
+"skill_label": "graphify",
+"skill_href": ""
+},
+"Application Security Engineer|Securing AI features and reviewing code with AI::ac-live": {
+"id": "ac-live",
+"skill": "ac",
+"label": "Run live offensive exercises",
+"text": "Run live cybersecurity skill exercises against real targets",
+"skill_label": "Anthropic-Cybersecurity-Skills",
+"skill_href": ""
+},
+"Application Security Engineer|Securing AI features and reviewing code with AI::rb-inj": {
+"id": "rb-inj",
+"skill": "rb",
+"label": "Detect prompt injection",
+"text": "Detect prompt injection on user input",
+"skill_label": "Rebuff",
+"skill_href": ""
+},
+"Application Security Engineer|Securing AI features and reviewing code with AI::lg-block": {
+"id": "lg-block",
+"skill": "lg",
+"label": "Block malicious prompts",
+"text": "Prompt Guard is a powerful tool for protecting LLM powered applications from malicious prompts to ensure their security and integrity.",
+"skill_label": "Llama Guard / PurpleLlama",
+"skill_href": ""
+},
+"Application Security Engineer|Securing AI features and reviewing code with AI::ng-in": {
+"id": "ng-in",
+"skill": "ng",
+"label": "Input rail rejects input",
+"text": "Input rails: applied to the input from the user; an input rail can reject the input, stopping any additional processing, or alter the input (e.g., to mask potentially sensitive data, to rephrase).",
+"skill_label": "NeMo Guardrails",
+"skill_href": ""
+},
+"Application Security Engineer|Securing AI features and reviewing code with AI::ng-out": {
+"id": "ng-out",
+"skill": "ng",
+"label": "Output rail rejects output",
+"text": "Output rails: applied to the output generated by the LLM; an output rail can reject the output, preventing it from being returned to the user, or alter it (e.g., removing sensitive data).",
+"skill_label": "NeMo Guardrails",
+"skill_href": ""
+},
+"Investigative Journalist|Analyzing large document leaks::pf-ocr": {
+"id": "pf-ocr",
+"skill": "pf",
+"label": "OCR scanned leak documents",
+"text": "Extract Text from Scanned PDFs",
+"skill_label": "pdf",
+"skill_href": ""
+},
+"Investigative Journalist|Analyzing large document leaks::gf-conf": {
+"id": "gf-conf",
+"skill": "gf",
+"label": "Tag inference confidence",
+"text": "Confidence tags \u2014 every inferred relationship is marked EXTRACTED, INFERRED, or AMBIGUOUS. You always know what was found vs guessed.",
+"skill_label": "graphify",
+"skill_href": ""
+},
+"Investigative Journalist|Analyzing large document leaks::rb-inj": {
+"id": "rb-inj",
+"skill": "rb",
+"label": "Detect prompt injection",
+"text": "Detect prompt injection on user input",
+"skill_label": "Rebuff",
+"skill_href": ""
+},
+"Investigative Journalist|Analyzing large document leaks::rb-canary": {
+"id": "rb-canary",
+"skill": "rb",
+"label": "Detect canary-word leakage",
+"text": "Detect canary word leakage",
+"skill_label": "Rebuff",
+"skill_href": ""
+},
+"Investigative Journalist|Analyzing large document leaks::ss-ckpt": {
+"id": "ss-ckpt",
+"skill": "ss",
+"label": "Checkpoint long scrapes",
+"text": "\u2705 Checkpoint/Resume - Never lose progress on long scrapes",
+"skill_label": "Skill_Seekers",
+"skill_href": ""
+},
+"Financial Analyst|Earnings analysis and report automation::pf-layout": {
+"id": "pf-layout",
+"skill": "pf",
+"label": "Extract text from filings",
+"text": "Extract Text with Layout",
+"skill_label": "pdf",
+"skill_href": ""
+},
+"Financial Analyst|Earnings analysis and report automation::pf-ocr": {
+"id": "pf-ocr",
+"skill": "pf",
+"label": "OCR scanned filings",
+"text": "Extract Text from Scanned PDFs",
+"skill_label": "pdf",
+"skill_href": ""
+},
+"Financial Analyst|Earnings analysis and report automation::xl-form": {
+"id": "xl-form",
+"skill": "xl",
+"label": "Formulas, never hardcoded",
+"text": "Use formulas, never hardcoded results. Write sheet['B10'] = '=SUM(B2:B9)', not the Python-computed total. The sheet must recalculate when its inputs change.",
+"skill_label": "xlsx",
+"skill_href": ""
+},
+"Financial Analyst|Earnings analysis and report automation::xl-zero": {
+"id": "xl-zero",
+"skill": "xl",
+"label": "Zero formula errors",
+"text": "Zero formula errors. Never ship while recalc.py reports errors_found. If you think an error predates you, prove it: load the *original* with data_only=True and look at that cell. An error you introduced looks exactly like one you inherited.",
+"skill_label": "xlsx",
+"skill_href": ""
+},
+"Financial Analyst|Earnings analysis and report automation::ga-val": {
+"id": "ga-val",
+"skill": "ga",
+"label": "Validate model output",
+"text": "Create Input and Output Guards for LLM Validation",
+"skill_label": "Guardrails AI",
+"skill_href": ""
+}
+}

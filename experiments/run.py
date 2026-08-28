@@ -9,6 +9,7 @@ import re
 import threading
 import urllib.request
 
+import skillpool as SP
 from arms import ARMS, SYSTEM_PERMISSIVE
 from execute import grade
 
@@ -73,9 +74,12 @@ def stratified_sample(rows, k, seed=0):
     return [scored[i] for i in idx]
 
 
-def generate(model, prompt, seed, temperature=0.8, arm="", base=None):
+def generate(model, prompt, seed, temperature=0.8, arm="", base=None, load=""):
+    """`load` is a composed skill-bundle block (skillpool.compose); `arm` is the
+    legacy single-skill path. They are mutually exclusive."""
     base = base or SYSTEM
-    system = (ARMS[arm] + "\n\n" + base) if arm and ARMS[arm] else base
+    head = load or (ARMS[arm] if arm else "")
+    system = (head + "\n\n" + base) if head else base
     body = json.dumps({
         "model": model, "stream": False,
         "messages": [{"role": "system", "content": system},
@@ -111,12 +115,25 @@ def main():
                     help="clarity levels to run; default all five")
     ap.add_argument("--permissive", action="store_true",
                     help="use the system prompt that allows asking instead of coding")
+    ap.add_argument("--bundle", default="",
+                    help="skillpool bundle name; loads n real skills at once "
+                         "(mutually exclusive with --arms)")
+    ap.add_argument("--save-text", action="store_true",
+                    help="store the raw response, needed for order analysis")
     ap.add_argument("--shard", default="0/1",
                     help="i/n: run only tasks where index %% n == i, to split "
                          "one experiment across machines")
     a = ap.parse_args()
 
     si, sn = (int(x) for x in a.shard.split("/"))
+
+    bundle = SP.BUNDLES[a.bundle] if a.bundle else None
+    load = SP.compose(bundle) if bundle else ""
+    if bundle:
+        assert a.arms == "none", "--bundle and --arms are mutually exclusive"
+        print(f"bundle {a.bundle}: n={len(bundle)} "
+              f"k={SP.k_conflicts(bundle)} words={len(load.split())}")
+        print("  " + " -> ".join(bundle))
 
     arms = a.arms.split(",")
     assert all(x in ARMS for x in arms), f"unknown arm in {arms}"
@@ -129,7 +146,8 @@ def main():
     if os.path.exists(a.out):
         for l in open(a.out):
             d = json.loads(l)
-            done.add((d["name"], d["condition"], d["sample"], d.get("arm", "none")))
+            done.add((d["name"], d["condition"], d["sample"],
+                      d.get("arm", "none"), d.get("bundle", "")))
 
     rows = load_tasks()
     tasks = rows if a.tasks >= len(rows) else stratified_sample(rows, a.tasks)
@@ -143,16 +161,17 @@ def main():
             for c in conds if c not in t["skip"] for arm in arms]
     random.Random(0).shuffle(jobs)
     jobs = [j for j in jobs
-            if (j[0]["name"], j[1], j[2], j[3]) not in done]
+            if (j[0]["name"], j[1], j[2], j[3], a.bundle) not in done]
     print(f"{len(jobs)} generations to run ({len(done)} already done)")
 
     def work(job):
         t, cond, s, arm = job
-        r = generate(a.model, t["prompts"][cond], seed=s, arm=arm, base=base)
+        r = generate(a.model, t["prompts"][cond], seed=s, arm=arm, base=base,
+                     load=load)
         msg = r["message"]
         text = msg["content"]
         g = grade(text, t["entry_point"], t["test_case"])
-        return {
+        rec = {
             "model": a.model, "name": t["name"], "condition": cond, "sample": s,
             "arm": arm, "permissive": bool(a.permissive),
             # a misaligned skill may instruct the model to ask instead of answer
@@ -168,6 +187,15 @@ def main():
             "passed_all": g["passed_all"],
             "done_reason": r.get("done_reason"),
         }
+        if bundle:
+            rec["bundle"] = a.bundle
+            rec["n_skills"] = len(bundle)
+            rec["k_conflicts"] = SP.k_conflicts(bundle)
+            rec["load_words"] = len(load.split())
+            rec["adherence"] = SP.score(text, bundle)
+        if a.save_text:
+            rec["response"] = text
+        return rec
 
     lock = threading.Lock()
     n_done = [0]
