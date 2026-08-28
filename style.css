@@ -173,6 +173,52 @@ h1,h2,.brand-name{font-family:"Lora",Georgia,serif;}
 }
 .rec-import-copy:hover{filter:brightness(1.06);}
 
+/* Multi-agentic orchestrator guidelines button + panel */
+.rec-orch{
+  display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-family:inherit;
+  font-size:.8rem;font-weight:700;color:var(--navy);
+  background:linear-gradient(180deg,#fff,#eef7f3);border:1px solid var(--line);
+  padding:8px 13px;border-radius:8px;
+}
+.rec-orch:hover{border-color:#12a150;color:#0b7a3c;box-shadow:0 2px 10px rgba(18,161,80,.15);}
+.rec-orch svg{opacity:.8;}
+.rec-orch-panel{padding:12px 18px 4px;}
+.rec-orch-pattern{margin:0 0 6px;font-size:.86rem;color:var(--navy);}
+.rec-orch-why{margin:0 0 10px;font-size:.8rem;color:var(--muted);line-height:1.5;}
+.rec-orch-flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:12px;}
+.rec-orch-step{
+  font-size:.72rem;font-weight:700;color:var(--navy);background:#eef7f3;
+  border:1px solid #cfe6da;border-radius:999px;padding:4px 10px;
+}
+.rec-orch-arrow{color:var(--muted);font-size:.78rem;}
+.rec-orch-agents{margin:0 0 10px;padding-left:20px;display:grid;gap:9px;}
+.rec-orch-agents li{font-size:.8rem;line-height:1.5;}
+.rec-orch-agents p{margin:3px 0 0;color:var(--muted);}
+.rec-orch-name{font-weight:700;color:var(--navy);margin-right:6px;}
+.rec-orch-skill{
+  display:inline-block;font-size:.68rem;font-weight:600;color:#0b7a3c;
+  background:#f2faf6;border:1px solid #cfe6da;border-radius:5px;padding:1px 6px;margin-right:4px;
+}
+.rec-orch-label{margin:0 0 5px;font-size:.72rem;font-weight:700;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--muted);}
+.rec-orch-rules{margin:0 0 12px;padding-left:20px;display:grid;gap:5px;
+  font-size:.79rem;line-height:1.5;color:var(--ink);}
+.rec-orch-io{
+  display:grid;grid-template-columns:auto 1fr;gap:2px 10px;margin:6px 0 0;
+  font-size:.73rem;line-height:1.45;
+}
+.rec-orch-io dt{font-weight:700;color:var(--navy);white-space:nowrap;}
+.rec-orch-io dd{margin:0;color:var(--muted);word-break:break-word;}
+.rec-orch-deny{color:#b03a2e;}
+.rec-orch-directives{margin-top:6px;}
+.rec-orch-directives summary{
+  cursor:pointer;font-size:.72rem;font-weight:700;color:#0b7a3c;list-style:none;
+}
+.rec-orch-directives summary::before{content:"▸ ";}
+.rec-orch-directives[open] summary::before{content:"▾ ";}
+.rec-orch-directives ul{margin:6px 0 0;padding-left:18px;display:grid;gap:4px;
+  font-size:.75rem;line-height:1.45;color:var(--muted);}
+
 /* ============ Network Analyzer overlay ============ */
 #analyzerOverlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;}
 #analyzerOverlay[hidden]{display:none;}  /* ID selector beat the UA [hidden] rule, so close never hid it */

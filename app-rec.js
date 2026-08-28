@@ -85,8 +85,10 @@ recResults.addEventListener("click", (e) => {
   const analyzeBtn = e.target.closest("[data-analyze]");
   if (analyzeBtn && typeof openAnalyzer === "function") { openAnalyzer(analyzeBtn.dataset.analyze); return; }
 
-  if (e.target.closest("[data-import]")) {
-    const panel = e.target.closest(".rec-card").querySelector(".rec-import-panel");
+  const toggle = e.target.closest("[data-import], [data-orch]");
+  if (toggle) {
+    const sel = toggle.hasAttribute("data-orch") ? ".rec-orch-panel" : ".rec-import-panel";
+    const panel = e.target.closest(".rec-card").querySelector(sel);
     if (panel) panel.hidden = !panel.hidden;
     return;
   }
@@ -133,6 +135,99 @@ For each repo below, add it to my skills folder (~/.claude/skills/ for personal 
   return { prompt, count: install.length };
 }
 
+// Multi-agent orchestrator guide for a bundle (ORCHESTRATORS, orch-data.js).
+// Says how to WIRE the same real skills into separate agents — order, isolation,
+// who verifies whom. The setup prompt is generated from the data, never hand-written.
+function orchPrompt(r, o) {
+  const repo = n => { const e = DIR.get(n); return e ? `${n} (${e.url})` : n; };
+  const agentBlock = (a, i) => `
+### Agent ${i + 1} — ${a.name}
+- **File:** \`.claude/agents/${a.slug}.md\`
+- **Skills to load (only these):** ${a.skills.map(repo).join("; ")}
+- **Job:** ${a.job}
+- **Reads:** ${a.inputs}
+- **Writes:** ${a.outputs}
+- **Tools allowed:** ${a.tools.allow.join(", ")}
+- **Tools denied (enforce, don't just instruct):** ${a.tools.deny.join(", ")}
+- **Exit criterion:** ${a.done}
+- **Put these in its system prompt, verbatim:**
+${a.directives.map(d => `  - ${d}`).join("\n")}`;
+
+  return `You are setting up a multi-agent orchestration for "${r.p} — ${r.t}".
+Build it, don't describe it. Work through the steps below in order and stop to ask me only if a step is genuinely ambiguous.
+
+## Pattern
+${o.pattern}
+
+## Why it is split this way
+${o.why}
+
+## Step 1 — install the skills
+Install each skill named below into \`.claude/skills/\` (project) or \`~/.claude/skills/\` (personal). If a URL points to a subfolder of a monorepo, copy just the folder holding SKILL.md. Report anything you could not install; do not substitute a different skill.
+
+## Step 2 — create one agent per role
+Create each as a separate subagent definition at the path given, with YAML frontmatter (\`name\`, \`description\`, \`tools\`) and the directives below as its system prompt. Each agent loads ONLY its own skills — do not give every agent the whole bundle, the isolation is the point.
+${o.agents.map(agentBlock).join("\n")}
+
+## Step 3 — wire the hand-offs
+Run order: ${o.flow.join(" → ")}
+
+Hand-offs go through files under \`${o.artifacts}\`, not through shared conversation context. Each agent reads only the paths listed under its **Reads** and writes only those under its **Writes**. Enforce this with per-agent working directories or file permissions — an instruction alone is not enforcement. The orchestrator checks each agent's exit criterion before advancing.
+
+## Step 4 — enforce these rules in the orchestrator
+${o.rules.map(x => `- ${x}`).join("\n")}
+
+## Step 5 — failure handling
+${o.failure}
+
+## Step 6 — verify the wiring before you trust it
+Run each of these and report the actual result, not an expectation:
+${o.checks.map((c, i) => `${i + 1}. ${c}`).join("\n")}
+
+## Report back
+1. The files you created (paths + one line each).
+2. A trace of one real request through the pipeline, showing every artifact written at each hop.
+3. Any deny-rule you could not technically enforce, and what you did instead.
+4. The results of Step 6, including anything that failed.`;
+}
+
+function orchPanel(r, o) {
+  const steps = o.flow.map(n => `<span class="rec-orch-step">${esc(n)}</span>`).join(`<span class="rec-orch-arrow">→</span>`);
+  return `<div class="rec-orch-panel" hidden>
+    <p class="rec-orch-pattern"><strong>${esc(o.pattern)}</strong></p>
+    <p class="rec-orch-why">${esc(o.why)}</p>
+    <div class="rec-orch-flow">${steps}</div>
+    <ol class="rec-orch-agents">
+      ${o.agents.map(a => `<li>
+        <span class="rec-orch-name">${esc(a.name)}</span>
+        ${a.skills.map(s => `<span class="rec-orch-skill">${esc(s)}</span>`).join("")}
+        <p>${esc(a.job)}</p>
+        <dl class="rec-orch-io">
+          <dt>Reads</dt><dd>${esc(a.inputs)}</dd>
+          <dt>Writes</dt><dd>${esc(a.outputs)}</dd>
+          <dt>Tools</dt><dd>${esc(a.tools.allow.join(", "))} <span class="rec-orch-deny">— denied: ${esc(a.tools.deny.join(", "))}</span></dd>
+          <dt>Done when</dt><dd>${esc(a.done)}</dd>
+        </dl>
+        <details class="rec-orch-directives">
+          <summary>${a.directives.length} system-prompt directives</summary>
+          <ul>${a.directives.map(d => `<li>${esc(d)}</li>`).join("")}</ul>
+        </details>
+      </li>`).join("")}
+    </ol>
+    <p class="rec-orch-label">Rules the orchestrator enforces</p>
+    <ul class="rec-orch-rules">${o.rules.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+    <p class="rec-orch-label">When something fails</p>
+    <p class="rec-orch-why">${esc(o.failure)}</p>
+    <p class="rec-orch-label">Verify the wiring</p>
+    <ul class="rec-orch-rules">${o.checks.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+    <p class="rec-import-hint">Paste into your <strong>Claude Code</strong> or <strong>Codex</strong> CLI — it sets up the agents above with the right skills, order and isolation.</p>
+    <div class="rec-import-code">
+      <button class="rec-import-copy" type="button">Copy</button>
+      <pre>${esc(orchPrompt(r, o))}</pre>
+    </div>
+  </div>`;
+}
+
 function card(r) {
   const items = r.s.slice().sort((a, b) => IMPORTANCE_ORDER[a[1]] - IMPORTANCE_ORDER[b[1]]);
   const hasGraph = typeof GRAPHS !== "undefined" && GRAPHS[r.p + "|" + r.t];
@@ -149,8 +244,15 @@ function card(r) {
          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><polyline points="8 11 12 15 16 11"/><path d="M5 21h14"/></svg>
          Import ${imp.count} ${imp.count === 1 ? "skill" : "skills"}</button>`
     : "";
-  const bar = (analyzeBtn || importBtn)
-    ? `<div class="rec-analyze-bar">${analyzeBtn}${importBtn}</div>` : "";
+  const orch = typeof ORCHESTRATORS !== "undefined" ? ORCHESTRATORS[r.p + "|" + r.t] : null;
+  const orchBtn = orch
+    ? `<button class="rec-orch" data-orch type="button"
+         title="How to split these skills across multiple agents — order, isolation, who verifies whom">
+         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><line x1="10.5" y1="7" x2="6" y2="16.5"/><line x1="13.5" y1="7" x2="18" y2="16.5"/><line x1="7.5" y1="19" x2="16.5" y2="19"/></svg>
+         Multi-agentic orchestrator guidelines</button>`
+    : "";
+  const bar = (analyzeBtn || importBtn || orchBtn)
+    ? `<div class="rec-analyze-bar">${analyzeBtn}${importBtn}${orchBtn}</div>` : "";
   return `
   <article class="rec-card">
     <header class="rec-card-head">
@@ -169,6 +271,7 @@ function card(r) {
         <pre>${esc(imp.prompt)}</pre>
       </div>
     </div>` : ""}
+    ${orch ? orchPanel(r, orch) : ""}
     <p class="rec-skills-label">AI skills &amp; governance files to import</p>
     <ul class="rec-skills">
       ${items.map(skillRow).join("")}

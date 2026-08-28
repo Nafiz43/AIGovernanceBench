@@ -17,6 +17,7 @@ Classic `<script>` tags share **one global scope** — a duplicate top-level `fu
 | `graph-data.js` | `const GRAPHS` — instruction dependency graphs keyed by `"Persona\|Task"` (`skills`, `nodes`, `edges`) |
 | `app.js` | directory view (search / filter / paginate) |
 | `app-rec.js` | recommender + tab switching; builds `DIR = Map(name→entry)`; renders cards; "Network Analyzer" button when a graph exists for the pair |
+| `orch-data.js` | `const ORCHESTRATORS` — multi-agent wiring guides keyed `"Persona\|Task"` (`pattern`, `why`, `agents[{name,skills,job}]`, `flow`, `rules`); 3 bundles. Every `skills` name must exist in `data.js` **and** in that pair's `RECS` bundle. `app-rec.js` renders the panel + generates the setup prompt from this data |
 | `app-graph.js` | force-directed SVG overlay: nodes = instructions, edges typed `conflict\|overlap\|depends\|reinforces` |
 | `index.html` | two views (`#view-recommend` landing, `#view-directory`); loads scripts in order: data → rec-data → graph-data → app → app-rec → app-graph |
 

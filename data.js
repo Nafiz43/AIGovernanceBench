@@ -606,5 +606,141 @@ const SKILLS = [
     "category": "Healthcare",
     "source": "nliulab",
     "type": "governance"
+  },
+  {
+    "name": "superpowers",
+    "url": "https://github.com/obra/superpowers",
+    "purpose": "Agentic skills framework and dev methodology — plans, breaks down, and debugs a task before writing code.",
+    "category": "Development",
+    "source": "obra",
+    "type": "skill"
+  },
+  {
+    "name": "gstack",
+    "url": "https://github.com/garrytan/gstack",
+    "purpose": "Garry Tan's Claude Code setup in one install — 23 opinionated development tools across plan, review, test, and ship.",
+    "category": "Development",
+    "source": "garrytan",
+    "type": "skill"
+  },
+  {
+    "name": "ponytail",
+    "url": "https://github.com/DietrichGebert/ponytail",
+    "purpose": "Makes an agent code like a lazy senior dev — say less, write the actual line, skip the over-engineering.",
+    "category": "Meta",
+    "source": "DietrichGebert",
+    "type": "skill"
+  },
+  {
+    "name": "codex-plugin-cc",
+    "url": "https://github.com/openai/codex-plugin-cc",
+    "purpose": "Delegate coding or review tasks to OpenAI Codex from inside Claude Code and bring the output back.",
+    "category": "Development",
+    "source": "OpenAI",
+    "type": "skill"
+  },
+  {
+    "name": "i-have-adhd",
+    "url": "https://github.com/ayghri/i-have-adhd",
+    "purpose": "Stops an agent from burying the answer — clear headings, short instructions, and the next action first.",
+    "category": "Meta",
+    "source": "ayghri",
+    "type": "skill"
+  },
+  {
+    "name": "ui-ux-pro-max-skill",
+    "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+    "purpose": "Design intelligence for professional UI/UX — usable colour palettes, font pairings, and layout systems.",
+    "category": "Design",
+    "source": "nextlevelbuilder",
+    "type": "skill"
+  },
+  {
+    "name": "taste-skill",
+    "url": "https://github.com/leonxlnx/taste-skill",
+    "purpose": "Gives an agent good visual taste so generated interfaces look premium and intentional instead of generic.",
+    "category": "Design",
+    "source": "leonxlnx",
+    "type": "skill"
+  },
+  {
+    "name": "impeccable",
+    "url": "https://github.com/pbakaus/impeccable",
+    "purpose": "A design language that adds the final layer of front-end polish to agent-built interfaces.",
+    "category": "Design",
+    "source": "pbakaus",
+    "type": "skill"
+  },
+  {
+    "name": "hyperframes",
+    "url": "https://github.com/heygen-com/hyperframes",
+    "purpose": "Turns web pages and interfaces into animated videos — write HTML, render video, built for agents.",
+    "category": "Creative",
+    "source": "HeyGen",
+    "type": "skill"
+  },
+  {
+    "name": "emil-skills",
+    "url": "https://github.com/emilkowalski/skills",
+    "purpose": "Interface-animation skills for design engineers — polished transitions, movement, and interaction states.",
+    "category": "Design",
+    "source": "Emil Kowalski",
+    "type": "skill"
+  },
+  {
+    "name": "gsap-skills",
+    "url": "https://github.com/greensock/gsap-skills",
+    "purpose": "Official GSAP skills teaching agents to write scroll effects, timelines, and production-ready web animations.",
+    "category": "Design",
+    "source": "GreenSock",
+    "type": "skill"
+  },
+  {
+    "name": "last30days-skill",
+    "url": "https://github.com/mvanhorn/last30days-skill",
+    "purpose": "Researches what people recently discussed across Reddit, X, YouTube, Hacker News, and more.",
+    "category": "Research",
+    "source": "mvanhorn",
+    "type": "skill"
+  },
+  {
+    "name": "agent-browser",
+    "url": "https://github.com/vercel-labs/agent-browser",
+    "purpose": "Browser-automation CLI that lets an agent open, navigate, and operate real websites.",
+    "category": "Development",
+    "source": "Vercel",
+    "type": "skill"
+  },
+  {
+    "name": "find-skills",
+    "url": "https://github.com/vercel-labs/skills",
+    "purpose": "Open agent-skills tool (npx skills) that finds and installs the right Claude skill for a task.",
+    "category": "Meta",
+    "source": "Vercel",
+    "type": "skill"
+  },
+  {
+    "name": "claude-hud",
+    "url": "https://github.com/jarrodwatts/claude-hud",
+    "purpose": "Claude Code HUD plugin — shows context usage, active tools, and progress while the agent works.",
+    "category": "Productivity",
+    "source": "jarrodwatts",
+    "type": "skill"
+  },
+  {
+    "name": "remotion-skills",
+    "url": "https://github.com/remotion-dev/skills",
+    "purpose": "Builds complete videos programmatically using React with Remotion.",
+    "category": "Creative",
+    "source": "Remotion",
+    "type": "skill"
+  },
+  {
+    "name": "social-media-skills",
+    "url": "https://github.com/charlie947/social-media-skills",
+    "purpose": "Free collection of skills for creating social content — hooks, post drafts, and platform-specific workflows.",
+    "category": "Marketing",
+    "source": "charlie947",
+    "type": "skill"
   }
 ];
