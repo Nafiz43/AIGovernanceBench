@@ -67,6 +67,7 @@ community = [
     ("ComposioHQ/awesome-claude-skills", "Curated list of Claude Skills, resources and tools for customizing Claude AI workflows.", "Curated list", "Meta"),
     ("mohitagw15856/pm-claude-skills", "515 professional Agent Skills for PRDs, launches, compliance and CVs — in Anthropic's plugin directory.", "Product", "Productivity"),
     ("GetBindu/awesome-claude-code-and-skills", "Collection of Claude Skills spanning coding, writing, and workflow automation.", "Curated list", "Meta"),
+    ("yylo-dev/yylo-skills", "Kanban, task-ledger, wiki and merge-flow Agent Skills for coding agents \u2014 installed via npx skills add yylo-dev/yylo-skills.", "Productivity", "Productivity"),
 ]
 
 for repo, purpose, cat, group in community:
