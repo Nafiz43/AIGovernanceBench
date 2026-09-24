@@ -742,5 +742,13 @@ const SKILLS = [
     "category": "Marketing",
     "source": "charlie947",
     "type": "skill"
+  },
+  {
+    "name": "yylo-skills",
+    "url": "https://github.com/yylo-dev/yylo-skills",
+    "purpose": "Kanban, task-ledger, wiki and merge-flow Agent Skills for coding agents \u2014 installed via npx skills add yylo-dev/yylo-skills.",
+    "category": "Productivity",
+    "source": "yylo-dev",
+    "type": "skill"
   }
 ];
